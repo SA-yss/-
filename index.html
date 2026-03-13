@@ -1,0 +1,2213 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>창고수량재고</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --card:#ffffff;
+      --chip:#f3f4f6;
+
+      --stockbg:#f3f6fa;
+      --out:#c63e3e;
+      --in:#1453af;
+
+      --radius:8px;
+
+      /* ✅ 표 칸폭: 날짜 / 구분 / 부서 / 담당자 / 수량 */
+      --log-cols: 45px 60px 100px 70px 50px;
+
+      /* ✅ 디테일 상단 카드 컬러 */
+      --blue:#2563eb;
+      --bluebg:#eef4ff;
+      --blueLine:#dbeafe;
+
+      /* ✅ Danger */
+      --danger:#c63e3e;
+      --dangerBg:#fff5f5;
+      --dangerLine:#ffd6d6;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo","Noto Sans KR", Arial;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width: 600px;
+      margin: 25px auto 70px;
+      padding: 0 17px; /* ✅ 홈화면 - 비쥬얼 폭 */
+    }
+
+    /* ---------- Topbar ---------- */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:50px;
+      padding-bottom: 13px;
+      border-bottom:1px solid var(--line);
+      margin-bottom: 23px;
+      padding-left: 15px;
+    }
+
+    .brand a{
+      color:inherit;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-width: 0;
+    }
+
+    h1{
+      font-size: 20px;
+      font-weight: 900;
+      margin: 0;
+      letter-spacing:-0.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .search{ /* 홈화면 - 검색 */
+      flex:1;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    .search input{
+      width: min(120px, 100%);
+      padding: 7px 10px;
+      border:1px solid var(--line);
+      border-radius: 7px;
+      outline:none;
+      font-size:12px;
+    }
+
+    .pill{
+      padding: 7px 12px;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      background: var(--chip);
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      font-weight: 700;
+    }
+
+    /* ---------- Home List ---------- */
+    .section{ margin-top: 25px; }
+
+    .secHead{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:7px;
+      margin: 20px 0 10px;
+      padding-left: 20px;
+    }
+
+    .secHead h2{
+      margin:0;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+    }
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 110px;
+      gap: 11px;
+      align-items: stretch;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+      padding: 9px;
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      min-height: 84px;
+      cursor:pointer;
+      transition: transform .06s ease;
+    }
+
+    .card:active{ transform: scale(0.997); }
+
+    .thumb{
+      width: 74px;
+      height: 74px;
+      border-radius: 8px;
+      background: #f8fafc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 auto;
+      overflow:hidden;
+      border:1px solid #ffffff;
+    }
+
+    .thumb img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(0.95);
+    }
+
+    .meta{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      text-align: left;
+      min-width:0;
+    }
+
+    .meta-bot{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 7px;
+      min-width:0;
+    }
+
+    .meta-bot span{ white-space: nowrap; }
+
+    .title{
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.8;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      letter-spacing:-0.1px;
+    }
+
+    .size{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+      font-weight: 600;
+    }
+
+    .status{ font-weight: 600; }
+    .status.out{ color: var(--out); }
+    .status.in{ color: var(--in); }
+
+    .delta{ white-space:nowrap; font-weight: 600; }
+    .delta .qty{ font-weight: 600; margin-left: 6px; }
+    .delta .qty.out{ color: var(--out); }
+    .delta .qty.in{ color: var(--in); }
+
+    .stock{
+      border:1px solid #f1f5f9;
+      border-radius: var(--radius);
+      background: var(--stockbg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+
+    .stock small{
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 800;
+      position: relative;
+      top: 1px;
+      margin-left: 2px;
+    }
+
+    /* ---------- Detail ---------- */
+    .paper{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background:#fff;
+      overflow:hidden;
+    }
+
+    .paper-head{
+      padding: 14px 18px;
+      border-bottom:1px solid var(--line);
+      font-weight: 700;
+      letter-spacing:-0.2px;
+    }
+
+    .paper-body{ padding: 16px; }
+
+    .imgRow{
+      display:flex;
+      justify-content:center;
+      gap: 18px;
+      padding: 10px 0 16px;
+      margin: 0 8px;
+    }
+
+    .imgBox{
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      background:#f8fafc;
+      border:1px solid #ffffff;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .imgBox img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .imgPh{ width: 36px; height: 36px; opacity:.6; }
+
+    .itemHeader{
+      padding: 6px 6px 2px;
+    }
+
+    .itemTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .itemName{
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing:-0.6px;
+      line-height: 1.05;
+      margin: 0;
+      min-width:0;
+      word-break: keep-all;
+    }
+
+    .sizePill{
+      flex: 0 0 auto;
+      padding: 7px 14px;
+      border-radius:7px;
+      background: #f7f8fa;
+      border:1px solid #f2f4f7;
+      color:#111827;
+      font-weight: 700;
+      font-size: 13px;
+      white-space:nowrap;
+      margin-top: 1px;
+    }
+
+    .statsGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 3px;
+    }
+
+    .statCard{
+      border-radius: 8px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding: 7px 8px;
+      min-height: 50px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .statCard.current{
+      background: #f3f6ff;
+      border-color: #e1e8ff;
+    }
+
+    .statCard.base{
+      cursor:pointer;
+    }
+
+    .statRow{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      text-align:center;
+    }
+
+    .statLabel{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      font-weight:700;
+      color:#111827;
+      letter-spacing:-0.2px;
+      min-width:0;
+      white-space:nowrap;
+      width:100%;
+      padding-bottom:6px;
+      margin-bottom:6px;
+      border-bottom:1px solid #e5e7eb;
+    }
+
+    .statLabel .txt{
+      font-size: 14px;
+      line-height: 1;
+      white-space:nowrap;
+    }
+
+    .statValue{
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing:-0.6px;
+      line-height:1;
+      color:#2e5ad2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      white-space:nowrap;
+      width:100%;
+    }
+
+    .statValue .unit{
+      font-size: 14px;
+      font-weight: 800;
+      color:#111827;
+      letter-spacing:-0.2px;
+      position: relative;
+      top: 0;
+      flex: 0 0 auto;
+      white-space:nowrap;
+    }
+
+    .statCard.base .statValue{
+      color:#111827;
+    }
+
+    .baseInput{
+      width: 95px;
+      border:0;
+      outline:none;
+      font-weight: 800;
+      font-size: 20px;
+      text-align:center;
+      background:transparent;
+      color:#111827;
+      padding:0;
+    }
+
+    .divider{ height:1px; background:var(--line); margin: 14px 0 18px; }
+
+    .boxTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 0 5px 5px;
+    }
+
+    .boxTitle{
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing:-0.2px;
+      margin-bottom: 5px;
+      padding: 4px 10px;
+    }
+
+    .selDelBtn{
+      padding: 7px 10px;
+      border:1px solid var(--line);
+      border-radius: 7px;
+      background:#fff;
+      font-weight: 500;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+
+    .logBox{
+      margin: 0 3px 10px;
+      border:1px solid var(--line);
+      border-radius: 7px;
+      background:#fff;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .logMinWidth{ min-width: 400px; }
+
+    .logHead,
+    .logRow{
+      display:grid;
+      grid-template-columns: var(--log-cols);
+      align-items:center;
+      justify-items:start;
+    }
+
+    .gapType{ margin-left: 13px; }
+
+    .logHead > :last-child,
+    .logRow  > :last-child{
+      justify-self:end;
+      text-align:right;
+    }
+
+    .logHead{
+      gap: 8px;
+      padding: 4px 16px;
+      background:#f8fafc;
+      border-bottom:1px solid var(--line);
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .logRow{
+      gap: 8px;
+      padding: 13px 16px;
+      border-top:1px solid var(--line);
+      font-size: 13px;
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .logRow:first-child{ border-top:none; }
+
+    .logRow.selected{
+      outline: 0.7px solid #c4c7d1;
+      outline-offset: -2px;
+      background: #fbfbfb;
+    }
+
+    .hbtn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      font-weight: 950;
+    }
+
+    .arrow{
+      font-size: 10px;
+      color: var(--muted);
+      transform: translateY(-0.5px);
+    }
+
+    .hselect{
+      width: 100%;
+      margin-left: 0;
+      border:1px solid var(--line);
+      border-radius: 7px;
+      padding: 4px 14px;
+      background:#fff;
+      font-weight: 600;
+      font-size: 12px;
+      outline:none;
+    }
+
+    .allSelect{ width:70px; }
+    .deptSelect{ width:90px; }
+
+    .hdateWrap{ position:relative; }
+
+    .hdate{
+      position:absolute;
+      left:5px;
+      top: 475px;
+      width: 30px;
+      padding: 5px 5px;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      background:#fff;
+      display:none;
+      z-index: 50;
+      box-shadow: 0 1px 2px rgba(17,24,39,0.08);
+    }
+
+    .hdate input{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      outline:none;
+      background:#fff;
+    }
+
+    .hdate .row2{
+      display:flex;
+      justify-content:flex-end;
+      gap:5px;
+      margin-top:5px;
+    }
+
+    .miniBtn{
+      border:1px solid var(--line);
+      border-radius: 8px;
+      padding: 3px 5px;
+      background:#fff;
+      cursor:pointer;
+      font-weight: 600;
+      font-size: 11px;
+      white-space:nowrap;
+    }
+
+    .logDate{ color:#111827; font-weight: 600; }
+    .logType{ font-weight: 600; }
+    .logType.out{ color: var(--out); }
+    .logType.in{ color: var(--in); }
+    .logDept{ color:#111827; font-weight: 600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .logPerson{ color:#111827; font-weight: 600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .logQty{ font-weight: 700; white-space:nowrap; }
+    .logQty.out{ color: var(--out); }
+    .logQty.in{ color: var(--in); }
+
+    .detailActions{
+      display:flex;
+      gap:8px;
+      justify-content:flex-end;
+      margin: 10px 3px 0;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding: 6px 10px;
+      border:1px solid var(--line);
+      border-radius: 7px;
+      background:#fff;
+      font-weight: 600;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      font-size: 11px;
+    }
+
+    .primary{ background:#2c2c2c; color:#fff; border-color:#111827; }
+
+    .dangerBox{
+      margin-top: 20px;
+      border: 1px dashed var(--dangerLine);
+      background: var(--dangerBg);
+      border-radius: 8px;
+      padding: 6px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .dangerText{
+      font-size: 11px;
+      color: #313131;
+      font-weight: 600;
+      line-height: 2;
+    }
+
+    .dangerBtn{
+      padding: 8px 12px;
+      border:1px solid var(--dangerLine);
+      background:#fff;
+      border-radius: 7px;
+      font-weight: 800;
+      color: var(--danger);
+      cursor:pointer;
+      white-space:nowrap;
+      font-size: 12px;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index: 9999;
+    }
+
+    .modal.show{ display:block; }
+
+    .modalOverlay{
+      position:absolute;
+      inset:0;
+      background: rgba(17,24,39,0.45);
+    }
+
+    .sheet{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      background:#fff;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.12);
+      overflow:hidden;
+      max-height: 86vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .sheetHead{
+      padding: 14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight: 700;
+    }
+
+    .sheetClose{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor:pointer;
+      font-weight: 700;
+    }
+
+    .sheetBody{
+      padding: 14px 16px 6px;
+      overflow:auto;
+    }
+
+    .field{ margin-bottom: 12px; }
+
+    .field label{
+      display:block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .field input, .field select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      outline:none;
+      background:#fff;
+    }
+
+    .seg{ display:flex; gap:10px; }
+
+    .seg button{
+      flex:1;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 10px;
+      background:#fff;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .seg button.active.out{
+      border-color: var(--out);
+      color: var(--out);
+      background: #fff5f5;
+    }
+
+    .seg button.active.in{
+      border-color: var(--in);
+      color: var(--in);
+      background: #f1f5ff;
+    }
+
+    .sheetFoot{
+      padding: 12px 16px 16px;
+      border-top:1px solid var(--line);
+      background:#fff;
+    }
+
+    .sheetFoot .primary{
+      width:100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .fab{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 9998;
+      padding: 12px 14px;
+      border:1px solid var(--line);
+      border-radius: 8px;
+      background:#2c2c2c;
+      color:#fff;
+      font-weight: 700;
+      font-size: 12px;
+      cursor:pointer;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .fab:active{ transform: translateY(0.5px); }
+
+    /* ✅ 모바일 */
+    @media (max-width: 450px){
+      .row{ grid-template-columns: 1fr 82px; gap: 10px; }
+      .stock{ font-size: 13px; }
+      .thumb{ width: 68px; height: 68px; }
+      .search{ justify-content:flex-start; width:100%; }
+
+      .statRow{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .statValue{ font-size: 23px; }
+      .statValue .unit{ font-size: 13px; }
+
+      .itemName{ font-size: 23px; }
+      .sizePill{ font-size: 12px; }
+      .statLabel .txt{ font-size: 16px; }
+      .baseInput{ font-size: 17px; width: 50px; }
+
+      .hdate{
+        width: min(92vw, 320px);
+        top: 44px;
+      }
+
+      .detailActions{ justify-content:space-between; }
+      .detailActions .btn{ flex:1; }
+
+      .dangerBox{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .dangerBtn{ align-self:stretch; text-align:center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <a href="#/" id="homeLink"><h1>창고수량재고</h1></a>
+      </div>
+
+      <div class="search" id="searchBox">
+        <input id="q" placeholder="품목 검색" />
+        <div class="pill" id="doSearch">검색</div>
+      </div>
+    </div>
+
+    <div id="app"></div>
+  </div>
+
+  <!-- ✅ FAB: 홈에서만 보이게(상세에서는 숨김) -->
+  <button class="fab" id="fabAddItem" type="button">품목 추가</button>
+
+  <!-- ✅ 품목 추가 모달 -->
+  <div class="modal" id="itemModal" aria-hidden="true">
+    <div class="modalOverlay" id="itemOverlay"></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="품목 추가">
+      <div class="sheetHead">
+        <div>품목 추가</div>
+        <button class="sheetClose" id="itemClose">닫기</button>
+      </div>
+
+      <div class="sheetBody">
+        <div class="field">
+          <label for="nCategory">카테고리</label>
+          <input id="nCategory" placeholder="예) 쇼핑백" />
+        </div>
+
+        <div class="field">
+          <label for="nName">품목명</label>
+          <input id="nName" placeholder="예) 신규 쇼핑백" />
+        </div>
+
+        <div class="field">
+          <label for="nSize">사이즈</label>
+          <input id="nSize" placeholder="예) 480*180*380mm" />
+        </div>
+
+        <div class="field">
+          <label for="nBase">기준재고</label>
+          <input id="nBase" inputmode="numeric" placeholder="예) 1000" />
+        </div>
+
+        <div class="field">
+          <label for="nImg">이미지 첨부</label>
+          <input type="file" id="nImg" accept="image/*">
+        </div>
+      </div>
+
+      <div class="sheetFoot">
+        <button class="btn primary" id="createItemBtn">추가</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    /****************************************************
+     * ✅ 1) Supabase 연결
+     ****************************************************/
+    const SUPABASE_URL = "https://iznnctfnmeiqdjljounq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_9p50RVtpPdmZOG2emGTDVg_NQ3bp8U8";
+
+    let supabaseClient = null;
+
+    const DB = {
+      mode: "local",
+      lastError: ""
+    };
+
+    function initSupabase(){
+      try{
+        if(window.supabase && typeof window.supabase.createClient === "function"){
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          DB.mode = "connected";
+          DB.lastError = "";
+          return true;
+        }
+      }catch(e){
+        console.error("Supabase init 실패:", e);
+        DB.mode = "error";
+        DB.lastError = String(e?.message || e);
+      }
+      supabaseClient = null;
+      DB.mode = "local";
+      return false;
+    }
+
+    function dbReady(){ return !!supabaseClient; }
+
+    function dbStatusText(){
+      if(DB.mode === "synced") return "연동됨(동기화됨)";
+      if(DB.mode === "connected") return "연결됨(동기화 대기)";
+      if(DB.mode === "error") return "DB 오류(로컬로 동작)";
+      return "로컬만(연동안됨)";
+    }
+
+    /****************************************************
+     * ✅ 2) 로컬저장 + 데이터
+     ****************************************************/
+    const STORAGE_KEY = "warehouse_stock_v1";
+
+    const data = [
+      {
+        category: "봉투",
+        items: [
+          {
+            id: "env-big",
+            name: "대봉투",
+            size: "210*297mm",
+            baseStock: 1720,
+            img: "images/large-paper-bag(Front).jpg",
+            images: ["images/large-paper-bag(Front).jpg","images/large-paper-bag(Back).jpg"],
+            logs: [
+              { d:"2026-03-17", t:"출고", dept:"아카이브팀", person:"ooo선임", qty:200 },
+              { d:"2026-03-31", t:"입고", dept:"운영팀", person:"(입력)", qty:800 },
+              { d:"2026-02-02", t:"출고", dept:"아카이브팀", person:"ooo선임", qty:200 },
+              { d:"2026-02-18", t:"입고", dept:"아카이브팀", person:"ooo선임", qty:500 },
+            ],
+          },
+          {
+            id: "env-letter",
+            name: "편지봉투",
+            size: "390*140*300mm",
+            baseStock: 1000,
+            img: "images/Letter-Envelope(Front).jpg",
+            images: ["images/Letter-Envelope(Front).jpg","images/Letter-envelope(back).jpg"],
+            logs: [
+              { d:"2026-02-10", t:"출고", dept:"운영팀", person:"ooo", qty:120 },
+              { d:"2026-02-18", t:"입고", dept:"운영팀", person:"ooo", qty:300 },
+            ],
+          },
+          {
+            id: "env-pvc",
+            name: "PVC봉투",
+            size: "310*95*230mm",
+            baseStock: 1000,
+            img: "images/PVC-bag.jpg",
+            images: ["images/PVC-bag.jpg", null],
+            logs: [
+              { d:"2026-02-01", t:"입고", dept:"구매", person:"ooo", qty:200 },
+              { d:"2026-02-17", t:"출고", dept:"운영팀", person:"ooo", qty:80 },
+            ],
+          },
+          {
+            id: "env-gray",
+            name: "회색봉투",
+            size: "130*110*360mm",
+            baseStock: 1000,
+            img: "images/gray-hand-bag.jpg",
+            images: ["images/gray-hand-bag.jpg", null],
+            logs: [
+              { d:"2026-02-17", t:"입고", dept:"구매", person:"ooo", qty:200 },
+            ],
+          },
+        ]
+      },
+      {
+        category: "홀더",
+        items: [
+          {
+            id: "holder-gray",
+            name: "보증서홀더(회색)",
+            size: "225*310mm",
+            baseStock: 1720,
+            img: "images/Warranty-Holder(Gray-Front).jpg",
+            images: ["images/Warranty-Holder(Gray-Front).jpg", null],
+            logs: [
+              { d:"2026-02-07", t:"입고", dept:"구매", person:"ooo", qty:300 },
+              { d:"2026-02-17", t:"출고", dept:"아카이브팀", person:"ooo", qty:80 },
+            ]
+          },
+          {
+            id: "holder-navy",
+            name: "수입지홀더(남색)",
+            size: "225*310mm",
+            baseStock: 1000,
+            img: "images/Warranty-holder(navy).jpg",
+            images: ["images/Warranty-holder(navy).jpg", null],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:90 },
+            ]
+          },
+          {
+            id: "office-holder-sky",
+            name: "사무용홀더",
+            size: "225*310mm",
+            baseStock: 1000,
+            img: "images/Guaranteed-Holder(in-SkyBlue-F).jpg",
+            images: ["images/Guaranteed-Holder(in-SkyBlue-F).jpg","images/Guaranteed-Holder(in-SkyBlue).jpg"],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:40 },
+            ]
+          },
+          {
+            id: "mint-delivery-bag",
+            name: "민트봉투",
+            size: "290*400mm",
+            baseStock: 1000,
+            img: "images/mint-delivery-bag.jpg",
+            images: ["images/mint-delivery-bag.jpg", null],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:50 },
+            ]
+          },
+        ]
+      },
+      {
+        category: "쇼핑백",
+        items: [
+          {
+            id: "bag-black-big",
+            name: "흑지쇼핑백(大)",
+            size: "480*180*380mm",
+            baseStock: 1720,
+            img: "images/Black-Shopping-Bag(L).jpg",
+            images: ["images/Black-Shopping-Bag(L).jpg", null],
+            logs: [
+              { d:"2026-02-05", t:"출고", dept:"전시팀", person:"ooo", qty:100 },
+            ]
+          },
+          {
+            id: "bag-black-small",
+            name: "흑지쇼핑백(小)",
+            size: "390*140*300mm",
+            baseStock: 1000,
+            img: "images/Black-Shopping-Bag(S).jpg",
+            images: ["images/Black-Shopping-Bag(S).jpg", null],
+            logs: [
+              { d:"2026-02-11", t:"출고", dept:"전시팀", person:"ooo", qty:60 },
+            ]
+          },
+          {
+            id: "blackwhite-shopping-bag",
+            name: "검흰쇼핑백",
+            size: "310*95*230mm",
+            baseStock: 1000,
+            img: "images/black&white-shopping-bag(1).jpg",
+            images: ["images/black&white-shopping-bag(1).jpg", "images/black&white-shopping-bag(2).jpg"],
+            logs: [
+              { d:"2/11", t:"출고", to:"전시팀 - ooo", qty:200 },
+            ]
+          },
+          {
+            id: "wine-shopping-bag",
+            name: "와인쇼핑백",
+            size: "130*110*360mm",
+            baseStock: 1000,
+            img: "images/wine-shopping-bag.jpg",
+            images: ["images/wine-shopping-bag.jpg", null],
+            logs: [
+              { d:"2/11", t:"출고", to:"전시팀 - ooo", qty:200 },
+            ]
+          },
+        ]
+      },
+      {
+        category: "기타",
+        items: [
+          { id:"etc-shirt", name:"조지물튼 티셔츠", size:"", baseStock: 1000, img:null, images:[null,null], logs:[] },
+          { id:"etc-bag", name:"SA 가방", size:"", baseStock: 1000, img:"images/SA-bag.jpg", images:["images/SA-bag.jpg", null], logs:[] },
+        ]
+      }
+    ];
+
+    /* ✅ 추가: 기본 품목 ID 기억 */
+    const INITIAL_ITEM_IDS = new Set(
+      data.flatMap(sec => (sec.items || []).map(it => it.id))
+    );
+
+    const app = document.getElementById("app");
+    const q = document.getElementById("q");
+    const doSearch = document.getElementById("doSearch");
+    const searchBox = document.getElementById("searchBox");
+    const homeLink = document.getElementById("homeLink");
+
+    const fabAddItem = document.getElementById("fabAddItem");
+    const itemModal = document.getElementById("itemModal");
+    const itemOverlay = document.getElementById("itemOverlay");
+    const itemClose = document.getElementById("itemClose");
+    const createItemBtn = document.getElementById("createItemBtn");
+    const nCategory = document.getElementById("nCategory");
+    const nName = document.getElementById("nName");
+    const nSize = document.getElementById("nSize");
+    const nBase = document.getElementById("nBase");
+    const nImg = document.getElementById("nImg");
+
+    /****************************************************
+     * ✅ 2-1) 로컬저장
+     ****************************************************/
+    function saveAllLocal(){
+      try{
+        const payload = data.map(sec => ({
+          category: sec.category,
+          items: (sec.items||[]).map(it => ({
+            id: it.id,
+            name: it.name,
+            size: it.size,
+            img: it.img ?? null,
+            images: Array.isArray(it.images) ? it.images : [it.img ?? null, null],
+            baseStock: Number(it.baseStock||0),
+            logs: it.logs || []
+          }))
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      }catch(e){}
+    }
+
+    function loadAllLocal(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const saved = JSON.parse(raw);
+        if(!Array.isArray(saved)) return;
+
+        const firstItem = saved?.[0]?.items?.[0];
+        const isNew = !!(firstItem && typeof firstItem === "object" && ("name" in firstItem));
+
+        if(!isNew){
+          const byId = new Map();
+          for(const sec of saved){
+            for(const it of (sec.items||[])){
+              byId.set(it.id, it);
+            }
+          }
+          for(const sec of data){
+            for(const it of sec.items){
+              const s = byId.get(it.id);
+              if(s){
+                if(typeof s.baseStock === "number") it.baseStock = s.baseStock;
+                if(Array.isArray(s.logs)) it.logs = s.logs;
+              }
+            }
+          }
+          return;
+        }
+
+        const baseIds = new Set();
+        for(const sec of data) for(const it of (sec.items||[])) baseIds.add(it.id);
+
+        const savedById = new Map();
+        for(const sec of saved){
+          for(const it of (sec.items||[])){
+            savedById.set(it.id, it);
+          }
+        }
+
+        for(const sec of data){
+          for(const it of (sec.items||[])){
+            const s = savedById.get(it.id);
+            if(s){
+              if(typeof s.baseStock === "number") it.baseStock = s.baseStock;
+              if(Array.isArray(s.logs)) it.logs = s.logs;
+              if(s.img && !it.img) it.img = s.img;
+              if(Array.isArray(s.images) && (!it.images || !it.images[0])) it.images = s.images;
+            }
+          }
+        }
+
+        for(const sSec of saved){
+          if(!sSec || !sSec.category) continue;
+          const cat = String(sSec.category);
+          let target = data.find(x => x.category === cat);
+          if(!target){
+            target = { category: cat, items: [] };
+            data.push(target);
+          }
+          for(const sIt of (sSec.items||[])){
+            if(!sIt || !sIt.id) continue;
+            if(baseIds.has(sIt.id)) continue;
+            target.items.push({
+              id: sIt.id,
+              name: sIt.name || "(신규)",
+              size: sIt.size || "",
+              baseStock: Number(sIt.baseStock||0),
+              img: sIt.img ?? null,
+              images: Array.isArray(sIt.images) ? sIt.images : [sIt.img ?? null, null],
+              logs: Array.isArray(sIt.logs) ? sIt.logs : []
+            });
+            baseIds.add(sIt.id);
+          }
+        }
+      }catch(e){}
+    }
+
+    /****************************************************
+     * ✅ 3) 공통 함수들
+     ****************************************************/
+    function iconPlaceholder(){
+      return `
+        <svg class="imgPh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M7 7h10v14H7V7Z" stroke="#cbd5e1" stroke-width="1.6"/>
+          <path d="M9 7a3 3 0 0 1 6 0" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    function statusClass(s){ return s === "입고" ? "in" : "out"; }
+
+    function toISODateLike(d){
+      if(!d) return "";
+      if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+      const m = String(d).match(/^(\d{1,2})\/(\d{1,2})$/);
+      if(m){
+        const y = new Date().getFullYear();
+        const mm = String(m[1]).padStart(2,"0");
+        const dd = String(m[2]).padStart(2,"0");
+        return `${y}-${mm}-${dd}`;
+      }
+      return String(d);
+    }
+
+    function formatKRDate(d){
+      const iso = toISODateLike(d);
+      const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(!m) return iso || "-";
+      return `${Number(m[2])}/${Number(m[3])}`;
+    }
+
+    function normalizeLog(r){
+      const out = { ...r };
+      out.d = toISODateLike(out.d);
+
+      if(!out.dept && out.to){
+        const parts = String(out.to).split("-").map(s=>s.trim());
+        out.dept = parts[0] || out.dept;
+        out.person = (parts[1] || "").replace(/^\(|\)$/g,"") || out.person;
+      }
+      out.t = (out.t === "입고") ? "입고" : "출고";
+      out.dept = out.dept || "-";
+      out.person = out.person || "";
+      out.qty = Number(out.qty || 0);
+      if(!out.__key) out.__key = `k_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      return out;
+    }
+
+    function ensureLogs(it){
+      it.logs = (it.logs || []).map(normalizeLog);
+    }
+
+    function signedQty(row){
+      const qty = Number(row.qty || 0);
+      if (!qty) return 0;
+      return row.t === "입고" ? qty : -qty;
+    }
+
+    function calcStock(it){
+      ensureLogs(it);
+      const base = Number(it.baseStock || 0);
+      const sum = (it.logs || []).reduce((a, r) => a + signedQty(r), 0);
+      return base + sum;
+    }
+
+    function getLastLogInfo(it){
+      ensureLogs(it);
+      if(!it.logs || it.logs.length === 0) return { status:"-", date:"-", delta:0 };
+      const sorted = [...it.logs].sort((a,b) => (toISODateLike(b.d)||"").localeCompare(toISODateLike(a.d)||""));
+      const r = sorted[0];
+      return { status: r.t || "-", date: formatKRDate(r.d), delta: signedQty(r) };
+    }
+
+    function findItemById(id){
+      for(const section of data){
+        for(const it of section.items){
+          if(it.id === id) return { section, it };
+        }
+      }
+      return null;
+    }
+
+    function flattenItems(){
+      const arr = [];
+      for(const sec of data) for(const it of sec.items) arr.push(it);
+      return arr;
+    }
+
+    function ensureCategory(cat){
+      const name = String(cat || "").trim();
+      if(!name) return null;
+      let sec = data.find(s => s.category === name);
+      if(!sec){
+        sec = { category: name, items: [] };
+        data.push(sec);
+      }
+      return sec;
+    }
+
+    function slugifyId(s){
+      return String(s || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-가-힣]/g, "")
+        .replace(/\-+/g, "-")
+        .slice(0, 50) || `item-${Date.now()}`;
+    }
+
+    function removeItemLocal(itemId){
+      for(const sec of data){
+        const before = (sec.items||[]).length;
+        sec.items = (sec.items||[]).filter(it => it.id !== itemId);
+        if(sec.items.length !== before) break;
+      }
+      saveAllLocal();
+    }
+
+    /****************************************************
+     * ✅ 4) Supabase DB 동기화
+     ****************************************************/
+    const DB_ITEMS = "warehouse_items";
+    const DB_LOGS  = "warehouse_logs";
+
+    /* ✅ 여기만 교체됨 */
+    async function loadAllFromDB_FORCE(){
+      if(!dbReady()) throw new Error("supabaseClient not ready");
+
+      const { data: itemRows, error: e1 } = await supabaseClient
+        .from(DB_ITEMS)
+        .select("id, base_stock");
+      if(e1) throw e1;
+
+      const { data: logRows, error: e2 } = await supabaseClient
+        .from(DB_LOGS)
+        .select("item_id, d, t, dept, person, qty, __key");
+      if(e2) throw e2;
+
+      const dbItemIds = new Set((itemRows || []).map(r => r.id));
+      const baseById = new Map((itemRows || []).map(r => [r.id, r.base_stock]));
+      const logsByItem = new Map();
+
+      /* ✅ DB에 없는 사용자 추가 품목만 제거 */
+      for(const sec of data){
+        sec.items = (sec.items || []).filter(it => {
+          if(INITIAL_ITEM_IDS.has(it.id)) return true;
+          return dbItemIds.has(it.id);
+        });
+      }
+
+      for(const r of (logRows || [])){
+        if(!logsByItem.has(r.item_id)) logsByItem.set(r.item_id, []);
+        logsByItem.get(r.item_id).push(normalizeLog({
+          d: r.d,
+          t: r.t,
+          dept: r.dept,
+          person: r.person,
+          qty: r.qty,
+          __key: r.__key
+        }));
+      }
+
+      for(const it of flattenItems()){
+        if(baseById.has(it.id)) it.baseStock = Number(baseById.get(it.id) ?? 0);
+
+        const dbLogs = logsByItem.get(it.id);
+        if(dbLogs) it.logs = dbLogs;
+        else it.logs = it.logs || [];
+      }
+
+      saveAllLocal();
+      DB.mode = "synced";
+      DB.lastError = "";
+      return true;
+    }
+
+    async function saveBaseToDB(itemId, baseStock){
+      if(!dbReady()) return;
+      const payload = { id: itemId, base_stock: Number(baseStock||0) };
+      const { error } = await supabaseClient.from(DB_ITEMS).upsert(payload, { onConflict: "id" });
+      if(error) throw error;
+    }
+
+    async function addLogToDB(itemId, row){
+      if(!dbReady()) return;
+      const r = normalizeLog(row);
+      const payload = {
+        item_id: itemId,
+        d: toISODateLike(r.d),
+        t: r.t,
+        dept: r.dept || "-",
+        person: r.person || "",
+        qty: Number(r.qty||0),
+        __key: r.__key
+      };
+      const { error } = await supabaseClient.from(DB_LOGS).insert(payload);
+      if(error) throw error;
+    }
+
+    async function deleteLogsByKeys(itemId, keys){
+      if(!dbReady()) return;
+      const { error } = await supabaseClient
+        .from(DB_LOGS)
+        .delete()
+        .eq("item_id", itemId)
+        .in("__key", keys);
+      if(error) throw error;
+    }
+
+    async function deleteItemFromDB(itemId){
+      if(!dbReady()) return;
+
+      const { error: e1 } = await supabaseClient
+        .from(DB_LOGS)
+        .delete()
+        .eq("item_id", itemId);
+      if(e1) throw e1;
+
+      const { error: e2 } = await supabaseClient
+        .from(DB_ITEMS)
+        .delete()
+        .eq("id", itemId);
+      if(e2) throw e2;
+    }
+
+    let realtimeChannel = null;
+    let reloadTimer = null;
+
+    function scheduleDBReload(){
+      clearTimeout(reloadTimer);
+      reloadTimer = setTimeout(async ()=>{
+        try{
+          await loadAllFromDB_FORCE();
+          router();
+        }catch(e){
+          console.error("Realtime DB reload 실패:", e);
+          DB.mode = "error";
+          DB.lastError = String(e?.message || e);
+          router();
+        }
+      }, 250);
+    }
+
+    function startRealtime(){
+      if(!dbReady()) return;
+      if(realtimeChannel) return;
+
+      try{
+        realtimeChannel = supabaseClient
+          .channel("warehouse_sync")
+          .on("postgres_changes", { event:"*", schema:"public", table: DB_ITEMS }, () => scheduleDBReload())
+          .on("postgres_changes", { event:"*", schema:"public", table: DB_LOGS  }, () => scheduleDBReload())
+          .subscribe(()=>{});
+      }catch(e){
+        console.error("Realtime 시작 실패:", e);
+      }
+    }
+
+    /****************************************************
+     * ✅ 5) 화면 렌더
+     ****************************************************/
+    function renderHome(){
+      searchBox.style.display = "flex";
+      const keyword = (q.value || "").trim().toLowerCase();
+
+      app.innerHTML = data.map(section => {
+        const filtered = (section.items||[]).filter(it => {
+          const hay = `${it.name} ${it.size}`.toLowerCase();
+          return keyword ? hay.includes(keyword) : true;
+        });
+
+        if(filtered.length === 0) return "";
+
+        return `
+          <div class="section">
+            <div class="secHead">
+              <h2>${section.category}</h2>
+            </div>
+
+            <div class="list">
+              ${filtered.map(it => {
+                const stock = calcStock(it);
+                const last = getLastLogInfo(it);
+                return `
+                  <div class="row">
+                    <div class="card" role="button" tabindex="0" data-open="${it.id}">
+                      <div class="thumb">
+                        ${it.img ? `<img src="${it.img}" alt="">` : iconPlaceholder()}
+                      </div>
+
+                      <div class="meta">
+                        <div class="meta-top">
+                          <div class="title">${it.name}</div>
+                          <div class="size">${it.size || ""}</div>
+                        </div>
+
+                        <div class="meta-bot">
+                          <div class="status ${statusClass(last.status)}">${last.status}</div>
+                          <div class="delta">
+                            <span>${last.date || "-"}</span>
+                            <span class="qty ${last.delta >= 0 ? "in" : "out"}">${(last.delta>=0?"+":"")}${(last.delta||0).toLocaleString()}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="stock">
+                      ${Number.isFinite(stock) ? `${stock.toLocaleString()}<small>개</small>` : `-`}
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      app.querySelectorAll("[data-open]").forEach(el => {
+        const go = () => location.hash = `#/item/${el.dataset.open}`;
+        el.addEventListener("click", go);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
+          }
+        });
+      });
+    }
+
+    function renderDetail(id){
+      searchBox.style.display = "none";
+
+      const found = findItemById(id);
+      if(!found){
+        app.innerHTML = `
+          <div class="paper">
+            <div class="paper-head">알림</div>
+            <div class="paper-body">품목을 찾을 수 없습니다.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const { section, it } = found;
+      ensureLogs(it);
+
+      let dateFilter = "";
+      let typeFilter = "전체";
+      let deptFilter = "전체";
+      let sortKey = "date";
+      let sortDir = "desc";
+
+      let selectedKeys = new Set();
+      let flashSelected = new Set();
+      const flashTimers = new Map();
+
+      function arrow(){ return sortDir === "asc" ? "↑" : "↓"; }
+
+      function toggleSort(key){
+        if(sortKey === key) sortDir = (sortDir === "asc") ? "desc" : "asc";
+        else { sortKey = key; sortDir = (key === "date") ? "desc" : "asc"; }
+        render();
+      }
+
+      function matches(r){
+        if(dateFilter && toISODateLike(r.d) !== dateFilter) return false;
+        if(typeFilter !== "전체" && r.t !== typeFilter) return false;
+        if(deptFilter !== "전체" && (r.dept||"-") !== deptFilter) return false;
+        return true;
+      }
+
+      function sortRows(rows){
+        const dir = (sortDir === "asc") ? 1 : -1;
+        return rows.sort((a,b)=>{
+          if(sortKey === "date"){
+            return (String(toISODateLike(a.d)).localeCompare(String(toISODateLike(b.d)))) * dir;
+          }
+          if(sortKey === "qty"){
+            return ((signedQty(a) - signedQty(b)) || 0) * dir;
+          }
+          return 0;
+        });
+      }
+
+      function flashRow(key){
+        flashSelected.add(key);
+        if(flashTimers.has(key)) clearTimeout(flashTimers.get(key));
+        const t = setTimeout(()=>{
+          flashSelected.delete(key);
+          flashTimers.delete(key);
+          render();
+        }, 2500);
+        flashTimers.set(key, t);
+      }
+
+      function iconBoxSvg(kind){
+        if(kind === "target"){
+          return `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 22a10 10 0 1 1 10-10" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 18a6 6 0 1 1 6-6" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 14a2 2 0 1 1 2-2" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+              <path d="M22 2l-5 5" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          `;
+        }
+        return `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 7l9-4 9 4-9 4-9-4Z" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M3 7v10l9 4 9-4V7" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 11v10" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        `;
+      }
+
+      async function handleDeleteItem(){
+        const itemName = (it.name || "해당 품목");
+        const ok = confirm(`정말 "${itemName}" 품목을 삭제하시겠습니까?\n`);
+        if(!ok) return;
+
+        removeItemLocal(it.id);
+
+        try{
+          await deleteItemFromDB(it.id);
+        }catch(err){
+          console.error(err);
+          alert("DB에서 품목 삭제에 실패했습니다. (로컬에서는 삭제됨)\n권한/RLS 설정을 확인해주세요.");
+          DB.mode = "error";
+          DB.lastError = String(err?.message || err);
+        }
+
+        q.value = "";
+        location.hash = "#/";
+        router();
+      }
+
+      function render(){
+        ensureLogs(it);
+
+        const img1 = (it.images && it.images[0]) ? `<img src="${it.images[0]}" alt="">` : iconPlaceholder();
+        const img2 = (it.images && it.images[1]) ? `<img src="${it.images[1]}" alt="">` : iconPlaceholder();
+
+        const stockNow = calcStock(it);
+        const base = Number(it.baseStock || 0);
+
+        const allDepts = [
+          "경영기획팀","서비스운영팀","아카이브팀","대외협력팀","디자인팀","영업팀","브랜드기획팀","고객관리팀","작품관리팀","VIP사업기획팀","웹서비스개발팀"
+        ];
+
+        let view = (it.logs||[]).filter(matches);
+        view = sortRows(view);
+
+        app.innerHTML = `
+          <div class="paper">
+            <div class="paper-head">${section.category}</div>
+            <div class="paper-body">
+
+              <div class="imgRow">
+                <div class="imgBox">${img1}</div>
+                <div class="imgBox">${img2}</div>
+              </div>
+
+              <div class="itemHeader">
+                <div class="itemTop">
+                  <div class="itemName">${it.name}</div>
+                  <div class="sizePill">${it.size || ""}</div>
+                </div>
+
+                <div class="statsGrid">
+                  <div class="statCard current">
+                    <div class="statRow">
+                      <div class="statLabel">
+                        <span class="txt">현재재고</span>
+                      </div>
+                      <div class="statValue">
+                        ${Number.isFinite(stockNow) ? stockNow.toLocaleString() : "0"}
+                        <span class="unit">개</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="statCard base" id="baseCard">
+                    <div class="statRow">
+                      <div class="statLabel">
+                        <span class="txt">기준재고</span>
+                      </div>
+                      <div class="statValue" id="baseDisplay">
+                        ${Number.isFinite(base) ? base.toLocaleString() : "0"}
+                        <span class="unit">개</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="boxTitleRow">
+                <p class="boxTitle">입출고 내역</p>
+                <button class="selDelBtn" id="bulkDelete">선택 삭제</button>
+              </div>
+
+              <div class="logBox">
+                <div class="logMinWidth">
+                  <div class="logHead">
+                    <div class="hdateWrap">
+                      <div class="hbtn" id="dateBtn">날짜 <span class="arrow">${sortKey==="date"?arrow():"↕"}</span></div>
+                      <div class="hdate" id="datePop">
+                        <input type="date" id="datePick" value="${dateFilter}">
+                        <div class="row2">
+                          <button class="miniBtn" id="dateClear">해제</button>
+                          <button class="miniBtn" id="dateOk">적용</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <select class="hselect allSelect" id="typeSel">
+                        <option value="전체" ${typeFilter==="전체"?"selected":""}>전체</option>
+                        <option value="출고" ${typeFilter==="출고"?"selected":""}>출고</option>
+                        <option value="입고" ${typeFilter==="입고"?"selected":""}>입고</option>
+                      </select>
+                    </div>
+
+                    <div class="gapType">
+                      <select class="hselect deptSelect" id="deptSel">
+                        <option value="전체" ${deptFilter==="전체"?"selected":""}>부서</option>
+                        ${allDepts.map(d => `<option value="${d}" ${deptFilter===d?"selected":""}>${d}</option>`).join("")}
+                      </select>
+                    </div>
+
+                    <div style="color:var(--muted); font-weight:600; font-size:12px;">담당자</div>
+
+                    <div>
+                      <div class="hbtn" id="qtyBtn" style="width:100%; justify-content:flex-end;">
+                        수량 <span class="arrow">${sortKey==="qty"?arrow():"↕"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  ${
+                    view.length
+                      ? view.map(r => {
+                          const key = r.__key;
+                          const sel = flashSelected.has(key) ? "selected" : "";
+                          return `
+                            <div class="logRow ${sel}" data-row="${key}">
+                              <div class="logDate">${formatKRDate(r.d)}</div>
+                              <div class="logType ${statusClass(r.t)}">${r.t}</div>
+                              <div class="logDept">${r.dept || "-"}</div>
+                              <div class="logPerson">${r.person || ""}</div>
+                              <div class="logQty ${statusClass(r.t)}">${(signedQty(r)>=0?"+":"")}${signedQty(r).toLocaleString()}</div>
+                            </div>
+                          `;
+                        }).join("")
+                      : `<div class="logRow">
+                           <div class="logDate">-</div>
+                           <div class="logType out">-</div>
+                           <div class="logDept">내역 없음</div>
+                           <div class="logPerson"></div>
+                           <div class="logQty out">-</div>
+                         </div>`
+                  }
+                </div>
+              </div>
+
+              <div class="detailActions">
+                <button class="btn primary" id="openAdd">내역 추가</button>
+                <button class="btn" id="refreshBtn">새로고침</button>
+              </div>
+
+              <div style="margin-top:10px; color:var(--muted); font-size:11px;">
+                DB상태: <b>${dbStatusText()}</b>
+                ${DB.mode==="error" && DB.lastError ? `<div style="margin-top:4px;">(${DB.lastError})</div>` : ``}
+              </div>
+
+              <div class="dangerBox">
+                <div class="dangerText">
+                  품목 삭제 시 복구가 어려우니 삭제 전 확인해 주세요.<br/>
+                </div>
+                <button class="dangerBtn" id="deleteItemBtn" type="button">품목 제거</button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="modal" id="addModal" aria-hidden="true">
+            <div class="modalOverlay" id="addOverlay"></div>
+            <div class="sheet" role="dialog" aria-modal="true" aria-label="내역 추가">
+              <div class="sheetHead">
+                <div>내역 추가</div>
+                <button class="sheetClose" id="addClose">닫기</button>
+              </div>
+
+              <div class="sheetBody">
+                <div class="field">
+                  <label for="aDate">날짜</label>
+                  <input type="date" id="aDate">
+                </div>
+
+                <div class="field">
+                  <label>구분</label>
+                  <input type="hidden" id="aType" value="출고">
+                  <div class="seg" id="aTypeSeg">
+                    <button type="button" class="active out" data-v="출고">출고</button>
+                    <button type="button" class="in" data-v="입고">입고</button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="aDept">부서</label>
+                  <select id="aDept">
+                    ${allDepts.map(d => `<option value="${d}">${d}</option>`).join("")}
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="aQty">수량</label>
+                  <input id="aQty" inputmode="numeric" placeholder="예) 200" />
+                </div>
+
+                <div class="field">
+                  <label for="aPerson">담당자</label>
+                  <input id="aPerson" placeholder="000선임" />
+                </div>
+              </div>
+
+              <div class="sheetFoot">
+                <button class="btn primary" id="addBtn">추가</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        app.querySelector("#deleteItemBtn").addEventListener("click", handleDeleteItem);
+
+        const baseCard = app.querySelector("#baseCard");
+        const baseDisplay = app.querySelector("#baseDisplay");
+
+        function openBaseEdit(){
+          const currentValue = Number.isFinite(it.baseStock) ? it.baseStock : 0;
+
+          baseDisplay.innerHTML = `
+            <input class="baseInput" id="baseEditInput" value="${currentValue}" inputmode="numeric" />
+            <span class="unit">개</span>
+          `;
+
+          const input = app.querySelector("#baseEditInput");
+          input.focus();
+          input.select();
+
+          async function saveBaseValue(){
+            const v = Number(String(input.value).replace(/,/g,"").trim());
+            it.baseStock = Number.isFinite(v) && v >= 0 ? v : 0;
+            saveAllLocal();
+
+            try{
+              await saveBaseToDB(it.id, it.baseStock);
+            }catch(err){
+              console.error(err);
+              alert("기준재고 DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+              DB.mode = "error";
+              DB.lastError = String(err?.message || err);
+            }
+
+            render();
+          }
+
+          input.addEventListener("keydown", async (e)=>{
+            if(e.key === "Enter"){
+              await saveBaseValue();
+            }else if(e.key === "Escape"){
+              render();
+            }
+          });
+
+          input.addEventListener("blur", saveBaseValue, { once:true });
+        }
+
+        baseCard.addEventListener("click", (e)=>{
+          if(e.target.id === "baseEditInput") return;
+          openBaseEdit();
+        });
+
+        const dateBtn = app.querySelector("#dateBtn");
+        const datePop = app.querySelector("#datePop");
+        const datePick = app.querySelector("#datePick");
+        const dateOk = app.querySelector("#dateOk");
+        const dateClear = app.querySelector("#dateClear");
+
+        function closeDatePop(){ datePop.style.display = "none"; }
+
+        dateBtn.addEventListener("click", ()=>{
+          datePop.style.display = (datePop.style.display === "block") ? "none" : "block";
+        });
+
+        dateOk.addEventListener("click", ()=>{
+          dateFilter = datePick.value || "";
+          closeDatePop();
+          render();
+        });
+
+        dateClear.addEventListener("click", ()=>{
+          dateFilter = "";
+          closeDatePop();
+          render();
+        });
+
+        document.addEventListener("click", (e)=>{
+          const wrap = app.querySelector(".hdateWrap");
+          if(!wrap) return;
+          if(!wrap.contains(e.target)) closeDatePop();
+        }, { once:true });
+
+        dateBtn.addEventListener("dblclick", ()=> toggleSort("date"));
+        app.querySelector("#qtyBtn").addEventListener("click", ()=> toggleSort("qty"));
+
+        app.querySelector("#typeSel").addEventListener("change", (e)=>{
+          typeFilter = e.target.value;
+          render();
+        });
+
+        app.querySelector("#deptSel").addEventListener("change", (e)=>{
+          deptFilter = e.target.value;
+          render();
+        });
+
+        app.querySelectorAll("[data-row]").forEach(row=>{
+          row.addEventListener("click", ()=>{
+            const key = row.dataset.row;
+            if(selectedKeys.has(key)) selectedKeys.delete(key);
+            else selectedKeys.add(key);
+            flashRow(key);
+            render();
+          });
+        });
+
+        app.querySelector("#bulkDelete").addEventListener("click", async ()=>{
+          if(selectedKeys.size === 0){
+            alert("삭제할 내역을 선택해주세요.");
+            return;
+          }
+
+          const keys = Array.from(selectedKeys);
+
+          it.logs = (it.logs||[]).filter(r => !selectedKeys.has(r.__key));
+          selectedKeys.clear();
+          flashSelected.clear();
+          for(const t of flashTimers.values()) clearTimeout(t);
+          flashTimers.clear();
+          saveAllLocal();
+
+          try{
+            await deleteLogsByKeys(it.id, keys);
+          }catch(err){
+            console.error(err);
+            alert("DB에서 내역 삭제에 실패했습니다. (로컬에서는 삭제됨)\n권한/RLS 설정을 확인해주세요.");
+            DB.mode = "error";
+            DB.lastError = String(err?.message || err);
+          }
+
+          render();
+        });
+
+        const addModal = app.querySelector("#addModal");
+        const openAdd = app.querySelector("#openAdd");
+        const addOverlay = app.querySelector("#addOverlay");
+        const addClose = app.querySelector("#addClose");
+
+        function openAddModal(){
+          addModal.classList.add("show");
+          document.body.style.overflow = "hidden";
+          const aDate = app.querySelector("#aDate");
+          if(!aDate.value){
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth()+1).padStart(2,"0");
+            const d = String(now.getDate()).padStart(2,"0");
+            aDate.value = `${y}-${m}-${d}`;
+          }
+        }
+
+        function closeAddModal(){
+          addModal.classList.remove("show");
+          document.body.style.overflow = "";
+        }
+
+        openAdd.addEventListener("click", openAddModal);
+        addOverlay.addEventListener("click", closeAddModal);
+        addClose.addEventListener("click", closeAddModal);
+
+        const seg = app.querySelector("#aTypeSeg");
+        const aType = app.querySelector("#aType");
+
+        function setType(v){
+          aType.value = v;
+          seg.querySelectorAll("button").forEach(b=>{
+            const on = b.dataset.v === v;
+            b.classList.toggle("active", on);
+            b.classList.toggle("out", b.dataset.v === "출고");
+            b.classList.toggle("in", b.dataset.v === "입고");
+          });
+        }
+
+        seg.querySelectorAll("button").forEach(b=>{
+          b.addEventListener("click", ()=> setType(b.dataset.v));
+        });
+
+        app.querySelector("#addBtn").addEventListener("click", async ()=>{
+          const d = app.querySelector("#aDate").value;
+          const t = app.querySelector("#aType").value;
+          const dept = app.querySelector("#aDept").value;
+          const person = (app.querySelector("#aPerson").value || "").trim();
+          const qtyRaw = (app.querySelector("#aQty").value || "").trim();
+          const qty = Number(qtyRaw);
+
+          if(!d){ alert("날짜를 선택해주세요."); return; }
+          if(!Number.isFinite(qty) || qty <= 0){ alert("수량은 0보다 큰 숫자여야 합니다. (예: 200)"); return; }
+
+          const row = normalizeLog({ d, t, dept, person: person || "(입력)", qty });
+
+          it.logs = it.logs || [];
+          it.logs.push(row);
+          saveAllLocal();
+
+          try{
+            await addLogToDB(it.id, row);
+          }catch(err){
+            console.error(err);
+            alert("DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+            DB.mode = "error";
+            DB.lastError = String(err?.message || err);
+          }
+
+          app.querySelector("#aQty").value = "";
+          app.querySelector("#aPerson").value = "";
+          closeAddModal();
+          render();
+        });
+
+        app.querySelector("#refreshBtn").addEventListener("click", ()=>{
+          dateFilter = "";
+          typeFilter = "전체";
+          deptFilter = "전체";
+          sortKey = "date";
+          sortDir = "desc";
+
+          selectedKeys.clear();
+          flashSelected.clear();
+          for(const t of flashTimers.values()) clearTimeout(t);
+          flashTimers.clear();
+
+          render();
+        });
+      }
+
+      render();
+    }
+
+    function updateFabVisibility(){
+      const isDetail = /^#\/item\//.test(location.hash || "#/");
+      fabAddItem.style.display = isDetail ? "none" : "inline-flex";
+    }
+
+    function router(){
+      updateFabVisibility();
+      const hash = location.hash || "#/";
+      const m = hash.match(/^#\/item\/(.+)$/);
+      if(m){
+        renderDetail(decodeURIComponent(m[1]));
+      }else{
+        renderHome();
+      }
+    }
+
+    /****************************************************
+     * ✅ 6) 품목 추가 모달 동작
+     ****************************************************/
+    function openItemModal(prefillCategory){
+      itemModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      if(prefillCategory) nCategory.value = prefillCategory;
+      if(!nBase.value) nBase.value = "1000";
+      setTimeout(()=>{ (nName.value ? nSize : nName).focus(); }, 30);
+    }
+
+    function closeItemModal(){
+      itemModal.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    fabAddItem.addEventListener("click", ()=> openItemModal(""));
+    itemOverlay.addEventListener("click", closeItemModal);
+    itemClose.addEventListener("click", closeItemModal);
+
+    createItemBtn.addEventListener("click", async ()=>{
+      const category = (nCategory.value || "").trim();
+      const name = (nName.value || "").trim();
+      const size = (nSize.value || "").trim();
+      const base = Number(String(nBase.value || "").replace(/,/g,""));
+      const img  = (nImg.value || "").trim();
+
+      if(!category){ alert("카테고리를 입력해주세요."); return; }
+      if(!name){ alert("품목명을 입력해주세요."); return; }
+      if(!Number.isFinite(base) || base < 0){ alert("기준재고는 0 이상 숫자여야 합니다."); return; }
+
+      const sec = ensureCategory(category);
+      if(!sec){ alert("카테고리 생성에 실패했습니다."); return; }
+
+      const baseId = slugifyId(`${category}-${name}-${size}`);
+      let id = baseId;
+      let n = 2;
+      while(findItemById(id)){
+        id = `${baseId}-${n++}`;
+      }
+
+      const newItem = {
+        id,
+        name,
+        size,
+        baseStock: base,
+        img: img || null,
+        images: [img || null, null],
+        logs: []
+      };
+
+      sec.items = sec.items || [];
+      sec.items.push(newItem);
+
+      saveAllLocal();
+
+      try{
+        await saveBaseToDB(newItem.id, newItem.baseStock);
+      }catch(err){
+        console.error(err);
+        DB.mode = "error";
+        DB.lastError = String(err?.message || err);
+        alert("품목은 추가되었지만 DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+      }
+
+      nName.value = "";
+      nSize.value = "";
+      nBase.value = "";
+      nImg.value = "";
+
+      closeItemModal();
+
+      q.value = "";
+      location.hash = "#/";
+      renderHome();
+    });
+
+    /****************************************************
+     * ✅ 7) 이벤트 + 부팅
+     ****************************************************/
+    doSearch.addEventListener("click", ()=>{
+      if((location.hash || "#/") !== "#/") location.hash = "#/";
+      renderHome();
+    });
+
+    q.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        if((location.hash || "#/") !== "#/") location.hash = "#/";
+        renderHome();
+      }
+    });
+
+    q.addEventListener("input", ()=>{
+      if((location.hash || "#/") === "#/") renderHome();
+    });
+
+    homeLink.addEventListener("click", (e)=>{
+      e.preventDefault();
+      q.value = "";
+      location.hash = "#/";
+      renderHome();
+    });
+
+    window.addEventListener("hashchange", router);
+
+    (async function boot(){
+      loadAllLocal();
+
+      if(!location.hash) location.hash = "#/";
+      router();
+
+      const ok = initSupabase();
+      if(!ok){
+        DB.mode = "local";
+        router();
+        return;
+      }
+
+      try{
+        await loadAllFromDB_FORCE();
+      }catch(err){
+        console.error("DB 로드 실패:", err);
+        DB.mode = "error";
+        DB.lastError = String(err?.message || err);
+      }
+
+      startRealtime();
+      router();
+    })();
+  </script>
+</body>
+</html>
