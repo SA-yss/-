@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work | Seoul Auction Creatives</title>
+  <meta name="description" content="Seoul Auction Creatives Work" />
+  <style>
+    :root{
+      --bg:#f5f5f3;
+      --text:#111111;
+      --muted:#666666;
+      --line:#dddddd;
+      --header-h:72px;
+      --max:1680px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:
+        "Pretendard",
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        "Malgun Gothic",
+        sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      word-break:keep-all;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    button{
+      font:inherit;
+      color:inherit;
+      background:none;
+      border:none;
+      cursor:pointer;
+    }
+
+    .wrap{
+      width:min(calc(100% - 56px), var(--max));
+      margin:0 auto;
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      height:var(--header-h);
+      background:rgba(245,245,243,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+
+    .site-header .inner{
+      width:min(calc(100% - 56px), var(--max));
+      height:100%;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .brand{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      white-space:nowrap;
+    }
+
+    .desktop-nav{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      margin-left:40px;
+      flex:1;
+    }
+
+    .desktop-nav a{
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.04em;
+      position:relative;
+    }
+
+    .desktop-nav a.active::after,
+    .desktop-nav a:hover::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:100%;
+      height:1px;
+      background:#111;
+    }
+
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .work-filters{
+      border-bottom:1px solid var(--line);
+    }
+
+    .work-filters .inner{
+      width:min(calc(100% - 56px), var(--max));
+      margin:0 auto;
+      min-height:66px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:34px;
+    }
+
+    .filter-item{
+      position:relative;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.03em;
+      color:#111;
+      padding:22px 0;
+    }
+
+    .filter-item.dropdown{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      cursor:pointer;
+    }
+
+    .filter-item svg{
+      width:10px;
+      height:6px;
+      flex:0 0 auto;
+    }
+
+    .work-hero{
+      padding:72px 0 56px;
+      text-align:center;
+    }
+
+    .work-hero h1{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      margin-bottom:24px;
+    }
+
+    .work-hero p{
+      font-size:16px;
+      color:#222;
+      letter-spacing:-0.02em;
+    }
+
+    .work-grid-section{
+      padding:0 0 120px;
+    }
+
+    .work-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:54px 20px;
+    }
+
+    .work-card{
+      display:block;
+    }
+
+    .work-thumb{
+      aspect-ratio:1.48 / 1;
+      overflow:hidden;
+      background:#dcdcdc;
+      margin-bottom:16px;
+    }
+
+    .work-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .5s ease;
+    }
+
+    .work-card:hover .work-thumb img{
+      transform:scale(1.02);
+    }
+
+    .work-title{
+      font-size:22px;
+      line-height:1.35;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      margin-bottom:8px;
+    }
+
+    .work-subtitle{
+      font-size:15px;
+      line-height:1.6;
+      color:#222;
+      letter-spacing:-0.02em;
+    }
+
+    .back-home{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      color:var(--muted);
+      margin-top:56px;
+    }
+
+    .back-home:hover{
+      color:#111;
+    }
+
+    @media (max-width: 980px){
+      .desktop-nav{
+        gap:18px;
+        margin-left:20px;
+      }
+
+      .work-filters .inner{
+        justify-content:flex-start;
+        gap:22px;
+        overflow-x:auto;
+      }
+
+      .work-hero{
+        padding:56px 0 42px;
+      }
+
+      .work-grid{
+        gap:42px 16px;
+      }
+
+      .work-title{
+        font-size:19px;
+      }
+
+      .work-subtitle{
+        font-size:14px;
+      }
+    }
+
+    @media (max-width: 640px){
+      :root{
+        --header-h:64px;
+      }
+
+      .site-header .inner,
+      .wrap,
+      .work-filters .inner{
+        width:min(calc(100% - 28px), var(--max));
+      }
+
+      .brand{
+        font-size:16px;
+      }
+
+      .desktop-nav{
+        gap:14px;
+        margin-left:12px;
+        overflow-x:auto;
+      }
+
+      .desktop-nav a{
+        white-space:nowrap;
+      }
+
+      .header-right{
+        display:none;
+      }
+
+      .work-filters .inner{
+        min-height:56px;
+        gap:18px;
+      }
+
+      .filter-item{
+        font-size:12px;
+        padding:18px 0;
+        white-space:nowrap;
+      }
+
+      .work-hero{
+        padding:44px 0 34px;
+      }
+
+      .work-hero h1{
+        font-size:18px;
+        margin-bottom:16px;
+      }
+
+      .work-hero p{
+        font-size:14px;
+      }
+
+      .work-grid-section{
+        padding-bottom:70px;
+      }
+
+      .work-grid{
+        grid-template-columns:1fr;
+        gap:34px;
+      }
+
+      .work-title{
+        font-size:18px;
+      }
+
+      .work-subtitle{
+        font-size:13px;
+      }
+
+      .back-home{
+        margin-top:40px;
+        font-size:13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="index.html" class="brand">Seoul Auction Creatives</a>
+
+      <nav class="desktop-nav" aria-label="주 메뉴">
+        <a href="sa-about.html">ABOUT</a>
+        <a href="sa-work.html" class="active">WORK</a>
+        <a href="index.html#archive">ARCHIVE</a>
+        <a href="index.html#download">DOWNLOAD</a>
+        <a href="index.html#ci">CI</a>
+        <a href="index.html#contact">CONTACT</a>
+      </nav>
+
+      <div class="header-right">
+        <span>Seoul Auction</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="work-filters">
+    <div class="inner">
+      <button class="filter-item dropdown" type="button">
+        BRAND
+        <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M5 6L0 0H10L5 6Z" fill="black"/>
+        </svg>
+      </button>
+      <a href="#" class="filter-item">CORPORATE</a>
+      <a href="#" class="filter-item">AWARD-WINNING</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="work-hero">
+      <div class="wrap">
+        <h1>WORK</h1>
+        <p>Created by Us</p>
+      </div>
+    </section>
+
+    <section class="work-grid-section">
+      <div class="wrap">
+        <div class="work-grid">
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-1.jpg" alt="서울옥션 크리에이티브 작업물 1">
+            </div>
+            <h2 class="work-title">Seoul Auction Exhibition Campaign Design</h2>
+            <p class="work-subtitle">서울옥션 전시 캠페인 그래픽 디자인</p>
+          </a>
+
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-2.jpg" alt="서울옥션 크리에이티브 작업물 2">
+            </div>
+            <h2 class="work-title">Auction Preview Space Visual Identity</h2>
+            <p class="work-subtitle">프리뷰 공간 비주얼 아이덴티티 구축</p>
+          </a>
+
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-3.jpg" alt="서울옥션 크리에이티브 작업물 3">
+            </div>
+            <h2 class="work-title">Digital Artwork Promotion Contents</h2>
+            <p class="work-subtitle">온라인 작품 홍보 콘텐츠 디자인</p>
+          </a>
+
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-4.jpg" alt="서울옥션 크리에이티브 작업물 4">
+            </div>
+            <h2 class="work-title">Art Fair Booth Graphic System</h2>
+            <p class="work-subtitle">아트페어 부스 그래픽 시스템 디자인</p>
+          </a>
+
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-5.jpg" alt="서울옥션 크리에이티브 작업물 5">
+            </div>
+            <h2 class="work-title">Archive Editorial Layout Project</h2>
+            <p class="work-subtitle">아카이브 에디토리얼 레이아웃 프로젝트</p>
+          </a>
+
+          <a href="#" class="work-card">
+            <div class="work-thumb">
+              <img src="images/work-6.jpg" alt="서울옥션 크리에이티브 작업물 6">
+            </div>
+            <h2 class="work-title">Auction Event Key Visual Series</h2>
+            <p class="work-subtitle">경매 이벤트 키비주얼 시리즈</p>
+          </a>
+        </div>
+
+        <a href="index.html" class="back-home">← BACK TO HOME</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
