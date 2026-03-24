@@ -79,17 +79,18 @@
     }
 
     .site-header .inner{
-  width:min(calc(100% - 24px), var(--max));
-  height:100%;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
+     width:min(calc(100% - 24px), var(--max));
+     height:100%;
+     margin:0 auto;
+     display:flex;
+     align-items:center;
+     gap:20px;
+    }
 
-.brand{
-  flex:0 0 auto;
-  font-size:25px;
+    .brand{
+  flex:1 1 auto;
+  min-width:0;
+  font-size:18px;
   font-weight:400 !important;
   font-style:normal !important;
   letter-spacing:0 !important;
@@ -97,7 +98,6 @@
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
-
 .desktop-nav{
   display:flex;
   align-items:center;
@@ -139,10 +139,11 @@
     }
 
     .header-tools{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:0 0 auto;
+  margin-left:auto;
     }
 
     .icon-btn{
