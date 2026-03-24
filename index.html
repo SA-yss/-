@@ -14,7 +14,7 @@
       --soft:#f7f7f7;
       --card:#f3f3f3;
       --black:#111111;
-      --max:1440px;
+      --max:1920px;
       --header-h:72px;
       --radius:0px;
     }
@@ -63,7 +63,7 @@
     }
 
     .wrap{
-      width:min(calc(100% - 40px), var(--max));
+      width:min(calc(100% - 24px), var(--max));
       margin:0 auto;
     }
 
@@ -79,28 +79,41 @@
     }
 
     .site-header .inner{
-      width:min(calc(100% - 40px), var(--max));
-      height:100%;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
+  width:min(calc(100% - 24px), var(--max));
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
 
-    .brand{
-      flex:0 0 auto;
-      font-size:18px;
-      font-weight:700;
-      letter-spacing:-0.03em;
-    }
+.brand{
+  flex:0 0 auto;
+  font-size:25px;
+  font-weight:400 !important;
+  font-style:normal !important;
+  letter-spacing:0 !important;
+  font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.desktop-nav{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  margin-left:auto;
+  justify-content:flex-end;
+  flex:0 0 auto;
+}
 
     .desktop-nav{
       display:flex;
       align-items:center;
       gap:28px;
-      flex:1 1 auto;
-      justify-content:center;
+      margin-left:auto;
+      justify-content:flex-end;
+      flex:0 0 auto;
     }
 
     .desktop-nav a{
@@ -268,8 +281,6 @@
       background:none;
     }
 
-
-
     .card-body{
       position:absolute;
       left:0;
@@ -306,9 +317,9 @@
     .span-7{ grid-column:span 7; }
     .span-8{ grid-column:span 8; }
 
-    .h-sm{ min-height:240px; }
-    .h-md{ min-height:320px; }
-    .h-lg{ min-height:420px; }
+    .h-sm{ min-height:300px; }
+    .h-md{ min-height:420px; }
+    .h-lg{ min-height:560px; }
 
     /* about strip */
     .about-strip{
@@ -503,7 +514,7 @@
 
     <nav class="mobile-nav" aria-label="모바일 메뉴">
       <a href="sa-about.html">ABOUT</a>
-      <a href="sa-about.html">WORK</a>
+      <a href="sa-work.html">WORK</a>
       <a href="#archive">ARCHIVE</a>
       <a href="#download">DOWNLOAD</a>
       <a href="#ci">CI</a>
@@ -555,7 +566,7 @@
 
         <a class="card span-4 h-md" href="#archive">
           <div class="card-media">
-              <img src="images/sa-9.jpg" alt="">
+            <img src="images/sa-9.jpg" alt="">
           </div>
           <div class="card-body">
             <p class="card-kicker">ARCHIVE</p>
@@ -566,7 +577,7 @@
 
         <a class="card span-4 h-md" href="#download">
           <div class="card-media">
-              <img src="images/sa-8.jpg" alt="">
+            <img src="images/sa-8.jpg" alt="">
           </div>
           <div class="card-body">
             <p class="card-kicker">DOWNLOAD</p>
@@ -577,7 +588,7 @@
 
         <a class="card span-4 h-md" href="#ci">
           <div class="card-media">
-              <img src="images/sa-9.jpg" alt="">
+            <img src="images/sa-9.jpg" alt="">
           </div>
           <div class="card-body">
             <p class="card-kicker">CI</p>
@@ -597,7 +608,7 @@
       <div class="portfolio-grid">
         <a class="card span-5 h-md" href="#">
           <div class="card-media">
-              <img src="images/sa-10.jpg" alt="">
+            <img src="images/sa-10.jpg" alt="">
           </div>
           <div class="card-body">
             <p class="card-kicker">ARCHIVE / RECORD</p>
