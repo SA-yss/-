@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archive | Seoul Auction Creatives</title>
+  <meta name="description" content="Seoul Auction Creatives Archive" />
+  <style>
+    :root{
+      --bg:#f5f5f3;
+      --text:#111111;
+      --muted:#666666;
+      --line:#dddddd;
+      --header-h:72px;
+      --max:1680px;
+      --menu-panel-w:min(68vw, 520px);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:
+        "Pretendard",
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        "Malgun Gothic",
+        sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      word-break:keep-all;
+    }
+
+    body.menu-open{
+      overflow:hidden;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    button{
+      font:inherit;
+      color:inherit;
+      background:none;
+      border:none;
+      cursor:pointer;
+    }
+
+    .wrap{
+      width:min(calc(100% - 56px), var(--max));
+      margin:0 auto;
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      height:var(--header-h);
+      background:rgba(245,245,243,0.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+
+    .site-header .inner{
+      width:min(calc(100% - 56px), var(--max));
+      height:100%;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      gap:24px;
+    }
+
+    .brand{
+      flex:1 1 auto;
+      min-width:0;
+      font-size:18px;
+      font-weight:400 !important;
+      letter-spacing:0 !important;
+      white-space:nowrap;
+      font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .desktop-nav{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      margin-left:auto;
+      justify-content:flex-end;
+      flex:0 0 auto;
+    }
+
+    .desktop-nav a{
+      position:relative;
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.04em;
+    }
+
+    .desktop-nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:0;
+      height:1px;
+      background:#111;
+      transition:width .25s ease;
+    }
+
+    .desktop-nav a:hover::after,
+    .desktop-nav a.active::after{
+      width:100%;
+    }
+
+    .header-tools{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+      margin-left:auto;
+    }
+
+    .icon-btn{
+      width:40px;
+      height:40px;
+      border-radius:999px;
+      border:1px solid transparent;
+      display:grid;
+      place-items:center;
+      transition:.2s ease;
+      flex:0 0 auto;
+    }
+
+    .icon-btn:hover{
+      background:rgba(0,0,0,0.03);
+      border-color:rgba(0,0,0,0.06);
+    }
+
+    .menu-btn{
+      display:none;
+    }
+
+    .archive-hero{
+      padding:72px 0 56px;
+      text-align:center;
+    }
+
+    .archive-hero h1{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-0.03em;
+      margin-bottom:24px;
+    }
+
+    .archive-hero p{
+      font-size:16px;
+      color:#222;
+      letter-spacing:-0.02em;
+    }
+
+    .archive-grid-section{
+      padding:0 0 120px;
+    }
+
+    .archive-grid-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .archive-grid{
+      width:100%;
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:54px 20px;
+    }
+
+    .archive-card{
+      display:block;
+    }
+
+    .archive-thumb{
+      aspect-ratio:1.48 / 1;
+      overflow:hidden;
+      background:#dcdcdc;
+      margin-bottom:16px;
+    }
+
+    .archive-thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .5s ease;
+    }
+
+    .archive-card:hover .archive-thumb img{
+      transform:scale(1.02);
+    }
+
+    .archive-title{
+      font-size:22px;
+      line-height:1.35;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      margin-bottom:8px;
+    }
+
+    .archive-subtitle{
+      font-size:15px;
+      line-height:1.6;
+      color:#222;
+      letter-spacing:-0.02em;
+    }
+
+    .back-home{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:14px;
+      color:var(--muted);
+      margin-top:56px;
+      align-self:center;
+    }
+
+    .back-home:hover{
+      color:#111;
+    }
+
+    /* mobile slide menu */
+    .mobile-menu{
+      position:fixed;
+      inset:0;
+      z-index:300;
+      pointer-events:none;
+    }
+
+    .mobile-menu.active{
+      pointer-events:auto;
+    }
+
+    .mobile-menu-dim{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0);
+      transition:background .28s ease;
+    }
+
+    .mobile-menu.active .mobile-menu-dim{
+      background:rgba(0,0,0,0.42);
+    }
+
+    .mobile-menu-panel{
+      position:absolute;
+      top:0;
+      right:0;
+      width:var(--menu-panel-w);
+      max-width:100%;
+      height:100dvh;
+      background:#f7f7f5;
+      transform:translateX(100%);
+      transition:transform .3s ease;
+      display:flex;
+      flex-direction:column;
+      padding:22px 24px 28px;
+      overflow-y:auto;
+      box-shadow:-10px 0 30px rgba(0,0,0,0.08);
+    }
+
+    .mobile-menu.active .mobile-menu-panel{
+      transform:translateX(0);
+    }
+
+    .mobile-menu-top{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-bottom:18px;
+    }
+
+    .mobile-close{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      font-size:34px;
+      line-height:1;
+      color:#111;
+    }
+
+    .mobile-nav-main{
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      padding:6px 0 26px;
+    }
+
+    .mobile-nav-main a{
+      font-size:22px;
+      font-weight:400;
+      letter-spacing:-0.03em;
+    }
+
+    .mobile-nav-main a.current{
+      font-weight:700;
+    }
+
+    .mobile-sub-wrap{
+      margin-top:8px;
+      padding-top:24px;
+      border-top:1px solid #d9d9d9;
+    }
+
+    .mobile-sub-title{
+      font-size:12px;
+      letter-spacing:0.12em;
+      color:#888;
+      margin-bottom:18px;
+    }
+
+    .mobile-sub-list{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .mobile-sub-list a{
+      font-size:18px;
+      line-height:1.4;
+      letter-spacing:-0.02em;
+    }
+
+    .mobile-sub-list a.current{
+      font-weight:700;
+    }
+
+    @media (max-width: 980px){
+      .desktop-nav{
+        gap:18px;
+      }
+
+      .archive-hero{
+        padding:56px 0 42px;
+      }
+
+      .archive-grid{
+        gap:42px 16px;
+      }
+
+      .archive-title{
+        font-size:19px;
+      }
+
+      .archive-subtitle{
+        font-size:14px;
+      }
+    }
+
+    @media (max-width: 763px){
+      .desktop-nav{
+        display:none;
+      }
+
+      .menu-btn{
+        display:grid;
+      }
+
+      .archive-hero{
+        padding:44px 0 34px;
+      }
+
+      .archive-hero h1{
+        font-size:18px;
+        margin-bottom:16px;
+      }
+
+      .archive-hero p{
+        font-size:14px;
+      }
+
+      .archive-grid{
+        grid-template-columns:1fr;
+        gap:34px;
+      }
+
+      .archive-grid-section{
+        padding-bottom:70px;
+      }
+
+      .archive-title{
+        font-size:18px;
+      }
+
+      .archive-subtitle{
+        font-size:13px;
+      }
+
+      .back-home{
+        margin-top:40px;
+        font-size:13px;
+      }
+    }
+
+    @media (max-width: 640px){
+      :root{
+        --header-h:64px;
+        --menu-panel-w:64vw;
+      }
+
+      .site-header .inner,
+      .wrap{
+        width:min(calc(100% - 28px), var(--max));
+      }
+
+      .brand{
+        font-size:16px;
+        max-width:70vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      .mobile-nav-main a{
+        font-size:18px;
+      }
+
+      .mobile-sub-list a{
+        font-size:16px;
+      }
+    }
+  </style>
+</head>
+<body data-page="archive">
+  <header class="site-header">
+    <div class="inner">
+      <a href="index.html" class="brand">Seoul Auction Creatives</a>
+
+      <nav class="desktop-nav" aria-label="주 메뉴">
+        <a href="sa-about.html">ABOUT</a>
+        <a href="sa-work.html">WORK</a>
+        <a href="sa-archive.html" class="active">ARCHIVE</a>
+        <a href="sa-download.html">DOWNLOAD</a>
+        <a href="sa-ci.html">CI</a>
+        <a href="sa-contact.html">CONTACT</a>
+      </nav>
+
+      <div class="header-tools">
+        <button class="icon-btn" aria-label="검색">
+          <svg width="18" height="18" viewBox="0 0 17 17" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
+            <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="메뉴 열기">
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+            <path d="M0 1H18M0 9H18" stroke="#111" stroke-width="2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="archive-hero">
+      <div class="wrap">
+        <h1>ARCHIVE</h1>
+        <p>Records, references, and documented traces</p>
+      </div>
+    </section>
+
+    <section class="archive-grid-section">
+      <div class="wrap archive-grid-wrap">
+        <div class="archive-grid">
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-9.jpg" alt="전시 기록 아카이브">
+            </div>
+            <h2 class="archive-title">Exhibition Records</h2>
+            <p class="archive-subtitle">전시 기록과 현장 결과물 아카이브</p>
+          </a>
+
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-10.jpg" alt="리서치 자료 아카이브">
+            </div>
+            <h2 class="archive-title">Research & Reference</h2>
+            <p class="archive-subtitle">리서치 자료와 시각 참고 레퍼런스 정리</p>
+          </a>
+
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-11.jpg" alt="프로젝트 기록 아카이브">
+            </div>
+            <h2 class="archive-title">Project Documentation</h2>
+            <p class="archive-subtitle">프로젝트 진행 과정과 결과 정리</p>
+          </a>
+
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-13.jpg" alt="에디토리얼 아카이브">
+            </div>
+            <h2 class="archive-title">Editorial Archive</h2>
+            <p class="archive-subtitle">편집물과 문서 레이아웃 기록</p>
+          </a>
+
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-14.jpg" alt="브랜드 자산 아카이브">
+            </div>
+            <h2 class="archive-title">Brand Asset History</h2>
+            <p class="archive-subtitle">브랜드 시각 자산 변천 및 정리</p>
+          </a>
+
+          <a href="#" class="archive-card">
+            <div class="archive-thumb">
+              <img src="images/sa-18.jpg" alt="콘텐츠 아카이브">
+            </div>
+            <h2 class="archive-title">Content Archive</h2>
+            <p class="archive-subtitle">온라인 콘텐츠와 홍보물 아카이브</p>
+          </a>
+        </div>
+
+        <a href="index.html" class="back-home">← BACK TO HOME</a>
+      </div>
+    </section>
+  </main>
+
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-dim" id="menuDim"></div>
+
+    <div class="mobile-menu-panel">
+      <div class="mobile-menu-top">
+        <button class="mobile-close" id="closeMenu" aria-label="메뉴 닫기">×</button>
+      </div>
+
+      <nav class="mobile-nav-main" id="mobileMainNav" aria-label="모바일 주 메뉴"></nav>
+
+      <div class="mobile-sub-wrap">
+        <p class="mobile-sub-title" id="mobileSubTitle">ARCHIVE</p>
+        <div class="mobile-sub-list" id="mobileSubList"></div>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    const pageKey = document.body.dataset.page || 'archive';
+
+    const mainMenu = [
+      { key:'about', label:'ABOUT', href:'sa-about.html' },
+      { key:'work', label:'WORK', href:'sa-work.html' },
+      { key:'archive', label:'ARCHIVE', href:'sa-archive.html' },
+      { key:'download', label:'DOWNLOAD', href:'sa-download.html' },
+      { key:'ci', label:'CI', href:'sa-ci.html' },
+      { key:'contact', label:'CONTACT', href:'sa-contact.html' }
+    ];
+
+    const subMenuData = {
+      about: {
+        title: 'ABOUT',
+        items: [
+          { label:'Introduction', href:'sa-about.html' },
+          { label:'Vision', href:'sa-about.html' },
+          { label:'Story', href:'sa-about.html' }
+        ]
+      },
+      work: {
+        title: 'WORK',
+        items: [
+          { label:'Brand', href:'sa-work.html' },
+          { label:'Corporate', href:'sa-work.html' },
+          { label:'Award-winning', href:'sa-work.html' }
+        ]
+      },
+      archive: {
+        title: 'ARCHIVE',
+        items: [
+          { label:'Exhibition Records', href:'#', current:true },
+          { label:'Research & Reference', href:'#' },
+          { label:'Project Documentation', href:'#' },
+          { label:'Editorial Archive', href:'#' }
+        ]
+      },
+      download: {
+        title: 'DOWNLOAD',
+        items: [
+          { label:'Forms', href:'sa-download.html' },
+          { label:'Templates', href:'sa-download.html' },
+          { label:'Press Kit', href:'sa-download.html' }
+        ]
+      },
+      ci: {
+        title: 'CI',
+        items: [
+          { label:'Logo System', href:'sa-ci.html' },
+          { label:'Typography & Color', href:'sa-ci.html' },
+          { label:'Guideline PDF', href:'sa-ci.html' }
+        ]
+      },
+      contact: {
+        title: 'CONTACT',
+        items: [
+          { label:'General Inquiry', href:'sa-contact.html' },
+          { label:'Design Team', href:'sa-contact.html' }
+        ]
+      }
+    };
+
+    const mobileMainNav = document.getElementById('mobileMainNav');
+    const mobileSubTitle = document.getElementById('mobileSubTitle');
+    const mobileSubList = document.getElementById('mobileSubList');
+
+    function renderMobileMenu() {
+      mobileMainNav.innerHTML = mainMenu.map(item => {
+        const currentClass = item.key === pageKey ? 'current' : '';
+        return `<a href="${item.href}" class="${currentClass}">${item.label}</a>`;
+      }).join('');
+
+      const currentSub = subMenuData[pageKey] || subMenuData.archive;
+      mobileSubTitle.textContent = currentSub.title;
+      mobileSubList.innerHTML = currentSub.items.map(item => {
+        const currentClass = item.current ? 'current' : '';
+        return `<a href="${item.href}" class="${currentClass}">${item.label}</a>`;
+      }).join('');
+    }
+
+    renderMobileMenu();
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const menuDim = document.getElementById('menuDim');
+
+    function openMenu() {
+      mobileMenu.classList.add('active');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('menu-open');
+    }
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('menu-open');
+    }
+
+    if (menuBtn) {
+      menuBtn.addEventListener('click', openMenu);
+    }
+
+    if (closeMenu) {
+      closeMenu.addEventListener('click', closeMobileMenu);
+    }
+
+    if (menuDim) {
+      menuDim.addEventListener('click', closeMobileMenu);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
+</html>
