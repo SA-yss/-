@@ -79,33 +79,25 @@
     }
 
     .site-header .inner{
-     width:min(calc(100% - 24px), var(--max));
-     height:100%;
-     margin:0 auto;
-     display:flex;
-     align-items:center;
-     gap:20px;
+      width:min(calc(100% - 24px), var(--max));
+      height:100%;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      gap:20px;
     }
 
     .brand{
-  flex:1 1 auto;
-  min-width:0;
-  font-size:18px;
-  font-weight:400 !important;
-  font-style:normal !important;
-  letter-spacing:0 !important;
-  font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
-.desktop-nav{
-  display:flex;
-  align-items:center;
-  gap:28px;
-  margin-left:auto;
-  justify-content:flex-end;
-  flex:0 0 auto;
-}
+      flex:1 1 auto;
+      min-width:0;
+      font-size:18px;
+      font-weight:400 !important;
+      font-style:normal !important;
+      letter-spacing:0 !important;
+      font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
     .desktop-nav{
       display:flex;
@@ -139,11 +131,11 @@
     }
 
     .header-tools{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex:0 0 auto;
-  margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+      margin-left:auto;
     }
 
     .icon-btn{
@@ -516,7 +508,7 @@
     <nav class="mobile-nav" aria-label="모바일 메뉴">
       <a href="sa-about.html">ABOUT</a>
       <a href="sa-work.html">WORK</a>
-      <a href="#archive">ARCHIVE</a>
+      <a href="sa-archive.html">ARCHIVE</a>
       <a href="#download">DOWNLOAD</a>
       <a href="#ci">CI</a>
       <a href="#contact">CONTACT</a>
@@ -706,7 +698,7 @@
       <div class="about-box">
         <p class="label">CONTACT</p>
         <p class="text">
-          seoulauction.com<br />
+          seoulauction.com/<br />
           서울옥션 · Design Team
           <span><br />문의: @seoulauction.com.</span>
         </p>
@@ -729,6 +721,20 @@
   </footer>
 
   <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 0);
+    });
+
+    window.addEventListener('beforeunload', () => {
+      window.scrollTo(0, 0);
+    });
+
     const menuBtn = document.getElementById('menuBtn');
     const mobilePanel = document.getElementById('mobilePanel');
     const closeMenu = document.getElementById('closeMenu');
