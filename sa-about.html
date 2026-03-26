@@ -405,7 +405,6 @@
       font-weight:700;
     }
 
-    /* desktop large */
     @media (min-width: 1201px){
       body.search-active .desktop-nav{
         transform:translateX(calc(-1 * var(--search-move)));
@@ -430,7 +429,6 @@
       }
     }
 
-    /* tablet / small laptop */
     @media (max-width: 1200px){
       .header-search{
         right:56px;
@@ -610,7 +608,6 @@
         <a href="sa-about.html" class="active">ABOUT</a>
         <a href="sa-work.html">WORK</a>
         <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-download.html">DOWNLOAD</a>
         <a href="sa-ci.html">CI</a>
         <a href="sa-contact.html">CONTACT</a>
       </nav>
@@ -637,7 +634,7 @@
           <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
           <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
         </svg>
-        <input type="text" id="headerSearchInput" placeholder="Search projects, archive, resources..." />
+        <input type="text" id="headerSearchInput" placeholder="Search projects, archive..." />
         <span class="search-hint">ESC</span>
       </form>
     </div>
@@ -689,7 +686,6 @@
       { key:'about', label:'ABOUT', href:'sa-about.html' },
       { key:'work', label:'WORK', href:'sa-work.html' },
       { key:'archive', label:'ARCHIVE', href:'sa-archive.html' },
-      { key:'download', label:'DOWNLOAD', href:'sa-download.html' },
       { key:'ci', label:'CI', href:'sa-ci.html' },
       { key:'contact', label:'CONTACT', href:'sa-contact.html' }
     ];
@@ -717,14 +713,6 @@
           { label:'Exhibition Records', href:'sa-archive.html' },
           { label:'Research & Reference', href:'sa-archive.html' },
           { label:'Project Documentation', href:'sa-archive.html' }
-        ]
-      },
-      download: {
-        title: 'DOWNLOAD',
-        items: [
-          { label:'Forms', href:'sa-download.html' },
-          { label:'Templates', href:'sa-download.html' },
-          { label:'Press Kit', href:'sa-download.html' }
         ]
       },
       ci: {
