@@ -48,12 +48,6 @@
       text-decoration:none;
     }
 
-    img{
-      display:block;
-      width:100%;
-      height:auto;
-    }
-
     button{
       font:inherit;
       color:inherit;
@@ -165,7 +159,7 @@
     }
 
     .contact-hero{
-      padding:72px 0 56px;
+      padding:72px 0 38px;
       text-align:center;
     }
 
@@ -173,67 +167,136 @@
       font-size:20px;
       font-weight:800;
       letter-spacing:-0.03em;
-      margin-bottom:24px;
+      margin-bottom:18px;
     }
 
     .contact-hero p{
-      font-size:16px;
+      font-size:15px;
       color:#222;
       letter-spacing:-0.02em;
     }
 
-    .contact-grid-section{
+    .contact-board-section{
       padding:0 0 120px;
     }
 
-    .contact-grid-wrap{
+    .contact-board-wrap{
       display:flex;
       flex-direction:column;
       align-items:center;
     }
 
-    .contact-grid{
+    .contact-intro{
       width:100%;
+      border-top:1px solid var(--line);
+      padding:26px 0 30px;
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:54px 20px;
+      grid-template-columns:220px 1fr;
+      gap:30px;
     }
 
-    .contact-card{
-      display:block;
+    .contact-intro-label{
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.08em;
     }
 
-    .contact-thumb{
-      aspect-ratio:1.48 / 1;
-      overflow:hidden;
-      background:#dcdcdc;
-      margin-bottom:16px;
+    .contact-intro-text{
+      font-size:24px;
+      line-height:1.5;
+      letter-spacing:-0.03em;
+      max-width:980px;
     }
 
-    .contact-thumb img{
+    .contact-intro-text span{
+      color:var(--muted);
+    }
+
+    .board-head{
       width:100%;
-      height:100%;
-      object-fit:cover;
-      transition:transform .5s ease;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      display:grid;
+      grid-template-columns:160px 220px 1fr;
+      gap:20px;
+      padding:14px 0;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.08em;
     }
 
-    .contact-card:hover .contact-thumb img{
-      transform:scale(1.02);
+    .board-row{
+      width:100%;
+      border-bottom:1px solid var(--line);
+      display:grid;
+      grid-template-columns:160px 220px 1fr;
+      gap:20px;
+      padding:22px 0;
+      transition:background .2s ease;
     }
 
-    .contact-title{
-      font-size:22px;
-      line-height:1.35;
+    .board-row:hover{
+      background:rgba(0,0,0,0.015);
+    }
+
+    .board-category{
+      font-size:14px;
+      font-weight:600;
+      color:#111;
+    }
+
+    .board-contact{
+      font-size:14px;
+      color:#111;
+      line-height:1.7;
+    }
+
+    .board-contact a:hover{
+      text-decoration:underline;
+    }
+
+    .board-desc{
+      font-size:14px;
+      color:#444;
+      line-height:1.8;
+    }
+
+    .board-group-title{
+      width:100%;
+      border-bottom:1px solid var(--line);
+      padding:110px 0 26px;
+      text-align:center;
+    }
+
+    .board-group-title h2{
+      font-size:24px;
       font-weight:800;
       letter-spacing:-0.04em;
-      margin-bottom:8px;
+      color:#111;
     }
 
-    .contact-subtitle{
-      font-size:15px;
+    .board-row.single-link{
+      grid-template-columns:1fr;
+      gap:0;
+      padding:24px 0;
+    }
+
+    .board-row.single-link .board-contact{
+      font-size:16px;
+      font-weight:600;
       line-height:1.6;
-      color:#222;
-      letter-spacing:-0.02em;
+    }
+
+    .board-row.single-link .board-desc{
+      margin-top:8px;
+    }
+
+    .contact-note{
+      width:100%;
+      padding-top:24px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.8;
     }
 
     .back-home{
@@ -363,19 +426,20 @@
       }
 
       .contact-hero{
-        padding:56px 0 42px;
+        padding:56px 0 32px;
       }
 
-      .contact-grid{
-        gap:42px 16px;
+      .contact-intro{
+        grid-template-columns:180px 1fr;
       }
 
-      .contact-title{
-        font-size:19px;
+      .contact-intro-text{
+        font-size:21px;
       }
 
-      .contact-subtitle{
-        font-size:14px;
+      .board-head,
+      .board-row{
+        grid-template-columns:140px 200px 1fr;
       }
     }
 
@@ -389,33 +453,72 @@
       }
 
       .contact-hero{
-        padding:44px 0 34px;
+        padding:44px 0 26px;
       }
 
       .contact-hero h1{
         font-size:18px;
-        margin-bottom:16px;
+        margin-bottom:14px;
       }
 
       .contact-hero p{
         font-size:14px;
       }
 
-      .contact-grid{
+      .contact-intro{
         grid-template-columns:1fr;
-        gap:34px;
+        gap:14px;
+        padding:20px 0 24px;
       }
 
-      .contact-grid-section{
-        padding-bottom:70px;
-      }
-
-      .contact-title{
+      .contact-intro-text{
         font-size:18px;
       }
 
-      .contact-subtitle{
+      .board-head{
+        display:none;
+      }
+
+      .board-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:18px 0;
+      }
+
+      .board-category{
         font-size:13px;
+        letter-spacing:0.08em;
+        color:var(--muted);
+      }
+
+      .board-contact{
+        font-size:15px;
+      }
+
+      .board-desc{
+        font-size:13px;
+      }
+
+      .board-group-title{
+        padding:72px 0 20px;
+      }
+
+      .board-group-title h2{
+        font-size:18px;
+      }
+
+      .board-row.single-link{
+        grid-template-columns:1fr;
+        gap:0;
+        padding:18px 0;
+      }
+
+      .board-row.single-link .board-contact{
+        font-size:15px;
+      }
+
+      .contact-board-section{
+        padding-bottom:70px;
       }
 
       .back-home{
@@ -487,61 +590,92 @@
     <section class="contact-hero">
       <div class="wrap">
         <h1>CONTACT</h1>
-        <p>General inquiries, partnership, press, and visit information</p>
+        <p>General inquiries, partnership, press, and internal access information</p>
       </div>
     </section>
 
-    <section class="contact-grid-section">
-      <div class="wrap contact-grid-wrap">
-        <div class="contact-grid">
-          <a href="mailto:hello@seoulauction.com" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-9.jpg" alt="일반 문의">
-            </div>
-            <h2 class="contact-title">General Inquiry</h2>
-            <p class="contact-subtitle">hello@seoulauction.com<br>기본 문의 및 일반 상담</p>
-          </a>
-
-          <a href="mailto:creative@seoulauction.com" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-10.jpg" alt="크리에이티브 문의">
-            </div>
-            <h2 class="contact-title">Creative Team</h2>
-            <p class="contact-subtitle">creative@seoulauction.com<br>디자인 및 크리에이티브 협업 문의</p>
-          </a>
-
-          <a href="mailto:press@seoulauction.com" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-11.jpg" alt="언론 및 미디어 문의">
-            </div>
-            <h2 class="contact-title">Press & Media</h2>
-            <p class="contact-subtitle">press@seoulauction.com<br>보도, 인터뷰, 미디어 관련 문의</p>
-          </a>
-
-          <a href="#" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-13.jpg" alt="방문 및 위치 안내">
-            </div>
-            <h2 class="contact-title">Visit & Location</h2>
-            <p class="contact-subtitle">서울특별시 강남구<br>전시 및 방문 관련 안내</p>
-          </a>
-
-          <a href="tel:+82-2-0000-0000" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-14.jpg" alt="전화 문의">
-            </div>
-            <h2 class="contact-title">Phone</h2>
-            <p class="contact-subtitle">+82 2 0000 0000<br>운영시간 평일 10:00 - 18:00</p>
-          </a>
-
-          <a href="#" class="contact-card">
-            <div class="contact-thumb">
-              <img src="images/sa-18.jpg" alt="파트너십 문의">
-            </div>
-            <h2 class="contact-title">Partnership</h2>
-            <p class="contact-subtitle">partnership@seoulauction.com<br>브랜드 및 프로젝트 제안 문의</p>
-          </a>
+    <section class="contact-board-section">
+      <div class="wrap contact-board-wrap">
+        <div class="contact-intro">
+          <p class="contact-intro-label">CONTACT</p>
+          <p class="contact-intro-text">
+            서울옥션 크리에이티브 관련 문의는 아래 항목을 통해 확인하실 수 있습니다.
+            <span>업무 성격에 따라 담당 메일과 연락처가 다를 수 있으니 해당 항목으로 문의해 주세요.</span>
+          </p>
         </div>
+
+        <div class="board-head">
+          <div>CATEGORY</div>
+          <div>CONTACT</div>
+          <div>DETAIL</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">GENERAL</div>
+          <div class="board-contact">
+            <a href="mailto:hello@seoulauction.com">hello@seoulauction.com</a>
+          </div>
+          <div class="board-desc">기본 문의 및 일반 상담 관련 안내</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">CREATIVE TEAM</div>
+          <div class="board-contact">
+            <a href="mailto:creative@seoulauction.com">creative@seoulauction.com</a>
+          </div>
+          <div class="board-desc">디자인, 브랜드, 크리에이티브 협업 관련 문의</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">PRESS & MEDIA</div>
+          <div class="board-contact">
+            <a href="mailto:press@seoulauction.com">press@seoulauction.com</a>
+          </div>
+          <div class="board-desc">보도, 인터뷰, 미디어 자료 요청 관련 문의</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">PARTNERSHIP</div>
+          <div class="board-contact">
+            <a href="mailto:partnership@seoulauction.com">partnership@seoulauction.com</a>
+          </div>
+          <div class="board-desc">브랜드 협업, 프로젝트 제안, 파트너십 관련 문의</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">PHONE</div>
+          <div class="board-contact">
+            <a href="tel:+82-2-0000-0000">+82 2 0000 0000</a>
+          </div>
+          <div class="board-desc">운영시간 평일 10:00 - 18:00 / 주말 및 공휴일 휴무</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">VISIT</div>
+          <div class="board-contact">
+            서울특별시 강남구
+          </div>
+          <div class="board-desc">전시 및 방문 관련 안내, 사전 문의 후 방문 권장</div>
+        </div>
+
+        <div class="board-group-title">
+          <h2>창고 재고 관리</h2>
+        </div>
+
+        <div class="board-row single-link">
+          <div>
+            <div class="board-contact">
+              <a href="admin/stock.html">창고재고관리 시스템 바로가기</a>
+            </div>
+            <div class="board-desc">
+              내부 관리자 전용 페이지입니다.
+            </div>
+          </div>
+        </div>
+
+        <p class="contact-note">
+          모든 문의는 접수 순서에 따라 확인되며, 업무일 기준으로 순차 회신됩니다.
+        </p>
 
         <a href="index.html" class="back-home">← BACK TO HOME</a>
       </div>
@@ -616,7 +750,7 @@
           { label:'General Inquiry', href:'sa-contact.html', current:true },
           { label:'Creative Team', href:'sa-contact.html' },
           { label:'Press & Media', href:'sa-contact.html' },
-          { label:'Visit & Location', href:'sa-contact.html' }
+          { label:'창고재고관리', href:'admin/stock.html' }
         ]
       }
     };
