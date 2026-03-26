@@ -662,15 +662,20 @@
           <h2>창고 재고 관리</h2>
         </div>
 
-        <div class="board-row single-link">
-          <div>
-            <div class="board-contact">
-              <a href="admin/stock.html">창고재고관리 시스템 바로가기</a>
-            </div>
-            <div class="board-desc">
-              내부 관리자 전용 페이지입니다.
-            </div>
+        <div class="board-row">
+          <div class="board-category">STOCK STATUS</div>
+          <div class="board-contact">
+            <a href="sa-index.html#/list">창고재고 현황 바로가기</a>
           </div>
+          <div class="board-desc">전체 재고 수량 확인 페이지입니다.</div>
+        </div>
+
+        <div class="board-row">
+          <div class="board-category">ADMIN</div>
+          <div class="board-contact">
+            <a href="sa-index.html#/admin">창고재고관리 관리자 페이지</a>
+          </div>
+          <div class="board-desc">내부 관리자 전용 페이지입니다. 접속 시 비밀번호 인증이 진행됩니다.</div>
         </div>
 
         <p class="contact-note">
@@ -750,7 +755,8 @@
           { label:'General Inquiry', href:'sa-contact.html', current:true },
           { label:'Creative Team', href:'sa-contact.html' },
           { label:'Press & Media', href:'sa-contact.html' },
-          { label:'창고재고관리', href:'sa-index.html' }
+          { label:'창고재고현황', href:'sa-index.html#/list' },
+          { label:'창고재고관리(Admin)', href:'sa-index.html#/admin' }
         ]
       }
     };
