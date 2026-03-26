@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI | Seoul Auction Creatives</title>
+  <meta name="description" content="Seoul Auction Creatives CI" />
+  <style>
+    :root{
+      --bg:#000000;
+      --panel:#f2f2f2;
+      --panel-dark:#232838;
+      --text:#ffffff;
+      --muted:#a1a1aa;
+      --line:rgba(255,255,255,0.08);
+      --max:1680px;
+      --header-h:72px;
+      --radius:14px;
+      --blue:#2f6bff;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:
+        "Pretendard",
+        "Apple SD Gothic Neo",
+        "Noto Sans KR",
+        "Malgun Gothic",
+        sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
+      word-break:keep-all;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    img{
+      display:block;
+      max-width:100%;
+      height:auto;
+    }
+
+    button{
+      font:inherit;
+      color:inherit;
+      background:none;
+      border:none;
+      cursor:pointer;
+    }
+
+    .wrap{
+      width:min(calc(100% - 64px), var(--max));
+      margin:0 auto;
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      height:var(--header-h);
+      background:rgba(0,0,0,0.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+
+    .site-header .inner{
+      width:min(calc(100% - 64px), var(--max));
+      height:100%;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .brand{
+      font-size:18px;
+      white-space:nowrap;
+      font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif;
+      font-weight:400;
+      letter-spacing:0;
+    }
+
+    .desktop-nav{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      margin-left:40px;
+      flex:1;
+    }
+
+    .desktop-nav a{
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:0.04em;
+      color:#d4d4d8;
+      position:relative;
+    }
+
+    .desktop-nav a.active,
+    .desktop-nav a:hover{
+      color:#fff;
+    }
+
+    .desktop-nav a.active::after,
+    .desktop-nav a:hover::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-6px;
+      width:100%;
+      height:1px;
+      background:#fff;
+    }
+
+    .header-right{
+      font-size:13px;
+      color:#a1a1aa;
+    }
+
+    .header-tools{
+      display:none;
+      align-items:center;
+      gap:10px;
+      margin-left:auto;
+    }
+
+    .icon-btn{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      flex:0 0 auto;
+    }
+
+    .page-hero{
+      padding:68px 0 44px;
+    }
+
+    .page-hero h1{
+      font-size:48px;
+      line-height:1.1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      margin-bottom:42px;
+    }
+
+    .intro-block h2{
+      font-size:28px;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      margin-bottom:28px;
+    }
+
+    .intro-block p{
+      max-width:980px;
+      font-size:14px;
+      line-height:1.8;
+      color:#d4d4d8;
+    }
+
+    .ci-section{
+      padding:0 0 54px;
+    }
+
+    .section-title{
+      font-size:28px;
+      line-height:1.2;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      margin-bottom:26px;
+    }
+
+    .section-desc{
+      max-width:980px;
+      font-size:14px;
+      line-height:1.8;
+      color:#d4d4d8;
+      margin-bottom:22px;
+    }
+
+    .asset-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .asset-grid.one{
+      grid-template-columns:1fr;
+    }
+
+    .asset-card{
+      position:relative;
+      border-radius:var(--radius);
+      overflow:hidden;
+      padding:14px 14px 44px;
+      min-height:220px;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .asset-card.light{
+      background:var(--panel);
+      color:#111827;
+    }
+
+    .asset-card.dark{
+      background:var(--panel-dark);
+      color:#ffffff;
+    }
+
+    .asset-card.large{
+      min-height:420px;
+      padding:18px 18px 52px;
+    }
+
+    .card-label{
+      font-size:11px;
+      color:rgba(0,0,0,0.62);
+      margin-bottom:12px;
+    }
+
+    .asset-card.dark .card-label{
+      color:rgba(255,255,255,0.7);
+    }
+
+    .card-visual{
+      width:100%;
+      min-height:150px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .asset-card.large .card-visual{
+      min-height:300px;
+    }
+
+    .download-link{
+      position:absolute;
+      right:14px;
+      bottom:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      color:var(--blue);
+      font-weight:500;
+    }
+
+    .download-link svg{
+      width:12px;
+      height:12px;
+      flex:0 0 auto;
+    }
+
+    .color-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .color-card{
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.06);
+      background:#111;
+    }
+
+    .color-chip{
+      aspect-ratio:1.25 / 1;
+    }
+
+    .color-info{
+      padding:14px;
+      border-top:1px solid rgba(255,255,255,0.06);
+    }
+
+    .color-name{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .color-code{
+      font-size:12px;
+      color:#c4c4c4;
+      line-height:1.7;
+    }
+
+    .type-grid,
+    .rule-grid,
+    .download-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .info-card{
+      border-radius:var(--radius);
+      padding:22px;
+      background:#111111;
+      border:1px solid rgba(255,255,255,0.08);
+      min-height:180px;
+    }
+
+    .info-card h3{
+      font-size:18px;
+      line-height:1.3;
+      font-weight:700;
+      margin-bottom:14px;
+      letter-spacing:-0.02em;
+    }
+
+    .info-card p{
+      font-size:14px;
+      color:#c9c9c9;
+      line-height:1.8;
+    }
+
+    .type-sample{
+      font-size:32px;
+      line-height:1.2;
+      margin-bottom:14px;
+      letter-spacing:-0.03em;
+    }
+
+    .type-sample.brand{
+      font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif;
+    }
+
+    .type-sample.ui{
+      font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+      font-weight:700;
+    }
+
+    .rule-bad{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:32px;
+      height:32px;
+      border-radius:999px;
+      background:#1b1b1b;
+      border:1px solid rgba(255,255,255,0.08);
+      color:#ff4d4f;
+      font-size:18px;
+      margin-bottom:16px;
+    }
+
+    .download-box{
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:190px;
+    }
+
+    .download-box .meta{
+      font-size:12px;
+      color:#9ca3af;
+      margin-top:8px;
+    }
+
+    .footer-space{
+      height:70px;
+    }
+
+    .mobile-menu{
+      position:fixed;
+      inset:0;
+      z-index:300;
+      pointer-events:none;
+    }
+
+    .mobile-menu.active{
+      pointer-events:auto;
+    }
+
+    .mobile-menu-dim{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0);
+      transition:background .28s ease;
+    }
+
+    .mobile-menu.active .mobile-menu-dim{
+      background:rgba(0,0,0,0.42);
+    }
+
+    .mobile-menu-panel{
+      position:absolute;
+      top:0;
+      right:0;
+      width:min(68vw, 320px);
+      max-width:100%;
+      height:100dvh;
+      background:#111;
+      transform:translateX(100%);
+      transition:transform .3s ease;
+      display:flex;
+      flex-direction:column;
+      padding:22px 24px 28px;
+      overflow-y:auto;
+      box-shadow:-10px 0 30px rgba(0,0,0,0.2);
+    }
+
+    .mobile-menu.active .mobile-menu-panel{
+      transform:translateX(0);
+    }
+
+    .mobile-menu-top{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      margin-bottom:18px;
+    }
+
+    .mobile-close{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      font-size:34px;
+      line-height:1;
+      color:#fff;
+    }
+
+    .mobile-nav-main{
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      padding:6px 0 26px;
+    }
+
+    .mobile-nav-main a{
+      font-size:18px;
+      font-weight:400;
+      letter-spacing:-0.03em;
+      color:#f4f4f5;
+    }
+
+    .mobile-nav-main a.current{
+      font-weight:700;
+    }
+
+    @media (max-width: 1080px){
+      .color-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      .type-grid,
+      .rule-grid,
+      .download-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 760px){
+      .asset-grid{
+        grid-template-columns:1fr;
+      }
+
+      .page-hero h1{
+        font-size:36px;
+        margin-bottom:26px;
+      }
+
+      .intro-block h2,
+      .section-title{
+        font-size:22px;
+      }
+    }
+
+    @media (max-width: 640px){
+      :root{
+        --header-h:64px;
+      }
+
+      .site-header .inner,
+      .wrap{
+        width:min(calc(100% - 28px), var(--max));
+      }
+
+      .brand{
+        font-size:16px;
+        max-width:70vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      .desktop-nav,
+      .header-right{
+        display:none;
+      }
+
+      .header-tools{
+        display:flex;
+      }
+
+      .page-hero{
+        padding:42px 0 30px;
+      }
+
+      .page-hero h1{
+        font-size:30px;
+      }
+
+      .intro-block h2,
+      .section-title{
+        font-size:20px;
+        margin-bottom:18px;
+      }
+
+      .intro-block p,
+      .section-desc{
+        font-size:13px;
+      }
+
+      .asset-card.large{
+        min-height:320px;
+      }
+
+      .asset-card.large .card-visual{
+        min-height:220px;
+      }
+
+      .color-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a href="index.html" class="brand">Seoul Auction Creatives</a>
+
+      <nav class="desktop-nav" aria-label="주 메뉴">
+        <a href="sa-about.html">ABOUT</a>
+        <a href="sa-work.html">WORK</a>
+        <a href="sa-archive.html">ARCHIVE</a>
+        <a href="sa-download.html">DOWNLOAD</a>
+        <a href="sa-ci.html" class="active">CI</a>
+        <a href="sa-contact.html">CONTACT</a>
+      </nav>
+
+      <div class="header-right">
+        <span>Seoul Auction</span>
+      </div>
+
+      <div class="header-tools">
+        <button class="icon-btn" id="menuBtn" aria-label="메뉴 열기">
+          <svg width="30" height="18" viewBox="0 0 30 18" fill="none">
+            <path d="M0 3H30" stroke="#ffffff" stroke-width="2.4"/>
+            <path d="M0 15H30" stroke="#ffffff" stroke-width="2.4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <h1>브랜드 아이덴티티</h1>
+
+        <div class="intro-block">
+          <h2>시그니처 로고</h2>
+          <p>
+            서울옥션 크리에이티브의 정체성과 기준을 기반으로 한 브랜드 자산 가이드입니다.<br>
+            로고는 심볼과 워드마크로 사용될 수 있으며, 일관된 커뮤니케이션을 위해 정해진 비율과 색상, 사용 규정을 기준으로 활용해야 합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <div class="asset-grid one">
+          <article class="asset-card light large">
+            <p class="card-label">시그니처 로고</p>
+
+            <div class="card-visual">
+              <svg width="420" height="130" viewBox="0 0 420 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Seoul Auction signature logo">
+                <circle cx="54" cy="65" r="34" fill="#111111"/>
+                <path d="M41 65c0-7.2 5.8-13 13-13h16c7.2 0 13 5.8 13 13s-5.8 13-13 13H54c-7.2 0-13-5.8-13-13Z" fill="#ffffff"/>
+                <text x="108" y="78" fill="#1f2937" font-size="48" font-weight="700" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">Seoul Auction</text>
+              </svg>
+            </div>
+
+            <a href="#" class="download-link">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <div class="asset-grid">
+          <article class="asset-card light">
+            <p class="card-label">로고 모션</p>
+
+            <div class="card-visual">
+              <svg width="150" height="100" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Seoul Auction symbol logo">
+                <circle cx="75" cy="50" r="26" fill="#111111"/>
+                <path d="M65 50c0-5.5 4.5-10 10-10h12c5.5 0 10 4.5 10 10s-4.5 10-10 10H75c-5.5 0-10-4.5-10-10Z" fill="#ffffff"/>
+              </svg>
+            </div>
+
+            <a href="#" class="download-link">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+
+          <article class="asset-card dark">
+            <p class="card-label">로고 다크 배경용</p>
+
+            <div class="card-visual">
+              <svg width="150" height="100" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Seoul Auction symbol logo on dark">
+                <circle cx="75" cy="50" r="26" fill="#ffffff"/>
+                <path d="M65 50c0-5.5 4.5-10 10-10h12c5.5 0 10 4.5 10 10s-4.5 10-10 10H75c-5.5 0-10-4.5-10-10Z" fill="#232838"/>
+              </svg>
+            </div>
+
+            <a href="#" class="download-link">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">심볼 로고</h2>
+        <p class="section-desc">
+          심볼은 서울옥션의 독립적인 브랜드 표식으로, 축약된 환경이나 디지털 아이콘 등에서 우선적으로 사용됩니다.
+        </p>
+
+        <div class="asset-grid one">
+          <article class="asset-card light large">
+            <p class="card-label">심볼 로고</p>
+
+            <div class="card-visual">
+              <svg width="260" height="260" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Seoul Auction symbol">
+                <circle cx="130" cy="130" r="72" fill="#111111"/>
+                <path d="M102 130c0-15.5 12.5-28 28-28h32c15.5 0 28 12.5 28 28s-12.5 28-28 28h-32c-15.5 0-28-12.5-28-28Z" fill="#ffffff"/>
+              </svg>
+            </div>
+
+            <a href="#" class="download-link">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">컬러 시스템</h2>
+        <p class="section-desc">
+          서울옥션 크리에이티브의 컬러는 절제된 블랙과 화이트를 중심으로, 신뢰감과 집중도를 높이는 중성 톤을 함께 사용합니다.
+        </p>
+
+        <div class="color-grid">
+          <article class="color-card">
+            <div class="color-chip" style="background:#000000;"></div>
+            <div class="color-info">
+              <p class="color-name">Primary Black</p>
+              <p class="color-code">HEX #000000<br>RGB 0 0 0</p>
+            </div>
+          </article>
+
+          <article class="color-card">
+            <div class="color-chip" style="background:#FFFFFF;"></div>
+            <div class="color-info">
+              <p class="color-name">Primary White</p>
+              <p class="color-code">HEX #FFFFFF<br>RGB 255 255 255</p>
+            </div>
+          </article>
+
+          <article class="color-card">
+            <div class="color-chip" style="background:#232838;"></div>
+            <div class="color-info">
+              <p class="color-name">Deep Navy</p>
+              <p class="color-code">HEX #232838<br>RGB 35 40 56</p>
+            </div>
+          </article>
+
+          <article class="color-card">
+            <div class="color-chip" style="background:#D9D9D9;"></div>
+            <div class="color-info">
+              <p class="color-name">Soft Gray</p>
+              <p class="color-code">HEX #D9D9D9<br>RGB 217 217 217</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">타이포그래피</h2>
+
+        <div class="type-grid">
+          <article class="info-card">
+            <div class="type-sample brand">Seoul Auction</div>
+            <h3>Brand Serif</h3>
+            <p>
+              브랜드명 및 타이틀 영역에 사용되는 서체입니다.<br>
+              고전성과 권위를 담는 인상에 적합합니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="type-sample ui">Pretendard</div>
+            <h3>UI Sans</h3>
+            <p>
+              본문, 안내문, 디지털 환경 전반에 사용하는 기본 서체입니다.<br>
+              높은 가독성과 정돈된 인상을 제공합니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="type-sample ui" style="font-size:20px; line-height:1.7;">
+              Heading / Body / Caption
+            </div>
+            <h3>Hierarchy</h3>
+            <p>
+              제목, 본문, 캡션의 계층을 명확히 구분하여 정보 전달의 흐름을 유지합니다.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">사용 가이드</h2>
+
+        <div class="rule-grid">
+          <article class="info-card">
+            <h3>Clear Space</h3>
+            <p>
+              로고 주변에는 심볼 기준 최소 여백을 확보해야 하며,
+              다른 그래픽 요소나 텍스트가 침범하지 않도록 유지합니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <h3>Minimum Size</h3>
+            <p>
+              디지털 환경에서는 작은 크기에서도 식별 가능하도록
+              최소 사용 크기 이하로 축소하지 않습니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <h3>Background Rule</h3>
+            <p>
+              배경 명도에 따라 밝은 로고와 어두운 로고를 구분해 사용하며,
+              대비가 낮은 배경 위 사용은 지양합니다.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">사용 금지 규정</h2>
+
+        <div class="rule-grid">
+          <article class="info-card">
+            <div class="rule-bad">×</div>
+            <h3>왜곡 금지</h3>
+            <p>
+              로고의 비율을 임의로 늘리거나 줄여 형태를 변형해서는 안 됩니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="rule-bad">×</div>
+            <h3>색상 변경 금지</h3>
+            <p>
+              지정된 컬러 시스템 외의 임의 색상 적용은 브랜드 일관성을 해칩니다.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <div class="rule-bad">×</div>
+            <h3>효과 사용 금지</h3>
+            <p>
+              그림자, 외곽선, 입체 효과 등 추가 장식은 로고 본래의 인상을 훼손합니다.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ci-section">
+      <div class="wrap">
+        <h2 class="section-title">다운로드 센터</h2>
+
+        <div class="download-grid">
+          <article class="info-card download-box">
+            <div>
+              <h3>Logo Pack</h3>
+              <p>시그니처 로고 및 배경별 로고 파일 묶음</p>
+              <p class="meta">SVG / PNG / PDF</p>
+            </div>
+
+            <a href="#" class="download-link" style="position:static; margin-top:18px;">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+
+          <article class="info-card download-box">
+            <div>
+              <h3>Symbol Pack</h3>
+              <p>심볼 단독 로고 및 앱 아이콘용 자산 묶음</p>
+              <p class="meta">SVG / PNG</p>
+            </div>
+
+            <a href="#" class="download-link" style="position:static; margin-top:18px;">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+
+          <article class="info-card download-box">
+            <div>
+              <h3>Brand Guide</h3>
+              <p>컬러, 타이포, 사용 규정이 포함된 브랜드 가이드 문서</p>
+              <p class="meta">PDF Guide</p>
+            </div>
+
+            <a href="#" class="download-link" style="position:static; margin-top:18px;">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              다운로드
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-space"></div>
+  </main>
+
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-dim" id="menuDim"></div>
+
+    <div class="mobile-menu-panel">
+      <div class="mobile-menu-top">
+        <button class="mobile-close" id="closeMenu" aria-label="메뉴 닫기">×</button>
+      </div>
+
+      <nav class="mobile-nav-main" aria-label="모바일 주 메뉴">
+        <a href="sa-about.html">ABOUT</a>
+        <a href="sa-work.html">WORK</a>
+        <a href="sa-archive.html">ARCHIVE</a>
+        <a href="sa-download.html">DOWNLOAD</a>
+        <a href="sa-ci.html" class="current">CI</a>
+        <a href="sa-contact.html">CONTACT</a>
+      </nav>
+    </div>
+  </aside>
+
+  <script>
+    const body = document.body;
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenu = document.getElementById('closeMenu');
+    const menuDim = document.getElementById('menuDim');
+
+    function openMenu(){
+      mobileMenu.classList.add('active');
+      body.style.overflow = 'hidden';
+    }
+
+    function closeMenuFn(){
+      mobileMenu.classList.remove('active');
+      body.style.overflow = '';
+    }
+
+    if(menuBtn){
+      menuBtn.addEventListener('click', openMenu);
+    }
+
+    if(closeMenu){
+      closeMenu.addEventListener('click', closeMenuFn);
+    }
+
+    if(menuDim){
+      menuDim.addEventListener('click', closeMenuFn);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        closeMenuFn();
+      }
+    });
+  </script>
+</body>
+</html>
