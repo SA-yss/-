@@ -71,7 +71,6 @@
       margin:0 auto;
     }
 
-    /* about 페이지와 동일한 메뉴 헤더/로고 정렬 기준 */
     .site-header{
       position:sticky;
       top:0;
@@ -173,10 +172,10 @@
       line-height:1.1;
       font-weight:600;
       letter-spacing:-0.04em;
-      margin-bottom:46px;
+      margin-bottom:60px;
     }
 
-    .intro-block h2{  /* 시그니처 로고 */
+    .intro-block h2{
       font-size:22px;
       font-weight:600;
       letter-spacing:-0.03em;
@@ -191,10 +190,10 @@
     }
 
     .ci-section{
-      padding:0 0 64px;
+      padding:0 0 100px;
     }
 
-    .section-title{   /* 컬러 시스템 */
+    .section-title{
       font-size:22px;
       line-height:1.2;
       font-weight:600;
@@ -235,7 +234,7 @@
     }
 
     .asset-card.dark{
-      background:var(--panel-dark);
+      background:#303030;;
       color:#ffffff;
       border-color:#232838;
     }
@@ -255,7 +254,7 @@
       color:rgba(255,255,255,0.72);
     }
 
-    .card-visual{  /* 시그니처 로고 아래 카드 */
+    .card-visual{
       width:100%;
       min-height:100px;
       display:flex;
@@ -281,7 +280,7 @@
     }
 
     .color-chip{
-      aspect-ratio:1.25 / 1;
+      aspect-ratio:1.6 / 1;
     }
 
     .color-info{
@@ -289,7 +288,7 @@
       border-top:1px solid var(--line);
     }
 
-    .color-name{ 
+    .color-name{
       font-size:14px;
       font-weight:500;
       margin-bottom:6px;
@@ -524,7 +523,7 @@
       }
 
       .color-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
   </style>
@@ -572,8 +571,6 @@
       </div>
     </section>
 
-    
-
     <section class="ci-section">
       <div class="wrap">
         <div class="asset-grid">
@@ -611,7 +608,7 @@
 
         <div class="color-grid">
           <article class="color-card">
-            <div class="color-chip" style="background:#000000;"></div>
+            <div class="color-chip" style="background:#39c3bc;"></div>
             <div class="color-info">
               <p class="color-name">Primary Black</p>
               <p class="color-code">HEX #000000<br>RGB 0 0 0</p>
@@ -627,7 +624,7 @@
           </article>
 
           <article class="color-card">
-            <div class="color-chip" style="background:#232838;"></div>
+            <div class="color-chip" style="background:#292929;"></div>
             <div class="color-info">
               <p class="color-name">Deep Navy</p>
               <p class="color-code">HEX #232838<br>RGB 35 40 56</p>
@@ -635,7 +632,7 @@
           </article>
 
           <article class="color-card">
-            <div class="color-chip" style="background:#D9D9D9;"></div>
+            <div class="color-chip" style="background:#f4f4f4;"></div>
             <div class="color-info">
               <p class="color-name">Soft Gray</p>
               <p class="color-code">HEX #D9D9D9<br>RGB 217 217 217</p>
