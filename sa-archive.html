@@ -67,7 +67,7 @@
       margin:0 auto;
     }
 
-    /* ABOUT 페이지와 동일 톤의 상단 헤더 */
+    /* ABOUT 페이지 기준으로 동일하게 수정 */
     .site-header{
       position:sticky;
       top:0;
@@ -79,25 +79,28 @@
     }
 
     .site-header .inner{
-      width:min(calc(100% - 56px), var(--max));
+      width:min(calc(100% - 24px), var(--max));
       height:100%;
       margin:0 auto;
       display:flex;
       align-items:center;
-      gap:24px;
+      gap:20px;
     }
 
-    /* ABOUT 페이지와 동일한 왼쪽 로고 위치 */
     .brand{
-      flex:1 1 auto;
+      flex:0 0 auto;
       min-width:0;
-      font-size:18px;
+      margin-left:20px;
+      margin-right:auto;
+      font-size:22px;
       font-weight:400 !important;
       letter-spacing:0 !important;
       white-space:nowrap;
       font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      position:relative;
+      z-index:6;
     }
 
     .desktop-nav{
@@ -137,7 +140,9 @@
       align-items:center;
       gap:10px;
       flex:0 0 auto;
-      margin-left:auto;
+      margin-left:0;
+      position:relative;
+      z-index:8;
     }
 
     .icon-btn{
@@ -433,6 +438,7 @@
       }
 
       .brand{
+        margin-left:0;
         font-size:16px;
         max-width:70vw;
         overflow:hidden;
