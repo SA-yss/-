@@ -2,742 +2,3112 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Seoul Auction Creatives</title>
-  <meta name="description" content="Seoul Auction Creatives Portfolio" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>창고수량재고</title>
   <style>
     :root{
       --bg:#ffffff;
-      --text:#111111;
-      --muted:#6f6f6f;
-      --line:#e9e9e9;
-      --soft:#f7f7f7;
-      --card:#f3f3f3;
-      --black:#111111;
-      --max:1920px;
-      --header-h:72px;
-      --radius:0px;
+      --text:#252525;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --card:#ffffff;
+      --chip:#f3f4f6;
+
+      --stockbg:#f3f6fa;
+      --out:#db1b1b;
+      --in:#007aff;
+
+      --radius:8px;
+      --log-cols: 70px 60px 95px 110px 90px;
+
+      --blue:#2563eb;
+      --bluebg:#eef4ff;
+      --blueLine:#dbeafe;
+
+      --danger:#c63e3e;
+      --dangerBg:#fff5f5;
+      --dangerLine:#ffefef;
+
+      --saMint:#84cdc9;
+
+      --page-accent: #39c3bc;
+      --page-accent-soft: #eef8f7;
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
+    *{box-sizing:border-box}
 
     body{
-      font-family:
-        "Pretendard",
-        "Apple SD Gothic Neo",
-        "Noto Sans KR",
-        "Malgun Gothic",
-        sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.45;
-      word-break:keep-all;
+      margin:0;
+      font-family:'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background:#ffffff;
+      color:#2f2f2f;
     }
 
-    a{
-      color:inherit;
-      text-decoration:none;
+    body.mode-request{
+      --page-accent: #39c3bc;
+      --page-accent-soft: #eef8f7;
     }
 
-    button{
-      font:inherit;
-      background:none;
-      border:0;
-      cursor:pointer;
-      color:inherit;
+    body.mode-list{
+      --page-accent: #39c3bc;
+      --page-accent-soft: #eef8f7;
     }
 
-    img, video{
-      display:block;
-      width:100%;
-      height:100%;
-      object-fit:cover;
+    body.mode-admin{
+      --page-accent: #5b57d9;
+      --page-accent-soft: #f1efff;
     }
 
     .wrap{
-      width:min(calc(100% - 50px), var(--max));
-      margin:0 auto;
+      max-width: 600px;
+      margin: 25px auto 70px;
+      padding: 0 17px;
     }
 
-    /* header */
-    .site-header{
-      position:sticky;
-      top:0;
-      z-index:100;
-      height:var(--header-h);
-      background:rgba(255,255,255,0.92);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(0,0,0,0.06);
-    }
-
-    .site-header .inner{
-      width:min(calc(100% - 24px), var(--max));
-      height:100%;
-      margin:0 auto;
+    .topbar{
       display:flex;
       align-items:center;
-      gap:20px;
+      justify-content:space-between;
+      gap:50px;
+      padding-bottom: 13px;
+      border-bottom:1px solid var(--line);
+      margin-bottom: 23px;
+      padding-left: 15px;
     }
 
     .brand{
-      flex:1 1 auto;
+      color:inherit;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       min-width:0;
-      margin-left:20px;
-      font-size:22px;
-      font-weight:400 !important;
-      font-style:normal !important;
-      letter-spacing:0 !important;
-      font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      font-family: "Didot Regular", "Didot", serif;
     }
 
-    .desktop-nav{
+    h1{
+      font-size:20px;
+      font-weight:900;
+      margin:0;
+      letter-spacing:-0.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .search{
+      flex:1;
       display:flex;
+      gap:8px;
       align-items:center;
-      gap:28px;
-      margin-left:auto;
       justify-content:flex-end;
-      flex:0 0 auto;
     }
 
-    .desktop-nav a{
-      position:relative;
-      font-size:13px;
-      font-weight:400;
-      letter-spacing:0.04em;
+    .search input{
+      width:min(120px, 100%);
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      outline:none;
+      font-size:12px;
     }
 
-    .desktop-nav a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-6px;
-      width:0;
-      height:1px;
-      background:#111;
-      transition:width .25s ease;
+    .pill{
+      padding:7px 12px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:var(--chip);
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      font-weight:700;
     }
 
-    .desktop-nav a:hover::after{
-      width:100%;
-    }
+    .section{ margin-top:25px; }
 
-    .header-tools{
+    .secHead{
       display:flex;
       align-items:center;
-      gap:10px;
-      flex:0 0 auto;
-      margin-left:auto;
+      justify-content:flex-start;
+      gap:7px;
+      margin:20px 0 10px;
+      padding-left:4px;
     }
 
-    .icon-btn{
-      width:40px;
-      height:40px;
-      border-radius:999px;
-      border:1px solid transparent;
-      display:grid;
-      place-items:center;
-      transition:.2s ease;
+    .secHead h2{
+      margin:0;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:0;
     }
 
-    .icon-btn:hover{
-      background:var(--soft);
-      border-color:var(--line);
-    }
-
-    .menu-btn{
-      display:none;
-    }
-
-    /* mobile panel */
-    .mobile-panel{
-      position:fixed;
-      inset:0;
-      background:rgba(255,255,255,0.98);
-      z-index:200;
-      display:none;
-      padding:24px 20px 32px;
-    }
-
-    .mobile-panel.active{
-      display:block;
-    }
-
-    .mobile-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:36px;
-    }
-
-    .mobile-nav{
+    .list{
       display:flex;
       flex-direction:column;
-      gap:18px;
+      gap:10px;
     }
 
-    .mobile-nav a{
-      font-size:28px;
-      font-weight:700;
-      letter-spacing:-0.03em;
-    }
-
-    /* hero */
-    .hero{
-      padding:64px 0 34px;
-    }
-
-    .hero-grid{
+    .row{
       display:grid;
-      grid-template-columns: 1.4fr .9fr;
-      gap:32px;
-      align-items:end;
-    }
-
-    .hero-title{
-      font-size:clamp(36px, 7vw, 88px);
-      line-height:0.95;
-      font-weight:800;
-      letter-spacing:-0.05em;
-    }
-
-    .hero-copy{
-      max-width:420px;
-      margin-left:auto;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.7;
-    }
-
-    /* section head */
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:20px;
-      padding:18px 0 16px;
-      border-top:1px solid var(--line);
-      margin-top:16px;
-    }
-
-    .section-head h2{
-      font-size:13px;
-      letter-spacing:0.08em;
-      font-weight:700;
-    }
-
-    .section-head p{
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    /* grid */
-    .grid-section{
-      padding-bottom:44px;
-    }
-
-    .portfolio-grid{
-      display:grid;
-      grid-template-columns:repeat(12, 1fr);
-      gap:14px;
+      grid-template-columns:1fr 110px;
+      gap:11px;
+      align-items:stretch;
     }
 
     .card{
-      position:relative;
-      overflow:hidden;
+      border:1px solid var(--line);
       border-radius:var(--radius);
       background:var(--card);
-      min-height:240px;
-      transition:transform .28s ease, box-shadow .28s ease;
+      padding:9px;
+      display:flex;
+      gap:14px;
+      align-items:center;
+      min-height:84px;
+      cursor:pointer;
+      transition:transform .06s ease;
     }
 
-    .card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    .card:active{ transform:scale(0.997); }
+
+    .thumb{
+      width:74px;
+      height:74px;
+      border-radius:8px;
+      background:#f8fafc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      overflow:hidden;
+      border:1px solid #ffffff;
     }
 
-    .card::before{
-      display:none;
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(0.95);
     }
 
-    .card-media{
-      position:absolute;
-      inset:0;
-      background:none;
+    .meta{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:8px;
+      text-align:left;
+      min-width:0;
     }
 
-    .card-body{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:2;
-      color:#fff;
-      padding:18px 18px 17px;
-    }
-
-    .card-kicker{
+    .meta-bot{
+      display:flex;
+      align-items:center;
+      gap:12px;
       font-size:11px;
-      letter-spacing:0.08em;
-      opacity:.86;
-      margin-bottom:8px;
-    }
-
-    .card-title{
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:-0.03em;
-      margin-bottom:6px;
-    }
-
-    .card-desc{
-      font-size:13px;
-      opacity:.92;
-      max-width:90%;
-    }
-
-    .span-4{ grid-column:span 4; }
-    .span-5{ grid-column:span 5; }
-    .span-6{ grid-column:span 6; }
-    .span-7{ grid-column:span 7; }
-    .span-8{ grid-column:span 8; }
-
-    .h-sm{ min-height:300px; }
-    .h-md{ min-height:420px; }
-    .h-lg{ min-height:560px; }
-
-    /* about strip */
-    .about-strip{
-      padding:10px 0 60px;
-    }
-
-    .about-box{
-      border-top:1px solid var(--line);
-      padding-top:22px;
-      display:grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap:30px;
-    }
-
-    .about-box .label{
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:0.08em;
-    }
-
-    .about-box .text{
-      font-size:24px;
-      line-height:1.5;
-      letter-spacing:-0.03em;
-    }
-
-    .about-box .text span{
       color:var(--muted);
+      margin-top:7px;
+      min-width:0;
     }
 
-    /* footer */
-    .site-footer{
-      border-top:1px solid var(--line);
-      padding:26px 0 34px;
-      margin-top:12px;
+    .meta-bot span{ white-space:nowrap; }
+
+    .title{
+      font-weight:700;
+      font-size:16px;
+      line-height:1.8;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      letter-spacing:-0.1px;
     }
 
-    .footer-row{
+    .size{
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      font-weight:600;
+    }
+
+    .status{ font-weight:600; }
+    .status.out{ color:var(--out); }
+    .status.in{ color:var(--in); }
+
+    .delta{ white-space:nowrap; font-weight:600; }
+    .delta .qty{ font-weight:600; margin-left:6px; }
+    .delta .qty.out{ color:var(--out); }
+    .delta .qty.in{ color:var(--in); }
+
+    .stock{
+      border:1px solid rgba(57, 195, 188, 0.1);
+      border-radius:var(--radius);
+      background:rgba(57, 195, 188, 0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:-0.2px;
+    }
+
+    .stock small{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+      position:relative;
+      top:1px;
+      margin-left:2px;
+    }
+
+    .paper{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+    }
+
+    .paper-head{
+      padding:14px 18px;
+      border-bottom:1px solid var(--line);
+      font-weight:700;
+      letter-spacing:-0.2px;
+    }
+
+    .paper-body{ padding:16px; }
+
+    .imgRow{
+      display:flex;
+      justify-content:center;
+      gap:25px;
+      padding:10px 0 16px;
+      margin:0 8px;
+    }
+
+    .imgBox{
+      width:120px;
+      height:120px;
+      border-radius:7px;
+      background:#f8fafc;
+      border:1px solid #ffffff;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .imgBox img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .imgPh{ width:36px; height:36px; opacity:.6; }
+
+    .itemHeader{
+      padding:12px 6px 4px;
+    }
+
+    .itemTop{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:20px;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .itemName{
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:-0.6px;
+      line-height:1.05;
+      margin:0;
+      min-width:0;
+      padding-left:8px;
+      word-break:keep-all;
+    }
+
+    .sizePill{
+      flex:0 0 auto;
+      padding:7px 14px;
+      border-radius:7px;
+      background:#f7f8fa;
+      border:1px solid #f2f4f7;
+      color:#111827;
+      font-weight:700;
       font-size:13px;
+      white-space:nowrap;
+      margin-top:1px;
+    }
+
+    .statsGrid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:3px;
+    }
+
+    .statCard{
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:0;
+      min-height:50px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    .statCard.current{
+      background:rgba(57, 195, 188, 0.07);
+      border-color:rgba(57, 195, 188, 0.07);
+    }
+
+    .statRow{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center;
+      min-height:50px;
+    }
+
+    .statLabel{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      font-size:16px;
+      font-weight:600;
+      color:#3b3b3b;
+      letter-spacing:-0.3px;
+      white-space:nowrap;
+    }
+
+    .statLabel .txt{
+      font-size:16px;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    .statValue{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      font-size:17px;
+      font-weight:600;
+      color:#2f2f2f;
+      letter-spacing:-0.3px;
+      white-space:nowrap;
+      word-break:keep-all;
+      position:relative;
+    }
+
+    .statValue::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:50%;
+      transform:translateY(-50%);
+      width:1px;
+      height:34px;
+      background:#c9d3d1;
+    }
+
+    .statValue .unit{
+      font-size:17px;
+      font-weight:800;
+      color:#2f2f2f;
+      letter-spacing:-0.3px;
+      position:static;
+      margin-left:0;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:14px 0 18px;
+    }
+
+    .boxTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      padding:0 5px 5px;
+    }
+
+    .boxTitle{
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:-0.2px;
+      margin-bottom:5px;
+      padding:4px 10px;
+    }
+
+    .selDelBtn{     /* 선택삭제 버튼 수정 */
+      padding:7px 14px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      background:#fff;
+      font-weight:500;
+      cursor:pointer;
+      white-space:nowrap;
+      min-width:86px;
+      height:36px;
+      font-size:12px;
+    }
+
+    .logBox{
+      margin:0 3px 10px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .logMinWidth{ min-width:400px; }
+
+    .logHead,
+    .logRow{
+      display:grid;
+      grid-template-columns:var(--log-cols);
+      align-items:center;
+      width:100%;
+      column-gap:0;
+    }
+
+    .logHead > div,
+    .logRow > div{
+      min-width:0;
+      padding:0 15px;
+    }
+
+    .logHead{
+      padding:0;
+      min-height:40px;
+      background:#f8fafc;
+      border-bottom:1px solid var(--line);
+      font-weight:600;
+      font-size:12px;
+    }
+
+    .logRow{
+      padding:0;
+      min-height:45px;
+      border-top:1px solid var(--line);
+      font-size:13px;
+      background:#fff;
+    }
+
+    .logHeadCell{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      min-height:40px;
+    }
+
+    .logHeadCell.center{ justify-content:flex-start; }
+    .logHeadCell.right{ justify-content:flex-start; }
+
+    .logHeadLabel{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .logHead .hselect{
+      width:100%;
+      min-width:0;
+      margin:0;
+      padding:4px 8px;
+      text-align:left;
+    }
+
+    .logHead .hdateWrap{ width:100%; }
+    .logHead .hbtn{ width:100%; }
+
+    .logHead .qtySortBtn{
+      width:100%;
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+    }
+
+    .logRow:first-child{ border-top:none; }
+    .logRow.clickable{ cursor:pointer; }
+
+    .logRow.selected{
+      outline:0.7px solid #c4c7d1;
+      outline-offset:-2px;
+      background:#fbfbfb;
+    }
+
+    .hbtn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      font-weight:800;
+    }
+
+    .arrow{
+      font-size:10px;
+      color:var(--muted);
+      transform:translateY(-0.5px);
+    }
+
+    .hselect{
+      width:100%;
+      margin-left:0;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:8px 14px;
+      background:#fff;
+      font-weight:600;
+      font-size:12px;
+      outline:none;
+      height:34px;
+    }
+
+    .hdateWrap{ position:relative; }
+
+    .hdate{
+      position:absolute;
+      left:5px;
+      top:44px;
+      width:min(92vw, 320px);
+      padding:5px 5px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fff;
+      display:none;
+      z-index:50;
+      box-shadow:0 1px 2px rgba(17,24,39,0.08);
+    }
+
+    .hdate input{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:5px 8px;
+      font-size:11px;
+      font-weight:600;
+      outline:none;
+      background:#fff;
+    }
+
+    .hdate .row2{
+      display:flex;
+      justify-content:flex-end;
+      gap:5px;
+      margin-top:5px;
+    }
+
+    .miniBtn{
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:3px 5px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:600;
+      font-size:11px;
+      white-space:nowrap;
+    }
+
+    .logDate,
+    .logType,
+    .logDept,
+    .logPerson,
+    .logQty{
+      display:flex;
+      align-items:center;
+      min-height:38px;
+      font-size:13px;
+    }
+
+    .logDate,
+    .logType,
+    .logDept,
+    .logPerson{
+      justify-content:flex-start;
+      text-align:left;
+      font-weight:400;
+    }
+
+    .logQty{
+      justify-content:flex-start;
+      text-align:left;
+      font-weight:400;
+    }
+
+    .requestActionWrap{
+      margin:10px 3px 0;
+    }
+
+    .requestSubmitBtn{
+      width:100%;
+      padding:12px 12px;
+      border:0;
+      border-radius:8px;
+      background:#2c2c2c;
+      color:#fff;
+      font-weight:600;
+      font-size:15px;
+      cursor:pointer;
+      margin-bottom:20px; 
+    }
+
+    .btn{
+      padding:7px 14px;
+      border:1px solid var(--line);
+      border-radius:7px;
+      background:#fff;
+      font-weight:500;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      font-size:12px;
+      min-width:86px;
+      height:36px;
+    }
+
+    .primary{
+      background:#2c2c2c;
+      color:#fff;
+      border-color:#111827;
+    }
+
+    .adminBottomRow,
+    .commonBottomRow{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .adminBottomLeft{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:600;
+      min-width:0;
+    }
+
+    .commonBottomLeft{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:600;
+      min-width:0;
+    }
+
+    .stockInline{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .stockInlineValue{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      color:#667085;
+      font-weight:700;
+      cursor:pointer;
+      border:none;
+      background:transparent;
+      padding:0;
+    }
+
+    .stockInlineValue b{
+      font-size:13px;
+      color:#667085;
+    }
+
+    .stockInlineEdit{
+      display:none;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .stockInlineEdit.show{
+      display:inline-flex;
+    }
+
+    .stockInlineInput{
+      width:88px;
+      height:32px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:0 10px;
+      font-size:12px;
+      font-weight:700;
+      outline:none;
+    }
+
+    .stockInlineMini{
+      height:32px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:0 10px;
+      background:#fff;
+      font-size:11px;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .adminBottomRight,
+    .commonBottomRight{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:auto;
+    }
+
+    .dangerBox{
+      margin-top:50px;
+      border:1px dashed #fdefef;
+      background:#fff9f9;
+      border-radius:8px;
+      padding:10px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .dangerText{
+      font-size:11px;
+      color:#313131;
+      font-weight:500;
+      line-height:1.8;
+    }
+
+    .dangerBtn{
+      padding:7px 14px;
+      border:1px solid #f0e0e0;
+      background:#fff;
+      border-radius:7px;
+      font-weight:600;
+      color:var(--danger);
+      cursor:pointer;
+      white-space:nowrap;
+      font-size:11px;
+      min-width:80px;
+    }
+
+    .dbStatusLine{
+      margin-top:18px;
+      font-size:11px;
       color:var(--muted);
     }
 
-    .footer-links{
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:9999;
+    }
+
+    .modal.show{ display:block; }
+
+    .modalOverlay{
+      position:absolute;
+      inset:0;
+      background:rgba(17,24,39,0.45);
+    }
+
+    .sheet{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      background:#fff;
+      border-top-left-radius:8px;
+      border-top-right-radius:8px;
+      box-shadow:0 -10px 30px rgba(0,0,0,0.12);
+      overflow:hidden;
+      max-height:86vh;
       display:flex;
-      flex-wrap:wrap;
-      gap:14px 18px;
+      flex-direction:column;
     }
 
-    .footer-links a:hover{
+    .sheetHead{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:600;
+    }
+
+    .sheetClose{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:8px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .sheetBody{
+      padding:14px 16px 6px;
+      overflow:auto;
+    }
+
+    .field{ margin-bottom:12px; }
+
+    .field label{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .field input, .field select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:12px 12px;
+      font-size:12px;
+      font-weight:700;
+      outline:none;
+      background:#fff;
+    }
+
+    .seg{ display:flex; gap:10px; }
+
+    .seg button{
+      flex:1;
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:10px 10px;
+      background:#fff;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12px;
+    }
+
+    .seg button.active.out{
+      border-color:var(--out);
+      color:var(--out);
+      background:#fff5f5;
+    }
+
+    .seg button.active.in{
+      border-color:var(--in);
+      color:var(--in);
+      background:#f1f5ff;
+    }
+
+    .sheetFoot{
+      padding:12px 16px 16px;
+      border-top:1px solid var(--line);
+      background:#fff;
+    }
+
+    .sheetFoot .primary{
+      width:100%;
+      padding:14px 14px;
+      border-radius:14px;
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .fab{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:9998;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#2c2c2c;
+      color:#fff;
+      font-weight:700;
+      font-size:12px;
+      cursor:pointer;
+      box-shadow:0 10px 24px rgba(0,0,0,0.14);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .fab:active{ transform:translateY(0.5px); }
+
+    .mainHome{
+      max-width:390px;
+      margin:0 auto;
+      padding:80px 40px 50px;
+      text-align:center;
+    }
+
+    .mainLogoArea{
+      width:100%;
+      min-height:110px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:52px;
+      cursor:pointer;
+    }
+
+    .mainLogoImg{
+      max-width:240px;
+      max-height:90px;
+      object-fit:contain;
+      display:block;
+    }
+
+    .mainLogoPlaceholder{
+      width:240px;
+      height:90px;
+      border:1px dashed #cfd8dc;
+      border-radius:7px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#d1d5da;
+      font-size:12px;
+      font-weight:600;
+      background:#fafafa;
+    }
+
+    .mainHomeLine{
+      width:85%;
+      height:1px;
+      background:#d9d9d9;
+      margin:0 auto 22px;
+    }
+
+    .mainHomeTitle{
+      font-size:12px;
+      font-weight:500;
+      color:#323232;
+      margin-bottom:65px;
+    }
+
+    .mainHomeBtns{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      margin-top:0;
+    }
+
+    .mainHomeBtn{
+      width:85%;
+      min-height:76px;
+      border:1px solid #d9d9d9;
+      border-radius:7px;
+      background:#fff;
+      color:#222;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      padding:20px 35px;
+      margin:0 auto;
+      display:block;
+    }
+
+    .mainHomeBtn.primaryHomeBtn{
+      background:#39C3BC;
+      border-color:#39C3BC;
+      color:#fff;
+    }
+
+    .listGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .stockCard{
+      border:1px solid #dcdcdc;
+      border-radius:7px;
+      background:#fff;
+      padding:14px 12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:66px;
+      cursor:default;
+    }
+
+    .stockThumb{
+      width:46px;
+      height:46px;
+      flex:0 0 46px;
+      border-radius:2px;
+      overflow:hidden;
+      background:#f6f7f8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .stockThumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .stockMeta{
+      min-width:0;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .stockName{
+      font-size:13px;
+      font-weight:700;
       color:#111;
+      line-height:1.2;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
-    /* responsive */
-    @media (max-width: 980px){
-      .desktop-nav{
-        display:none;
+    .stockQtyBar{
+      width:100%;
+      height:25px;
+      border-radius:3px;
+      background:rgba(57, 195, 188, 0.09);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      font-weight:600;
+      color:#3a3a3a;
+    }
+
+    .stockBtn{
+      background:#ffffff;
+      border-color:#c7c7c7;
+      color:#202020;
+    }
+
+    .adminBtn{
+      background:#424242;
+      border-color:#424242;
+      color:#ffffff;
+    }
+
+    .authModal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:10000;
+    }
+
+    .authModal.show{ display:block; }
+
+    .authOverlay{
+      position:absolute;
+      inset:0;
+      background:rgba(22, 22, 22, 0.1);
+    }
+
+    .authDialog{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%, -50%);
+      width:min(92vw, 440px);
+      background:#fff;
+      border-radius:12px;
+      padding:20px 20px 14px;
+      box-shadow:0 5px 5px rgba(45, 45, 45, 0.15);
+    }
+
+    .authTitle{
+      font-size:16px;
+      font-weight:700;
+      letter-spacing:-0.4px;
+      margin:0 0 7px;
+      color:#353535;
+    }
+
+    .authDesc{
+      font-size:14px;
+      color:#6d6d6d;
+      margin:0 0 12px;
+      line-height:1.5;
+    }
+
+    .authInput{
+      width:100%;
+      height:46px;
+      border:0.2px solid #bcbcbc;
+      border-radius:5px;
+      outline:none;
+      padding:0 14px;
+      font-size:14px;
+      font-weight:400;
+      color:#494949;
+      background:#fff;
+    }
+
+    .authInput:focus{
+      border-color:#b6b6b6;
+      box-shadow:0 0 0 1px rgba(158, 158, 158, 0.12);
+    }
+
+    .authError{
+      min-height:20px;
+      margin-top:10px;
+      font-size:12px;
+      color:#c63e3e;
+      font-weight:500;
+      visibility:hidden;
+    }
+
+    .authError.show{ visibility:visible; }
+
+    .authBtns{
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      margin-top:-18px;
+    }
+
+    .authBtn{
+      min-width:85px;
+      height:35px;
+      border:none;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:500;
+      cursor:pointer;
+    }
+
+    .authBtn.cancel{
+      background:#f3f3f3;
+      color:#424242;
+    }
+
+    .authBtn.confirm{
+      background:#424242;
+      color:#fff;
+    }
+
+    @media (min-width:391px){
+      .mainHomeBtns{
+        margin-top:22px;
+        gap:26px;
       }
 
-      .menu-btn{
-        display:grid;
+      .primaryHomeBtn{ margin-top:6px; }
+      .stockBtn{ margin-top:0; }
+      .adminBtn{ margin-top:6px; }
+    }
+
+    @media (max-width:390px){
+      .listGrid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
       }
 
-      .hero{
-        padding:48px 0 28px;
+      .stockCard{
+        padding:12px 10px;
+        min-height:64px;
+        gap:10px;
       }
 
-      .hero-grid{
-        grid-template-columns:1fr;
-        gap:18px;
+      .stockThumb{
+        width:42px;
+        height:42px;
+        flex-basis:42px;
       }
 
-      .hero-copy{
-        margin-left:0;
+      .stockName{ font-size:12px; }
+
+      .stockQtyBar{
+        font-size:12px;
+        height:23px;
+      }
+    }
+
+    @media (max-width:390px){
+      .row{ grid-template-columns:1fr 82px; gap:10px; }
+      .stock{ font-size:11px; }
+      .thumb{ width:68px; height:68px; }
+      .search{ justify-content:flex-start; width:100%; }
+
+      .statValue{ font-size:16px; }
+      .statLabel .txt{ font-size:15px; }
+
+      .itemName{ font-size:23px; }
+      .sizePill{ font-size:12px; }
+
+      .adminBottomRow,
+      .commonBottomRow{
+        align-items:flex-start;
       }
 
-      .portfolio-grid{
-        grid-template-columns:repeat(2, 1fr);
+      .adminBottomRight,
+      .commonBottomRight{
+        width:100%;
+        justify-content:flex-end;
       }
 
-      .span-4,
-      .span-5,
-      .span-6,
-      .span-7,
-      .span-8{
-        grid-column:span 1;
-      }
-
-      .h-sm,
-      .h-md,
-      .h-lg{
-        min-height:260px;
-      }
-
-      .about-box{
-        grid-template-columns:1fr;
-      }
-
-      .about-box .text{
-        font-size:20px;
-      }
-
-      .footer-row{
+      .dangerBox{
         flex-direction:column;
-      }
-    }
-
-    @media (max-width: 640px){
-      :root{
-        --header-h:64px;
+        align-items:flex-start;
       }
 
-      .site-header .inner,
-      .wrap{
-        width:min(calc(100% - 28px), var(--max));
+      .dangerBtn{
+        align-self:stretch;
+        text-align:center;
       }
 
-      .brand{
-        font-size:16px;
-        margin-left:0;
+      .mainHome{
+        padding-top:100px;
       }
 
-      .hero-title{
-        font-size:42px;
+      .mainLogoArea{
+        min-height:96px;
+        margin-bottom:50px;
       }
 
-      .hero-copy{
-        font-size:14px;
+      .mainLogoImg{
+        max-width:220px;
+        max-height:82px;
       }
 
-      .portfolio-grid{
-        grid-template-columns:1fr;
-        gap:12px;
+      .mainLogoPlaceholder{
+        width:220px;
+        height:82px;
+        font-size:13px;
       }
 
-      .card{
-        border-radius:0px;
+      .mainHomeTitle{
+        font-size:12px;
+        margin-bottom:70px;
       }
 
-      .card-title{
-        font-size:20px;
+      .primaryHomeBtn{
+        min-height:60px;
+        padding:22px 35px;
+        margin-bottom:-1px;
       }
 
-      .about-box .text{
-        font-size:18px;
+      .stockBtn{
+        min-height:60px;
+        padding:18px 35px;
+        margin-bottom:52px;
       }
 
-      .mobile-nav a{
-        font-size:24px;
+      .adminBtn{
+        min-height:32px;
+        padding:10px 35px;
+      }
+
+      .authDialog{
+        width:min(92vw, 360px);
+        padding:22px 18px 18px;
+      }
+
+      .authTitle{ font-size:20px; }
+
+      .authBtn{
+        min-width:100px;
+        height:50px;
+        font-size:15px;
       }
     }
   </style>
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="inner">
-      <a href="index.html" class="brand">Seoul Auction Creatives</a>
+  <div class="wrap">
+    <div class="topbar" id="topbar">
+      <div class="brand">
+        <a href="#/" id="homeLink"><h1 id="topTitle">창고수량재고</h1></a>
+      </div>
 
-      <nav class="desktop-nav" aria-label="주 메뉴">
-        <a href="sa-about.html">ABOUT</a>
-        <a href="sa-work.html">WORK</a>
-        <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-ci.html">CI</a>
-        <a href="sa-contact.html">CONTACT</a>
-      </nav>
-
-      <div class="header-tools">
-        <button class="icon-btn" aria-label="검색">
-          <svg width="18" height="18" viewBox="0 0 17 17" fill="none">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
-            <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
-          </svg>
-        </button>
-
-        <button class="icon-btn menu-btn" id="menuBtn" aria-label="메뉴 열기">
-          <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
-            <path d="M0 1H18M0 9H18" stroke="#111" stroke-width="2"/>
-          </svg>
-        </button>
+      <div class="search" id="searchBox">
+        <input id="q" placeholder="품목 검색" />
+        <div class="pill" id="doSearch">검색</div>
       </div>
     </div>
-  </header>
 
-  <aside class="mobile-panel" id="mobilePanel">
-    <div class="mobile-top">
-      <strong>Menu</strong>
-      <button class="icon-btn" id="closeMenu" aria-label="메뉴 닫기">✕</button>
-    </div>
+    <div id="app"></div>
+  </div>
 
-    <nav class="mobile-nav" aria-label="모바일 메뉴">
-      <a href="sa-about.html">ABOUT</a>
-      <a href="sa-work.html">WORK</a>
-      <a href="sa-archive.html">ARCHIVE</a>
+  <button class="fab" id="fabAddItem" type="button">품목 추가</button>
 
-      <a href="sa-ci.html">CI</a>
-      <a href="sa-contact.html">CONTACT</a>
-    </nav>
-  </aside>
-
-  <main>
-    <section class="hero wrap">
-      <div class="hero-grid">
-        <h1 class="hero-title">
-          Creative Archive<br />
-          for Visual Culture
-        </h1>
-        <p class="hero-copy">
-          서울옥션 크리에이티브는 전시와 경매, 그리고 예술 콘텐츠를 통해 만들어진 다양한 시각적 결과물과 디자인 작업들을 창작자의 관점에서 재해석하고 기록하는 디지털 아카이브입니다.
-        </p>
-      </div>
-    </section>
-
-    <section class="grid-section wrap" id="work">
-      <div class="section-head">
-        <h2>WORK</h2>
-        <p>Selected projects, exhibition graphics, campaign assets</p>
+  <div class="modal" id="itemModal" aria-hidden="true">
+    <div class="modalOverlay" id="itemOverlay"></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="품목 추가">
+      <div class="sheetHead">
+        <div>품목 추가</div>
+        <button class="sheetClose" id="itemClose">닫기</button>
       </div>
 
-      <div class="portfolio-grid">
-        <a class="card span-8 h-lg" href="#">
-          <div class="card-media">
-            <img src="images/sa-1.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">WORK / EXHIBITION</p>
-            <h3 class="card-title">Auction Exhibition Identity</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
+      <div class="sheetBody">
+        <div class="field">
+          <label for="nCategory">카테고리</label>
+          <input id="nCategory" placeholder="예) 쇼핑백" />
+        </div>
 
-        <a class="card span-4 h-lg" href="#">
-          <div class="card-media">
-            <img src="images/sa-11.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">WORK / DIGITAL</p>
-            <h3 class="card-title">Online Promotion</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
+        <div class="field">
+          <label for="nName">품목명</label>
+          <input id="nName" placeholder="예) 신규 쇼핑백" />
+        </div>
 
-        <a class="card span-4 h-md" href="sa-archive.html">
-          <div class="card-media">
-            <img src="images/sa-9.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE</p>
-            <h3 class="card-title">Past Projects</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
+        <div class="field">
+          <label for="nSize">사이즈</label>
+          <input id="nSize" placeholder="예) 480*180*380mm" />
+        </div>
 
-      
+        <div class="field">
+          <label for="nBase">기준재고</label>
+          <input id="nBase" inputmode="numeric" placeholder="예) 1000" />
+        </div>
 
-        <a class="card span-4 h-md" href="sa-download.html">
-          <div class="card-media">
-            <img src="images/sa-9.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">CI</p>
-            <h3 class="card-title">Brand Assets</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="grid-section wrap" id="archive">
-      <div class="section-head">
-        <h2>ARCHIVE</h2>
-        <p>Documented process, records, references</p>
+        <div class="field">
+          <label for="nImg">이미지 경로</label>
+          <input id="nImg" placeholder="예) large-paper-bag-front.jpg 또는 images/large-paper-bag-front.jpg" />
+        </div>
       </div>
 
-      <div class="portfolio-grid">
-        <a class="card span-5 h-md" href="#">
-          <div class="card-media">
-            <img src="images/sa-10.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE / RECORD</p>
-            <h3 class="card-title">Exhibition Records</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-
-        <a class="card span-7 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE / RESEARCH</p>
-            <h3 class="card-title">Research & Reference</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-   
-  
-        <a class="card span-4 h-sm" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">DOWNLOAD</p>
-            <h3 class="card-title">Templates</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-
-        <a class="card span-4 h-sm" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">DOWNLOAD</p>
-            <h3 class="card-title">Press Kit</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="grid-section wrap" id="ci">
-      <div class="section-head">
-        <h2>CI</h2>
-        <p>Corporate identity and visual rules</p>
-      </div>
-
-      <div class="portfolio-grid">
-        <a class="card span-6 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">CI / LOGO</p>
-            <h3 class="card-title">Logo System</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-
-        <a class="card span-6 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">CI / GUIDELINE</p>
-            <h3 class="card-title">Typography & Color</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="about-strip wrap" id="about">
-      <div class="about-box">
-        <p class="label">ABOUT</p>
-        <p class="text">
-          서울옥션의 전시, 디자인, 브랜드 자료를 한눈에 보여주는 포트폴리오
-          <span> </span>
-        </p>
-      </div>
-    </section>
-
-    <section class="about-strip wrap" id="contact">
-      <div class="about-box">
-        <p class="label">CONTACT</p>
-        <p class="text">
-          seoulauction.com/<br />
-          서울옥션 · Design Team
-          <span><br />문의: @seoulauction.com.</span>
-        </p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-row">
-      <p>© Seoul Auction Creatives</p>
-      <div class="footer-links">
-        <a href="sa-about.html">ABOUT</a>
-        <a href="sa-work.html">WORK</a>
-        <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-download.html">DOWNLOAD</a>
-        <a href="sa-ci.html">CI</a>
-        <a href="sa-contact.html">CONTACT</a>
+      <div class="sheetFoot">
+        <button class="btn primary" id="createItemBtn">추가</button>
       </div>
     </div>
-  </footer>
+  </div>
 
+  <div class="authModal" id="adminAuthModal" aria-hidden="true">
+    <div class="authOverlay" id="adminAuthOverlay"></div>
+    <div class="authDialog" role="dialog" aria-modal="true" aria-label="관리자 비밀번호 입력">
+      <h3 class="authTitle">관리자 모드</h3>
+      <p class="authDesc">관리자 비밀번호를 입력해주세요.</p>
+      <input type="password" id="adminPasswordInput" class="authInput" placeholder="비밀번호 입력" />
+      <div class="authError" id="adminAuthError">비밀번호가 올바르지 않습니다.</div>
+      <div class="authBtns">
+        <button class="authBtn cancel" id="adminAuthCancel" type="button">취소</button>
+        <button class="authBtn confirm" id="adminAuthConfirm" type="button">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
+    const SUPABASE_URL = "https://iznnctfnmeiqdjljounq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_9p50RVtpPdmZOG2emGTDVg_NQ3bp8U8";
+
+    let supabaseClient = null;
+
+    const DB = {
+      mode: "local",
+      lastError: ""
+    };
+
+    const ADMIN_PASSWORD = "1234";
+    const ADMIN_SESSION_KEY = "warehouse_admin_ok";
+    let pendingAdminTarget = "#/admin";
+
+    function isAdminAuthorized(){
+      return sessionStorage.getItem(ADMIN_SESSION_KEY) === "yes";
     }
 
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 0);
-    });
+    function openAdminAuthModal(targetHash = "#/admin"){
+      pendingAdminTarget = targetHash || "#/admin";
+      adminAuthError.classList.remove("show");
+      adminPasswordInput.value = "";
+      adminAuthModal.classList.add("show");
+      adminAuthModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => adminPasswordInput.focus(), 20);
+    }
 
-    window.addEventListener('beforeunload', () => {
-      window.scrollTo(0, 0);
-    });
+    function closeAdminAuthModal(){
+      adminAuthModal.classList.remove("show");
+      adminAuthModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      adminAuthError.classList.remove("show");
+      adminPasswordInput.value = "";
+    }
 
-    const menuBtn = document.getElementById('menuBtn');
-    const mobilePanel = document.getElementById('mobilePanel');
-    const closeMenu = document.getElementById('closeMenu');
-    const mobileLinks = mobilePanel.querySelectorAll('a');
+    function confirmAdminAuth(){
+      const input = (adminPasswordInput.value || "").trim();
 
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => {
-        mobilePanel.classList.add('active');
-        document.body.style.overflow = 'hidden';
+      if(input === ADMIN_PASSWORD){
+        sessionStorage.setItem(ADMIN_SESSION_KEY, "yes");
+        closeAdminAuthModal();
+
+        const target = pendingAdminTarget || "#/admin";
+
+        if(location.hash === target){
+          router();
+        }else{
+          location.hash = target;
+        }
+        return;
+      }
+
+      adminAuthError.classList.add("show");
+      adminPasswordInput.focus();
+      adminPasswordInput.select();
+    }
+
+    function checkAdminAccess(targetHash = "#/admin"){
+      if(isAdminAuthorized()) return true;
+      openAdminAuthModal(targetHash);
+      return false;
+    }
+
+    function clearAdminAccess(){
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    }
+
+    function initSupabase(){
+      try{
+        if(window.supabase && typeof window.supabase.createClient === "function"){
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          DB.mode = "connected";
+          DB.lastError = "";
+          return true;
+        }
+      }catch(e){
+        console.error("Supabase init 실패:", e);
+        DB.mode = "error";
+        DB.lastError = String(e?.message || e);
+      }
+      supabaseClient = null;
+      DB.mode = "local";
+      return false;
+    }
+
+    function dbReady(){ return !!supabaseClient; }
+
+    function dbStatusText(){
+      if(DB.mode === "synced") return "연동됨(동기화됨)";
+      if(DB.mode === "connected") return "연결됨(동기화 대기)";
+      if(DB.mode === "error") return "DB 오류(로컬로 동작)";
+      return "로컬만(연동안됨)";
+    }
+
+    const STORAGE_KEY = "warehouse_stock_v1";
+
+    const data = [
+      {
+        category: "봉투",
+        items: [
+          {
+            id: "env-big",
+            name: "대봉투",
+            size: "210*297mm",
+            baseStock: 1720,
+            img: "large-paper-bag(Front).jpg",
+            images: ["large-paper-bag(Front).jpg","large-paper-bag(Back).jpg"],
+            logs: [
+              { d:"2026-03-17", t:"출고", dept:"아카이브팀", person:"ooo선임", qty:200 },
+              { d:"2026-03-31", t:"입고", dept:"운영팀", person:"(입력)", qty:800 },
+              { d:"2026-02-02", t:"출고", dept:"아카이브팀", person:"ooo선임", qty:200 },
+              { d:"2026-02-18", t:"입고", dept:"아카이브팀", person:"ooo선임", qty:500 },
+            ],
+          },
+          {
+            id: "env-letter",
+            name: "편지봉투",
+            size: "390*140*300mm",
+            baseStock: 1000,
+            img: "Letter-Envelope(Front).jpg",
+            images: ["Letter-Envelope(Front).jpg","Letter-envelope(back).jpg"],
+            logs: [
+              { d:"2026-02-10", t:"출고", dept:"운영팀", person:"ooo", qty:120 },
+              { d:"2026-02-18", t:"입고", dept:"운영팀", person:"ooo", qty:300 },
+            ],
+          },
+          {
+            id: "env-pvc",
+            name: "PVC봉투",
+            size: "310*95*230mm",
+            baseStock: 1000,
+            img: "PVC-bag.jpg",
+            images: ["PVC-bag.jpg", "PVC-bag-1.jpg"],
+            logs: [
+              { d:"2026-02-01", t:"입고", dept:"구매", person:"ooo", qty:200 },
+              { d:"2026-02-17", t:"출고", dept:"운영팀", person:"ooo", qty:80 },
+            ],
+          },
+          {
+            id: "env-gray",
+            name: "회색봉투",
+            size: "130*110*360mm",
+            baseStock: 1000,
+            img: "gray-hand-bag.jpg",
+            images: ["gray-hand-bag.jpg", "gray-hand-bag-1.jpg"],
+            logs: [
+              { d:"2026-02-17", t:"입고", dept:"구매", person:"ooo", qty:200 },
+            ],
+          },
+        ]
+      },
+      {
+        category: "홀더",
+        items: [
+          {
+            id: "holder-gray",
+            name: "보증서홀더(회색)",
+            size: "225*310mm",
+            baseStock: 1720,
+            img: "Warranty-Holder(Gray-Front).jpg",
+            images: ["Warranty-Holder(Gray-Front).jpg", "Warranty-Holder(Gray-in).jpg"],
+            logs: [
+              { d:"2026-02-07", t:"입고", dept:"구매", person:"ooo", qty:300 },
+              { d:"2026-02-17", t:"출고", dept:"아카이브팀", person:"ooo", qty:80 },
+            ]
+          },
+          {
+            id: "holder-navy",
+            name: "수입지홀더(남색)",
+            size: "225*310mm",
+            baseStock: 1000,
+            img: "Warranty-holder(navy).jpg",
+            images: ["Warranty-holder(navy).jpg", "Warranty-holder(navy-in).jpg"],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:90 },
+            ]
+          },
+          {
+            id: "office-holder-sky",
+            name: "사무용홀더",
+            size: "225*310mm",
+            baseStock: 1000,
+            img: "Guaranteed-Holder(in-SkyBlue-F).jpg",
+            images: ["Guaranteed-Holder(in-SkyBlue-F).jpg","Guaranteed-Holder(in-SkyBlue).jpg"],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:40 },
+            ]
+          },
+          {
+            id: "mint-delivery-bag",
+            name: "민트봉투",
+            size: "290*400mm",
+            baseStock: 1000,
+            img: "mint-delivery-bag.jpg",
+            images: ["mint-delivery-bag.jpg", null],
+            logs: [
+              { d:"2026-02-12", t:"출고", dept:"운영팀", person:"ooo", qty:50 },
+            ]
+          },
+        ]
+      },
+      {
+        category: "쇼핑백",
+        items: [
+          {
+            id: "bag-black-big",
+            name: "흑지쇼핑백(大)",
+            size: "480*180*380mm",
+            baseStock: 1720,
+            img: "Black-Shopping-Bag(L).jpg",
+            images: ["Black-Shopping-Bag(L).jpg", "Black-Shopping-Bag.jpg"],
+            logs: [
+              { d:"2026-02-05", t:"출고", dept:"전시팀", person:"ooo", qty:100 },
+            ]
+          },
+          {
+            id: "bag-black-small",
+            name: "흑지쇼핑백(小)",
+            size: "390*140*300mm",
+            baseStock: 1000,
+            img: "Black-Shopping-Bag(S).jpg",
+            images: ["Black-Shopping-Bag(S).jpg", "Black-Shopping-Bag.jpg"],
+            logs: [
+              { d:"2026-02-11", t:"출고", dept:"전시팀", person:"ooo", qty:60 },
+            ]
+          },
+          {
+            id: "blackwhite-shopping-bag",
+            name: "검흰쇼핑백",
+            size: "310*95*230mm",
+            baseStock: 1000,
+            img: "black&white-shopping-bag(1).jpg",
+            images: ["black&white-shopping-bag(1).jpg", "black&white-shopping-bag(2).jpg"],
+            logs: [
+              { d:"2/11", t:"출고", to:"전시팀 - ooo", qty:200 },
+            ]
+          },
+          {
+            id: "wine-shopping-bag",
+            name: "와인쇼핑백",
+            size: "130*110*360mm",
+            baseStock: 1000,
+            img: "wine-shopping-bag.jpg",
+            images: ["wine-shopping-bag-1.jpg", "wine-shopping-bag.jpg"],
+            logs: [
+              { d:"2/11", t:"출고", to:"전시팀 - ooo", qty:200 },
+            ]
+          },
+        ]
+      },
+      {
+        category: "기타",
+        items: [
+          { id:"etc-shirt", name:"조지물튼 티셔츠", size:"", baseStock: 1000, img:null, images:[null,null], logs:[] },
+          { id:"etc-bag", name:"SA 가방", size:"", baseStock: 1000, img:"SA-bag.jpg", images:["SA-bag.jpg", null], logs:[] },
+        ]
+      }
+    ];
+
+    const INITIAL_ITEM_IDS = new Set(
+      data.flatMap(sec => (sec.items || []).map(it => it.id))
+    );
+
+    const app = document.getElementById("app");
+    const q = document.getElementById("q");
+    const doSearch = document.getElementById("doSearch");
+    const searchBox = document.getElementById("searchBox");
+    const homeLink = document.getElementById("homeLink");
+    const topbar = document.getElementById("topbar");
+    const topTitle = document.getElementById("topTitle");
+
+    const fabAddItem = document.getElementById("fabAddItem");
+    const itemModal = document.getElementById("itemModal");
+    const itemOverlay = document.getElementById("itemOverlay");
+    const itemClose = document.getElementById("itemClose");
+    const createItemBtn = document.getElementById("createItemBtn");
+    const nCategory = document.getElementById("nCategory");
+    const nName = document.getElementById("nName");
+    const nSize = document.getElementById("nSize");
+    const nBase = document.getElementById("nBase");
+    const nImg = document.getElementById("nImg");
+
+    const adminAuthModal = document.getElementById("adminAuthModal");
+    const adminAuthOverlay = document.getElementById("adminAuthOverlay");
+    const adminPasswordInput = document.getElementById("adminPasswordInput");
+    const adminAuthError = document.getElementById("adminAuthError");
+    const adminAuthCancel = document.getElementById("adminAuthCancel");
+    const adminAuthConfirm = document.getElementById("adminAuthConfirm");
+
+    function saveAllLocal(){
+      try{
+        const payload = data.map(sec => ({
+          category: sec.category,
+          items: (sec.items||[]).map(it => ({
+            id: it.id,
+            name: it.name,
+            size: it.size,
+            img: it.img ?? null,
+            images: Array.isArray(it.images) ? it.images : [it.img ?? null, null],
+            baseStock: Number(it.baseStock||0),
+            logs: it.logs || []
+          }))
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      }catch(e){}
+    }
+
+    function loadAllLocal(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const saved = JSON.parse(raw);
+        if(!Array.isArray(saved)) return;
+
+        const firstItem = saved?.[0]?.items?.[0];
+        const isNew = !!(firstItem && typeof firstItem === "object" && ("name" in firstItem));
+
+        if(!isNew){
+          const byId = new Map();
+          for(const sec of saved){
+            for(const it of (sec.items||[])){
+              byId.set(it.id, it);
+            }
+          }
+          for(const sec of data){
+            for(const it of sec.items){
+              const s = byId.get(it.id);
+              if(s){
+                if(typeof s.baseStock === "number") it.baseStock = s.baseStock;
+                if(Array.isArray(s.logs)) it.logs = s.logs;
+              }
+            }
+          }
+          return;
+        }
+
+        const baseIds = new Set();
+        for(const sec of data) for(const it of (sec.items||[])) baseIds.add(it.id);
+
+        const savedById = new Map();
+        for(const sec of saved){
+          for(const it of (sec.items||[])){
+            savedById.set(it.id, it);
+          }
+        }
+
+        for(const sec of data){
+          for(const it of (sec.items||[])){
+            const s = savedById.get(it.id);
+            if(s){
+              if(typeof s.baseStock === "number") it.baseStock = s.baseStock;
+              if(Array.isArray(s.logs)) it.logs = s.logs;
+              if(s.img && !it.img) it.img = s.img;
+              if(Array.isArray(s.images) && (!it.images || !it.images[0])) it.images = s.images;
+            }
+          }
+        }
+
+        for(const sSec of saved){
+          if(!sSec || !sSec.category) continue;
+          const cat = String(sSec.category);
+          let target = data.find(x => x.category === cat);
+          if(!target){
+            target = { category: cat, items: [] };
+            data.push(target);
+          }
+          for(const sIt of (sSec.items||[])){
+            if(!sIt || !sIt.id) continue;
+            if(baseIds.has(sIt.id)) continue;
+            target.items.push({
+              id: sIt.id,
+              name: sIt.name || "(신규)",
+              size: sIt.size || "",
+              baseStock: Number(sIt.baseStock||0),
+              img: sIt.img ?? null,
+              images: Array.isArray(sIt.images) ? sIt.images : [sIt.img ?? null, null],
+              logs: Array.isArray(sIt.logs) ? sIt.logs : []
+            });
+            baseIds.add(sIt.id);
+          }
+        }
+      }catch(e){}
+    }
+
+    function iconPlaceholder(){
+      return `
+        <svg class="imgPh" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M7 7h10v14H7V7Z" stroke="#cbd5e1" stroke-width="1.6"/>
+          <path d="M9 7a3 3 0 0 1 6 0" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttr(str){
+      return escapeHtml(str);
+    }
+
+    function isAbsoluteLike(path){
+      return /^(https?:)?\/\//i.test(path) || /^data:/i.test(path) || /^blob:/i.test(path) || path.startsWith("/");
+    }
+
+    function uniq(arr){
+      return [...new Set(arr.filter(Boolean))];
+    }
+
+    function getImageCandidates(path){
+      const raw = String(path || "").trim();
+      if(!raw) return [];
+      if(isAbsoluteLike(raw)) return [raw];
+
+      const noHeadSlash = raw.replace(/^\.?\//, "");
+      return uniq([
+        raw,
+        "./" + noHeadSlash,
+        "images/" + noHeadSlash,
+        "./images/" + noHeadSlash
+      ]);
+    }
+
+    window.handleImgError = function(imgEl){
+      try{
+        const list = JSON.parse(imgEl.dataset.candidates || "[]");
+        let idx = Number(imgEl.dataset.idx || "0");
+        idx += 1;
+
+        if(idx < list.length){
+          imgEl.dataset.idx = String(idx);
+          imgEl.src = list[idx];
+          return;
+        }
+
+        const fallback = imgEl.dataset.fallback || "";
+        if(fallback){
+          imgEl.onerror = null;
+          imgEl.outerHTML = fallback;
+        }
+      }catch(e){
+        const fallback = imgEl.dataset.fallback || "";
+        if(fallback){
+          imgEl.onerror = null;
+          imgEl.outerHTML = fallback;
+        }
+      }
+    };
+
+    function renderSmartImage(path, alt="", className=""){
+      const candidates = getImageCandidates(path);
+      const fallback = iconPlaceholder();
+      if(!candidates.length) return fallback;
+
+      return `
+        <img
+          ${className ? `class="${escapeAttr(className)}"` : ""}
+          src="${escapeAttr(candidates[0])}"
+          alt="${escapeAttr(alt)}"
+          data-candidates='${escapeAttr(JSON.stringify(candidates))}'
+          data-idx="0"
+          data-fallback='${escapeAttr(fallback)}'
+          onerror="window.handleImgError(this)"
+        >
+      `;
+    }
+
+    function renderSmartLogo(path, alt=""){
+      const candidates = getImageCandidates(path);
+      if(!candidates.length){
+        return `<div class="mainLogoPlaceholder"></div>`;
+      }
+
+      return `
+        <img
+          class="mainLogoImg"
+          src="${escapeAttr(candidates[0])}"
+          alt="${escapeAttr(alt)}"
+          data-candidates='${escapeAttr(JSON.stringify(candidates))}'
+          data-idx="0"
+          data-fallback='<div class="mainLogoPlaceholder"></div>'
+          onerror="window.handleImgError(this)"
+        />
+      `;
+    }
+
+    function statusClass(s){ return s === "입고" ? "in" : "out"; }
+
+    function toISODateLike(d){
+      if(!d) return "";
+      if(/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+      const m = String(d).match(/^(\d{1,2})\/(\d{1,2})$/);
+      if(m){
+        const y = new Date().getFullYear();
+        const mm = String(m[1]).padStart(2,"0");
+        const dd = String(m[2]).padStart(2,"0");
+        return `${y}-${mm}-${dd}`;
+      }
+      return String(d);
+    }
+
+    function formatKRDate(d){
+      const iso = toISODateLike(d);
+      const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if(!m) return iso || "-";
+      return `${Number(m[2])}/${Number(m[3])}`;
+    }
+
+    function normalizeLog(r){
+      const out = { ...r };
+      out.d = toISODateLike(out.d);
+
+      if(!out.dept && out.to){
+        const parts = String(out.to).split("-").map(s=>s.trim());
+        out.dept = parts[0] || out.dept;
+        out.person = (parts[1] || "").replace(/^\(|\)$/g,"") || out.person;
+      }
+      out.t = (out.t === "입고") ? "입고" : "신청";
+      out.dept = out.dept || "-";
+      out.person = out.person || "";
+      out.qty = Number(out.qty || 0);
+      if(!out.__key) out.__key = `k_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+      return out;
+    }
+
+    function ensureLogs(it){
+      it.logs = (it.logs || []).map(normalizeLog);
+    }
+
+    function signedQty(row){
+      const qty = Number(row.qty || 0);
+      if (!qty) return 0;
+      return row.t === "입고" ? qty : -qty;
+    }
+
+    function calcStock(it){
+      ensureLogs(it);
+      const base = Number(it.baseStock || 0);
+      const sum = (it.logs || []).reduce((a, r) => a + signedQty(r), 0);
+      return base + sum;
+    }
+
+    function getLastLogInfo(it){
+      ensureLogs(it);
+      if(!it.logs || it.logs.length === 0) return { status:"-", date:"-", delta:0 };
+      const sorted = [...it.logs].sort((a,b) => (toISODateLike(b.d)||"").localeCompare(toISODateLike(a.d)||""));
+      const r = sorted[0];
+      return { status: r.t || "-", date: formatKRDate(r.d), delta: signedQty(r) };
+    }
+
+    function findItemById(id){
+      for(const section of data){
+        for(const it of section.items){
+          if(it.id === id) return { section, it };
+        }
+      }
+      return null;
+    }
+
+    function flattenItems(){
+      const arr = [];
+      for(const sec of data) for(const it of sec.items) arr.push(it);
+      return arr;
+    }
+
+    function ensureCategory(cat){
+      const name = String(cat || "").trim();
+      if(!name) return null;
+      let sec = data.find(s => s.category === name);
+      if(!sec){
+        sec = { category: name, items: [] };
+        data.push(sec);
+      }
+      return sec;
+    }
+
+    function slugifyId(s){
+      return String(s || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w\-가-힣]/g, "")
+        .replace(/\-+/g, "-")
+        .slice(0, 50) || `item-${Date.now()}`;
+    }
+
+    function removeItemLocal(itemId){
+      for(const sec of data){
+        const before = (sec.items||[]).length;
+        sec.items = (sec.items||[]).filter(it => it.id !== itemId);
+        if(sec.items.length !== before) break;
+      }
+      saveAllLocal();
+    }
+
+    const DB_ITEMS = "warehouse_items";
+    const DB_LOGS  = "warehouse_logs";
+
+    async function loadAllFromDB_FORCE(){
+      if(!dbReady()) throw new Error("supabaseClient not ready");
+
+      const { data: itemRows, error: e1 } = await supabaseClient
+        .from(DB_ITEMS)
+        .select("id, base_stock");
+      if(e1) throw e1;
+
+      const { data: logRows, error: e2 } = await supabaseClient
+        .from(DB_LOGS)
+        .select("item_id, d, t, dept, person, qty, __key");
+      if(e2) throw e2;
+
+      const dbItemIds = new Set((itemRows || []).map(r => r.id));
+      const baseById = new Map((itemRows || []).map(r => [r.id, r.base_stock]));
+      const logsByItem = new Map();
+
+      for(const sec of data){
+        sec.items = (sec.items || []).filter(it => {
+          if(INITIAL_ITEM_IDS.has(it.id)) return true;
+          return dbItemIds.has(it.id);
+        });
+      }
+
+      for(const r of (logRows || [])){
+        if(!logsByItem.has(r.item_id)) logsByItem.set(r.item_id, []);
+        logsByItem.get(r.item_id).push(normalizeLog({
+          d: r.d,
+          t: r.t,
+          dept: r.dept,
+          person: r.person,
+          qty: r.qty,
+          __key: r.__key
+        }));
+      }
+
+      for(const it of flattenItems()){
+        if(baseById.has(it.id)) it.baseStock = Number(baseById.get(it.id) ?? 0);
+        const dbLogs = logsByItem.get(it.id);
+        if(dbLogs) it.logs = dbLogs;
+        else it.logs = it.logs || [];
+      }
+
+      saveAllLocal();
+      DB.mode = "synced";
+      DB.lastError = "";
+      return true;
+    }
+
+    async function saveBaseToDB(itemId, baseStock){
+      if(!dbReady()) return;
+      const payload = { id: itemId, base_stock: Number(baseStock||0) };
+      const { error } = await supabaseClient.from(DB_ITEMS).upsert(payload, { onConflict: "id" });
+      if(error) throw error;
+    }
+
+    async function addLogToDB(itemId, row){
+      if(!dbReady()) return;
+      const r = normalizeLog(row);
+      const payload = {
+        item_id: itemId,
+        d: toISODateLike(r.d),
+        t: r.t,
+        dept: r.dept || "-",
+        person: r.person || "",
+        qty: Number(r.qty||0),
+        __key: r.__key
+      };
+      const { error } = await supabaseClient.from(DB_LOGS).insert(payload);
+      if(error) throw error;
+    }
+
+    async function deleteLogsByKeys(itemId, keys){
+      if(!dbReady()) return;
+      const { error } = await supabaseClient
+        .from(DB_LOGS)
+        .delete()
+        .eq("item_id", itemId)
+        .in("__key", keys);
+      if(error) throw error;
+    }
+
+    async function deleteItemFromDB(itemId){
+      if(!dbReady()) return;
+
+      const { error: e1 } = await supabaseClient
+        .from(DB_LOGS)
+        .delete()
+        .eq("item_id", itemId);
+      if(e1) throw e1;
+
+      const { error: e2 } = await supabaseClient
+        .from(DB_ITEMS)
+        .delete()
+        .eq("id", itemId);
+      if(e2) throw e2;
+    }
+
+    let realtimeChannel = null;
+    let reloadTimer = null;
+
+    function scheduleDBReload(){
+      clearTimeout(reloadTimer);
+      reloadTimer = setTimeout(async ()=>{
+        try{
+          await loadAllFromDB_FORCE();
+          router();
+        }catch(e){
+          console.error("Realtime DB reload 실패:", e);
+          DB.mode = "error";
+          DB.lastError = String(e?.message || e);
+          router();
+        }
+      }, 250);
+    }
+
+    function startRealtime(){
+      if(!dbReady()) return;
+      if(realtimeChannel) return;
+
+      try{
+        realtimeChannel = supabaseClient
+          .channel("warehouse_sync")
+          .on("postgres_changes", { event:"*", schema:"public", table: DB_ITEMS }, () => scheduleDBReload())
+          .on("postgres_changes", { event:"*", schema:"public", table: DB_LOGS  }, () => scheduleDBReload())
+          .subscribe(()=>{});
+      }catch(e){
+        console.error("Realtime 시작 실패:", e);
+      }
+    }
+
+    function setTopTitleByMode(mode){
+      if(mode === "request"){
+        topTitle.textContent = "물품 신청하기";
+      }else if(mode === "list"){
+        topTitle.textContent = "물품 재고 현황";
+      }else if(mode === "admin"){
+        topTitle.textContent = "관리자 페이지";
+      }else{
+        topTitle.textContent = "창고수량재고";
+      }
+    }
+
+    function setBodyMode(mode){
+      document.body.classList.remove("mode-request", "mode-list", "mode-admin");
+      if(mode === "request"){
+        document.body.classList.add("mode-request");
+      }else if(mode === "list"){
+        document.body.classList.add("mode-list");
+      }else if(mode === "admin"){
+        document.body.classList.add("mode-admin");
+      }
+    }
+
+    function renderMainHome(){
+      topbar.style.display = "none";
+      document.body.classList.remove("mode-request", "mode-list", "mode-admin");
+
+      app.innerHTML = `
+        <div class="mainHome">
+          <div class="mainLogoArea" id="mainHomeLogoBtn">
+            ${renderSmartLogo("sa-ci.jpg", "Seoul Auction 로고")}
+          </div>
+
+          <div class="mainHomeLine"></div>
+          <div class="mainHomeTitle">서울옥션 디자인팀 창고재고관리</div>
+
+          <div class="mainHomeBtns">
+            <button class="mainHomeBtn primaryHomeBtn" id="goRequestPage" type="button">물품 신청하기</button>
+            <button class="mainHomeBtn stockBtn" id="goStockPage" type="button">물품 재고 현황</button>
+            <button class="mainHomeBtn adminBtn" id="goAdminPage" type="button">관리자 페이지</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("goRequestPage").addEventListener("click", ()=>{
+        location.hash = "#/request";
+      });
+
+      document.getElementById("goStockPage").addEventListener("click", ()=>{
+        location.hash = "#/list";
+      });
+
+      document.getElementById("goAdminPage").addEventListener("click", ()=>{
+        location.hash = "#/admin";
+      });
+
+      document.getElementById("mainHomeLogoBtn").addEventListener("click", ()=>{
+        location.hash = "#/";
       });
     }
 
-    if (closeMenu) {
-      closeMenu.addEventListener('click', () => {
-        mobilePanel.classList.remove('active');
-        document.body.style.overflow = '';
+    function renderHome(mode = "request"){
+      topbar.style.display = "flex";
+      searchBox.style.display = "flex";
+      setTopTitleByMode(mode);
+      setBodyMode(mode);
+
+      const keyword = (q.value || "").trim().toLowerCase();
+      const isStockMode = mode === "list";
+
+      app.innerHTML = data.map(section => {
+        const filtered = (section.items||[]).filter(it => {
+          const hay = `${it.name} ${it.size}`.toLowerCase();
+          return keyword ? hay.includes(keyword) : true;
+        });
+
+        if(filtered.length === 0) return "";
+
+        return `
+          <div class="section">
+            <div class="secHead">
+              <h2>${escapeHtml(section.category)}</h2>
+            </div>
+
+            ${
+              isStockMode
+                ? `
+                  <div class="listGrid">
+                    ${filtered.map(it => {
+                      const stock = calcStock(it);
+                      return `
+                        <div class="stockCard" role="button" tabindex="0" data-open="${escapeAttr(it.id)}">
+                          <div class="stockThumb">
+                            ${it.img ? renderSmartImage(it.img, it.name) : iconPlaceholder()}
+                          </div>
+
+                          <div class="stockMeta">
+                            <div class="stockName">${escapeHtml(it.name)}</div>
+                            <div class="stockQtyBar">${Number.isFinite(stock) ? stock.toLocaleString() : "0"}개</div>
+                          </div>
+                        </div>
+                      `;
+                    }).join("")}
+                  </div>
+                `
+                : `
+                  <div class="list">
+                    ${filtered.map(it => {
+                      const stock = calcStock(it);
+                      const last = getLastLogInfo(it);
+                      return `
+                        <div class="row">
+                          <div class="card" role="button" tabindex="0" data-open="${escapeAttr(it.id)}">
+                            <div class="thumb">
+                              ${it.img ? renderSmartImage(it.img, it.name) : iconPlaceholder()}
+                            </div>
+
+                            <div class="meta">
+                              <div class="meta-top">
+                                <div class="title">${escapeHtml(it.name)}</div>
+                                <div class="size">${escapeHtml(it.size || "")}</div>
+                              </div>
+
+                              <div class="meta-bot">
+                                <div class="status ${statusClass(last.status)}">${escapeHtml(last.status)}</div>
+                                <div class="delta">
+                                  <span>${escapeHtml(last.date || "-")}</span>
+                                  <span class="qty ${last.delta >= 0 ? "in" : "out"}">${(last.delta>=0?"+":"")}${(last.delta||0).toLocaleString()}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="stock">
+                            ${Number.isFinite(stock) ? `${stock.toLocaleString()}<small>개</small>` : `-`}
+                          </div>
+                        </div>
+                      `;
+                    }).join("")}
+                  </div>
+                `
+            }
+          </div>
+        `;
+      }).join("");
+
+      app.querySelectorAll("[data-open]").forEach(el => {
+        if(mode === "list") return;
+
+        const go = () => location.hash = `#/${mode}/item/${el.dataset.open}`;
+        el.addEventListener("click", go);
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
+          }
+        });
       });
     }
 
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobilePanel.classList.remove('active');
-        document.body.style.overflow = '';
-      });
+    function renderDetail(id, mode = "request"){
+      topbar.style.display = "flex";
+      searchBox.style.display = "none";
+      setTopTitleByMode(mode);
+      setBodyMode(mode);
+
+      const isRequest = mode === "request";
+      const isAdmin = mode === "admin";
+      const canSelectDelete = isRequest || isAdmin;
+
+      const found = findItemById(id);
+      if(!found){
+        app.innerHTML = `
+          <div class="paper">
+            <div class="paper-head">알림</div>
+            <div class="paper-body">품목을 찾을 수 없습니다.</div>
+          </div>
+        `;
+        return;
+      }
+
+      const { section, it } = found;
+      ensureLogs(it);
+
+      let dateFilter = "";
+      let typeFilter = "전체";
+      let deptFilter = "전체";
+      let sortKey = "date";
+      let sortDir = "desc";
+
+      let selectedKeys = new Set();
+      let flashSelected = new Set();
+      const flashTimers = new Map();
+
+      function arrow(){ return sortDir === "asc" ? "↑" : "↓"; }
+
+      function toggleSort(key){
+        if(sortKey === key) sortDir = (sortDir === "asc") ? "desc" : "asc";
+        else { sortKey = key; sortDir = (key === "date") ? "desc" : "asc"; }
+        render();
+      }
+
+      function matches(r){
+        if(dateFilter && toISODateLike(r.d) !== dateFilter) return false;
+        if(typeFilter !== "전체" && r.t !== typeFilter) return false;
+        if(deptFilter !== "전체" && (r.dept||"-") !== deptFilter) return false;
+        return true;
+      }
+
+      function sortRows(rows){
+        const dir = (sortDir === "asc") ? 1 : -1;
+        return rows.sort((a,b)=>{
+          if(sortKey === "date"){
+            return (String(toISODateLike(a.d)).localeCompare(String(toISODateLike(b.d)))) * dir;
+          }
+          if(sortKey === "qty"){
+            return ((signedQty(a) - signedQty(b)) || 0) * dir;
+          }
+          return 0;
+        });
+      }
+
+      function flashRow(key){
+        flashSelected.add(key);
+        if(flashTimers.has(key)) clearTimeout(flashTimers.get(key));
+        const t = setTimeout(()=>{
+          flashSelected.delete(key);
+          flashTimers.delete(key);
+          render();
+        }, 2500);
+        flashTimers.set(key, t);
+      }
+
+      async function handleDeleteItem(){
+        const itemName = (it.name || "해당 품목");
+        const ok = confirm(`정말 "${itemName}" 품목을 삭제하시겠습니까?`);
+        if(!ok) return;
+
+        removeItemLocal(it.id);
+
+        try{
+          await deleteItemFromDB(it.id);
+        }catch(err){
+          console.error(err);
+          alert("DB에서 품목 삭제에 실패했습니다. (로컬에서는 삭제됨)\n권한/RLS 설정을 확인해주세요.");
+          DB.mode = "error";
+          DB.lastError = String(err?.message || err);
+        }
+
+        q.value = "";
+        location.hash = "#/admin";
+        router();
+      }
+
+      function getToday(){
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth()+1).padStart(2,"0");
+        const d = String(now.getDate()).padStart(2,"0");
+        return `${y}-${m}-${d}`;
+      }
+
+      function setNameTitleIfNeeded(inputEl){
+        let value = (inputEl.value || "").trim();
+        if (!value) return;
+        const titles = ["선임", "주임", "대리", "과장", "차장", "부장", "팀장", "매니저"];
+        const hasTitle = titles.some(title => value.endsWith(title));
+        if (!hasTitle) inputEl.value = value + "선임";
+      }
+
+      function render(){
+        ensureLogs(it);
+
+        const img1 = (it.images && it.images[0]) ? renderSmartImage(it.images[0], it.name) : iconPlaceholder();
+        const img2 = (it.images && it.images[1]) ? renderSmartImage(it.images[1], it.name) : iconPlaceholder();
+
+        const stockNow = calcStock(it);
+        const base = Number(it.baseStock || 0);
+
+        const allDepts = [
+          "경영기획팀","인사팀","관재팀","재무팀","서비스운영팀","아카이브팀","대외협력팀","디자인팀","영업팀","브랜드기획팀","고객관리팀","작품관리팀","VIP사업기획팀","웹서비스개발팀","인사팀","관재팀","재무팀",
+        ];
+
+        let view = (it.logs||[]).filter(matches);
+        view = sortRows(view);
+
+        app.innerHTML = `
+          <div class="paper">
+            <div class="paper-head">${escapeHtml(section.category)}</div>
+            <div class="paper-body">
+
+              <div class="imgRow">
+                <div class="imgBox">${img1}</div>
+                <div class="imgBox">${img2}</div>
+              </div>
+
+              <div class="itemHeader">
+                <div class="itemTop">
+                  <div class="itemName">${escapeHtml(it.name)}</div>
+                  <div class="sizePill">${escapeHtml(it.size || "")}</div>
+                </div>
+
+                <div class="statsGrid">
+                  <div class="statCard current">
+                    <div class="statRow">
+                      <div class="statLabel">
+                        <span class="txt">현재재고</span>
+                      </div>
+                      <div class="statValue">
+                        ${Number.isFinite(stockNow) ? `${stockNow.toLocaleString()}개` : "0개"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="boxTitleRow" style="margin-top:0;">
+                <p class="boxTitle">신청 내역</p>
+              </div>
+
+              ${
+                isRequest
+                ? `
+                  <div class="requestActionWrap">
+                    <button class="requestSubmitBtn" id="openRequestBtn" type="button">신청하기</button>
+                  </div>
+                `
+                : ``
+              }
+
+              <div class="logBox">
+                <div class="logMinWidth">
+                  <div class="logHead">
+                    <div class="logHeadCell">
+                      <div class="hdateWrap">
+                        <div class="hbtn" id="dateBtn">날짜 <span class="arrow">${sortKey==="date"?arrow():"↕"}</span></div>
+                        <div class="hdate" id="datePop">
+                          <input type="date" id="datePick" value="${dateFilter}">
+                          <div class="row2">
+                            <button class="miniBtn" id="dateClear">해제</button>
+                            <button class="miniBtn" id="dateOk">적용</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="logHeadCell center">
+                      ${
+                        isRequest
+                        ? `<div class="logHeadLabel">구분</div>`
+                        : `
+                          <select class="hselect" id="typeSel">
+                            <option value="전체" ${typeFilter==="전체"?"selected":""}>전체</option>
+                            <option value="출고" ${typeFilter==="출고"?"selected":""}>출고</option>
+                            <option value="입고" ${typeFilter==="입고"?"selected":""}>입고</option>
+                          </select>
+                        `
+                      }
+                    </div>
+
+                    <div class="logHeadCell">
+                      ${
+                        isRequest
+                        ? `<div class="logHeadLabel">부서</div>`
+                        : `
+                          <select class="hselect" id="deptSel">
+                            <option value="전체" ${deptFilter==="전체"?"selected":""}>전체</option>
+                            ${allDepts.map(d => `<option value="${escapeAttr(d)}" ${deptFilter===d?"selected":""}>${escapeHtml(d)}</option>`).join("")}
+                          </select>
+                        `
+                      }
+                    </div>
+
+                    <div class="logHeadCell center">
+                      <div class="logHeadLabel">담당자</div>
+                    </div>
+
+                    <div class="logHeadCell right">
+                      <div class="hbtn qtySortBtn" id="qtyBtn">
+                        수량 <span class="arrow">${sortKey==="qty"?arrow():"↕"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  ${
+                    view.length
+                      ? view.map(r => {
+                          const key = r.__key;
+                          const sel = flashSelected.has(key) ? "selected" : "";
+                          const clickable = canSelectDelete ? "clickable" : "";
+                          return `
+                            <div class="logRow ${clickable} ${sel}" data-row="${escapeAttr(key)}">
+                              <div class="logDate">${escapeHtml(formatKRDate(r.d))}</div>
+                              <div class="logType ${statusClass(r.t)}">${escapeHtml(r.t)}</div>
+                              <div class="logDept">${escapeHtml(r.dept || "-")}</div>
+                              <div class="logPerson">${escapeHtml(r.person || "")}</div>
+                              <div class="logQty ${statusClass(r.t)}">${(signedQty(r)>=0?"+":"")}${signedQty(r).toLocaleString()}</div>
+                            </div>
+                          `;
+                        }).join("")
+                      : `<div class="logRow">
+                           <div class="logDate">-</div>
+                           <div class="logType out">-</div>
+                           <div class="logDept">내역 없음</div>
+                           <div class="logPerson"></div>
+                           <div class="logQty out">-</div>
+                         </div>`
+                  }
+                </div>
+              </div>
+
+              ${
+                isAdmin ? `
+                  <div class="adminBottomRow">
+                    <div class="adminBottomLeft">
+                      <span>기존재고:</span>
+
+                      <div class="stockInline">
+                        <button type="button" class="stockInlineValue" id="baseInlineDisplay">
+                          <b>${Number.isFinite(base) ? base.toLocaleString() : "0"}개</b>
+                        </button>
+
+                        <div class="stockInlineEdit" id="baseInlineEdit">
+                          <input class="stockInlineInput" id="baseInlineInput" inputmode="numeric" value="${Number.isFinite(base) ? base : 0}" />
+                          <button type="button" class="stockInlineMini" id="baseInlineSave">저장</button>
+                          <button type="button" class="stockInlineMini" id="baseInlineCancel">취소</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="adminBottomRight">
+                      <button class="btn primary" id="openAdd">내역 추가</button>
+                      <button class="selDelBtn" id="bulkDelete">선택 삭제</button>
+                    </div>
+                  </div>
+
+                  <div class="dangerBox">
+                    <div class="dangerText">품목 삭제 시 복구가 어려우니 삭제 전 확인해 주세요.</div>
+                    <button class="dangerBtn" id="deleteItemBtn" type="button">품목 제거</button>
+                  </div>
+
+                  <div class="dbStatusLine">
+                    DB상태: <b>${dbStatusText()}</b>
+                    ${DB.mode==="error" && DB.lastError ? `<div style="margin-top:4px;">(${escapeHtml(DB.lastError)})</div>` : ``}
+                  </div>
+                ` : isRequest ? `
+                  <div class="commonBottomRow">
+                    <div class="commonBottomLeft">
+                      <span>DB상태: <b>${dbStatusText()}</b></span>
+                    </div>
+
+                    <div class="commonBottomRight">
+                      <button class="selDelBtn" id="bulkDelete" type="button">선택 삭제</button>
+                    </div>
+                  </div>
+                ` : `
+                  <div class="dbStatusLine">
+                    DB상태: <b>${dbStatusText()}</b>
+                  </div>
+                `
+              }
+
+            </div>
+          </div>
+
+          <div class="modal" id="addModal" aria-hidden="true">
+            <div class="modalOverlay" id="addOverlay"></div>
+            <div class="sheet" role="dialog" aria-modal="true" aria-label="${isRequest ? '신청하기' : '내역 추가'}">
+              <div class="sheetHead">
+                <div>${isRequest ? '신청하기' : '내역 추가'}</div>
+                <button class="sheetClose" id="addClose">닫기</button>
+              </div>
+
+              <div class="sheetBody">
+                <div class="field">
+                  <label for="aDate">날짜</label>
+                  <input type="date" id="aDate">
+                </div>
+
+                ${
+                  isRequest
+                  ? `<input type="hidden" id="aType" value="출고">`
+                  : `
+                    <div class="field">
+                      <label>구분</label>
+                      <input type="hidden" id="aType" value="출고">
+                      <div class="seg" id="aTypeSeg">
+                        <button type="button" class="active out" data-v="출고">출고</button>
+                        <button type="button" class="in" data-v="입고">입고</button>
+                      </div>
+                    </div>
+                  `
+                }
+
+                <div class="field">
+                  <label for="aDept">부서</label>
+                  <select id="aDept">
+                    ${allDepts.map(d => `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`).join("")}
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="aQty">수량</label>
+                  <input id="aQty" inputmode="numeric" placeholder="예) 200" />
+                </div>
+
+                <div class="field">
+                  <label for="aPerson">담당자</label>
+                  <input id="aPerson" placeholder="000선임" />
+                </div>
+              </div>
+
+              <div class="sheetFoot">
+                <button class="btn primary" id="addBtn">${isRequest ? '신청하기' : '추가'}</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        if(isAdmin){
+          app.querySelector("#deleteItemBtn").addEventListener("click", handleDeleteItem);
+        }
+
+        const dateBtn = app.querySelector("#dateBtn");
+        const datePop = app.querySelector("#datePop");
+        const datePick = app.querySelector("#datePick");
+        const dateOk = app.querySelector("#dateOk");
+        const dateClear = app.querySelector("#dateClear");
+
+        function closeDatePop(){ datePop.style.display = "none"; }
+
+        dateBtn.addEventListener("click", ()=>{
+          datePop.style.display = (datePop.style.display === "block") ? "none" : "block";
+        });
+
+        dateOk.addEventListener("click", ()=>{
+          dateFilter = datePick.value || "";
+          closeDatePop();
+          render();
+        });
+
+        dateClear.addEventListener("click", ()=>{
+          dateFilter = "";
+          closeDatePop();
+          render();
+        });
+
+        document.addEventListener("click", (e)=>{
+          const wrap = app.querySelector(".hdateWrap");
+          if(!wrap) return;
+          if(!wrap.contains(e.target)) closeDatePop();
+        }, { once:true });
+
+        dateBtn.addEventListener("dblclick", ()=> toggleSort("date"));
+        app.querySelector("#qtyBtn").addEventListener("click", ()=> toggleSort("qty"));
+
+        const typeSelEl = app.querySelector("#typeSel");
+        const deptSelEl = app.querySelector("#deptSel");
+
+        if(typeSelEl){
+          typeSelEl.addEventListener("change", (e)=>{
+            typeFilter = e.target.value;
+            render();
+          });
+        }
+
+        if(deptSelEl){
+          deptSelEl.addEventListener("change", (e)=>{
+            deptFilter = e.target.value;
+            render();
+          });
+        }
+
+        if(canSelectDelete){
+          app.querySelectorAll("[data-row]").forEach(row=>{
+            row.addEventListener("click", ()=>{
+              const key = row.dataset.row;
+              if(selectedKeys.has(key)) selectedKeys.delete(key);
+              else selectedKeys.add(key);
+              flashRow(key);
+              render();
+            });
+          });
+        }
+
+        const bulkDeleteBtn = app.querySelector("#bulkDelete");
+        if(bulkDeleteBtn){
+          bulkDeleteBtn.addEventListener("click", async ()=>{
+            if(selectedKeys.size === 0){
+              alert("삭제할 내역을 선택해주세요.");
+              return;
+            }
+
+            const keys = Array.from(selectedKeys);
+
+            it.logs = (it.logs||[]).filter(r => !selectedKeys.has(r.__key));
+            selectedKeys.clear();
+            flashSelected.clear();
+            for(const t of flashTimers.values()) clearTimeout(t);
+            flashTimers.clear();
+            saveAllLocal();
+
+            try{
+              await deleteLogsByKeys(it.id, keys);
+            }catch(err){
+              console.error(err);
+              alert("DB에서 내역 삭제에 실패했습니다. (로컬에서는 삭제됨)");
+              DB.mode = "error";
+              DB.lastError = String(err?.message || err);
+            }
+
+            render();
+          });
+        }
+
+        const addModal = app.querySelector("#addModal");
+        const addOverlay = app.querySelector("#addOverlay");
+        const addClose = app.querySelector("#addClose");
+        const addBtn = app.querySelector("#addBtn");
+        const aPersonInput = app.querySelector("#aPerson");
+        const openAdd = app.querySelector("#openAdd");
+        const openRequestBtn = app.querySelector("#openRequestBtn");
+        const aType = app.querySelector("#aType");
+        const seg = app.querySelector("#aTypeSeg");
+
+        function openAddModal(){
+          addModal.classList.add("show");
+          document.body.style.overflow = "hidden";
+          const aDate = app.querySelector("#aDate");
+          if(!aDate.value){
+            aDate.value = getToday();
+          }
+        }
+
+        function closeAddModal(){
+          addModal.classList.remove("show");
+          document.body.style.overflow = "";
+        }
+
+        if(openAdd) openAdd.addEventListener("click", openAddModal);
+        if(openRequestBtn) openRequestBtn.addEventListener("click", openAddModal);
+
+        addOverlay.addEventListener("click", closeAddModal);
+        addClose.addEventListener("click", closeAddModal);
+
+        aPersonInput.addEventListener("blur", ()=>{
+          setNameTitleIfNeeded(aPersonInput);
+        });
+
+        if(seg && aType){
+          function setType(v){
+            aType.value = v;
+            seg.querySelectorAll("button").forEach(b=>{
+              const on = b.dataset.v === v;
+              b.classList.toggle("active", on);
+              b.classList.toggle("out", b.dataset.v === "출고");
+              b.classList.toggle("in", b.dataset.v === "입고");
+            });
+          }
+
+          seg.querySelectorAll("button").forEach(b=>{
+            b.addEventListener("click", ()=> setType(b.dataset.v));
+          });
+        }
+
+        addBtn.addEventListener("click", async ()=>{
+          const d = app.querySelector("#aDate").value;
+          const t = app.querySelector("#aType").value;
+          const dept = app.querySelector("#aDept").value;
+          const person = (app.querySelector("#aPerson").value || "").trim();
+          const qtyRaw = (app.querySelector("#aQty").value || "").trim();
+          const qty = Number(qtyRaw);
+
+          if(!d){ alert("날짜를 선택해주세요."); return; }
+          if(!Number.isFinite(qty) || qty <= 0){ alert("수량은 0보다 큰 숫자여야 합니다. (예: 200)"); return; }
+
+          const row = normalizeLog({ d, t, dept, person: person || "(입력)", qty });
+
+          it.logs = it.logs || [];
+          it.logs.push(row);
+          saveAllLocal();
+
+          try{
+            await addLogToDB(it.id, row);
+          }catch(err){
+            console.error(err);
+            alert("DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+            DB.mode = "error";
+            DB.lastError = String(err?.message || err);
+          }
+
+          app.querySelector("#aQty").value = "";
+          app.querySelector("#aPerson").value = "";
+          closeAddModal();
+          render();
+        });
+
+        if(isAdmin){
+          const baseInlineDisplay = app.querySelector("#baseInlineDisplay");
+          const baseInlineEdit = app.querySelector("#baseInlineEdit");
+          const baseInlineInput = app.querySelector("#baseInlineInput");
+          const baseInlineSave = app.querySelector("#baseInlineSave");
+          const baseInlineCancel = app.querySelector("#baseInlineCancel");
+
+          function openBaseInlineEdit(){
+            if(!baseInlineEdit) return;
+            baseInlineEdit.classList.add("show");
+            baseInlineDisplay.style.display = "none";
+            baseInlineInput.focus();
+            baseInlineInput.select();
+          }
+
+          function closeBaseInlineEdit(){
+            if(!baseInlineEdit) return;
+            baseInlineEdit.classList.remove("show");
+            baseInlineDisplay.style.display = "inline-flex";
+          }
+
+          async function saveBaseInlineEdit(){
+            const v = Number(String(baseInlineInput.value || "").replace(/,/g,"").trim());
+            it.baseStock = Number.isFinite(v) && v >= 0 ? v : 0;
+            saveAllLocal();
+
+            try{
+              await saveBaseToDB(it.id, it.baseStock);
+            }catch(err){
+              console.error(err);
+              alert("기존재고 DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+              DB.mode = "error";
+              DB.lastError = String(err?.message || err);
+            }
+
+            render();
+          }
+
+          if(baseInlineDisplay){
+            baseInlineDisplay.addEventListener("click", openBaseInlineEdit);
+          }
+
+          if(baseInlineSave){
+            baseInlineSave.addEventListener("click", saveBaseInlineEdit);
+          }
+
+          if(baseInlineCancel){
+            baseInlineCancel.addEventListener("click", closeBaseInlineEdit);
+          }
+
+          if(baseInlineInput){
+            baseInlineInput.addEventListener("keydown", async (e)=>{
+              if(e.key === "Enter"){
+                await saveBaseInlineEdit();
+              }else if(e.key === "Escape"){
+                closeBaseInlineEdit();
+              }
+            });
+          }
+        }
+      }
+
+      render();
+    }
+
+    function updateFabVisibility(){
+      const hash = location.hash || "#/";
+      const isAdminHome = hash === "#/admin" && isAdminAuthorized();
+      fabAddItem.style.display = isAdminHome ? "inline-flex" : "none";
+    }
+
+    function router(){
+      updateFabVisibility();
+
+      const hash = location.hash || "#/";
+
+      const requestItem = hash.match(/^#\/request\/item\/(.+)$/);
+      const adminItem = hash.match(/^#\/admin\/item\/(.+)$/);
+      const listItem = hash.match(/^#\/list\/item\/(.+)$/);
+
+      if(hash === "#/" || hash === ""){
+        renderMainHome();
+      }else if(hash === "#/request"){
+        renderHome("request");
+      }else if(hash === "#/list"){
+        renderHome("list");
+      }else if(hash === "#/admin"){
+        if(!checkAdminAccess("#/admin")) return;
+        renderHome("admin");
+      }else if(requestItem){
+        renderDetail(decodeURIComponent(requestItem[1]), "request");
+      }else if(adminItem){
+        if(!checkAdminAccess(hash)) return;
+        renderDetail(decodeURIComponent(adminItem[1]), "admin");
+      }else if(listItem){
+        renderDetail(decodeURIComponent(listItem[1]), "list");
+      }else{
+        renderMainHome();
+      }
+    }
+
+    function openItemModal(prefillCategory){
+      itemModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      if(prefillCategory) nCategory.value = prefillCategory;
+      if(!nBase.value) nBase.value = "1000";
+      setTimeout(()=>{ (nName.value ? nSize : nName).focus(); }, 30);
+    }
+
+    function closeItemModal(){
+      itemModal.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    fabAddItem.addEventListener("click", ()=> openItemModal(""));
+    itemOverlay.addEventListener("click", closeItemModal);
+    itemClose.addEventListener("click", closeItemModal);
+
+    createItemBtn.addEventListener("click", async ()=>{
+      const category = (nCategory.value || "").trim();
+      const name = (nName.value || "").trim();
+      const size = (nSize.value || "").trim();
+      const base = Number(String(nBase.value || "").replace(/,/g,""));
+      const img  = (nImg.value || "").trim();
+
+      if(!category){ alert("카테고리를 입력해주세요."); return; }
+      if(!name){ alert("품목명을 입력해주세요."); return; }
+      if(!Number.isFinite(base) || base < 0){ alert("기준재고는 0 이상 숫자여야 합니다."); return; }
+
+      const sec = ensureCategory(category);
+      if(!sec){ alert("카테고리 생성에 실패했습니다."); return; }
+
+      const baseId = slugifyId(`${category}-${name}-${size}`);
+      let id = baseId;
+      let n = 2;
+      while(findItemById(id)){
+        id = `${baseId}-${n++}`;
+      }
+
+      const newItem = {
+        id,
+        name,
+        size,
+        baseStock: base,
+        img: img || null,
+        images: [img || null, null],
+        logs: []
+      };
+
+      sec.items = sec.items || [];
+      sec.items.push(newItem);
+
+      saveAllLocal();
+
+      try{
+        await saveBaseToDB(newItem.id, newItem.baseStock);
+      }catch(err){
+        console.error(err);
+        DB.mode = "error";
+        DB.lastError = String(err?.message || err);
+        alert("품목은 추가되었지만 DB 저장에 실패했습니다. (로컬에는 저장됨)\n권한/RLS 설정을 확인해주세요.");
+      }
+
+      nCategory.value = "";
+      nName.value = "";
+      nSize.value = "";
+      nBase.value = "";
+      nImg.value = "";
+
+      closeItemModal();
+
+      q.value = "";
+      location.hash = "#/admin";
+      router();
     });
+
+    doSearch.addEventListener("click", ()=>{
+      const hash = location.hash || "#/";
+      if(hash === "#/admin"){
+        if(!checkAdminAccess("#/admin")) return;
+        renderHome("admin");
+      }else if(hash === "#/list"){
+        renderHome("list");
+      }else{
+        renderHome("request");
+      }
+    });
+
+    q.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        const hash = location.hash || "#/";
+        if(hash === "#/admin"){
+          if(!checkAdminAccess("#/admin")) return;
+          renderHome("admin");
+        }else if(hash === "#/list"){
+          renderHome("list");
+        }else{
+          renderHome("request");
+        }
+      }
+    });
+
+    q.addEventListener("input", ()=>{
+      const hash = location.hash || "#/";
+      if(hash === "#/admin"){
+        if(!checkAdminAccess("#/admin")) return;
+        renderHome("admin");
+      }else if(hash === "#/list"){
+        renderHome("list");
+      }else if(hash === "#/request"){
+        renderHome("request");
+      }
+    });
+
+    homeLink.addEventListener("click", (e)=>{
+      e.preventDefault();
+      q.value = "";
+      clearAdminAccess();
+      closeAdminAuthModal();
+      location.hash = "#/";
+    });
+
+    adminAuthOverlay.addEventListener("click", ()=>{
+      closeAdminAuthModal();
+      location.hash = "#/";
+    });
+
+    adminAuthCancel.addEventListener("click", ()=>{
+      closeAdminAuthModal();
+      location.hash = "#/";
+    });
+
+    adminAuthConfirm.addEventListener("click", confirmAdminAuth);
+
+    adminPasswordInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        confirmAdminAuth();
+      }else if(e.key === "Escape"){
+        closeAdminAuthModal();
+        location.hash = "#/";
+      }
+    });
+
+    window.addEventListener("hashchange", router);
+
+    (async function boot(){
+      loadAllLocal();
+
+      if(!location.hash) location.hash = "#/";
+      router();
+
+      const ok = initSupabase();
+      if(!ok){
+        DB.mode = "local";
+        router();
+        return;
+      }
+
+      try{
+        await loadAllFromDB_FORCE();
+      }catch(err){
+        console.error("DB 로드 실패:", err);
+        DB.mode = "error";
+        DB.lastError = String(err?.message || err);
+      }
+
+      startRealtime();
+      router();
+    })();
   </script>
 </body>
 </html>
