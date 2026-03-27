@@ -12,6 +12,7 @@
       --muted:#666666;
       --line:#dddddd;
       --soft:#f7f7f7;
+      --section-bg:#f3f3f1;
       --header-h:72px;
       --max:1920px;
       --menu-panel-w:min(68vw, 520px);
@@ -68,7 +69,6 @@
       margin:0 auto;
     }
 
-    /* about 페이지 기준으로 동일하게 */
     .site-header{
       position:sticky;
       top:0;
@@ -187,6 +187,76 @@
       font-size:16px;
       color:#222;
       letter-spacing:-0.02em;
+    }
+
+    .book-section{
+      padding:0 0 120px;
+    }
+
+    .book-panel{
+      background:#f7f7f7;
+      padding:26px 32px 44px;
+    }
+
+    .book-panel-top{
+      border-top:1px solid #dfdfdf;
+      padding-top:24px;
+      margin-bottom:34px;
+      
+    }
+
+    .book-panel-top h2{
+      font-size:14px;
+      font-weight:600;
+      color:#6f6f6f;
+      letter-spacing:-0.02em;
+    }
+
+    .book-grid{
+      display:grid;
+      grid-template-columns:repeat(5, minmax(0, 1fr));
+      gap:120px 20px;
+    }
+
+    .book-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .book-cover{
+      width:100%;
+      max-width:220px;
+      aspect-ratio:1000 / 1500;
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 1px 4px rgba(0,0,0,0.04);
+      background:#fff;
+      overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+
+    .book-cover img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    .book-card:hover .book-cover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 18px rgba(0,0,0,0.08);
+    }
+
+    .book-name{
+      margin-top:18px;
+      width:100%;
+      max-width:220px;
+      text-align:left;
+      font-size:14px;
+      line-height:1.45;
+      font-weight:500;
+      color:#5f5f5f;
+      letter-spacing:-0.03em;
     }
 
     .work-grid-section{
@@ -364,6 +434,12 @@
       font-weight:700;
     }
 
+    @media (max-width: 1400px){
+      .book-grid{
+        grid-template-columns:repeat(4, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 980px){
       .brand{
         font-size:19px;
@@ -375,6 +451,19 @@
 
       .work-hero{
         padding:56px 0 42px;
+      }
+
+      .book-panel{
+        padding:22px 22px 34px;
+      }
+
+      .book-grid{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:34px 18px;
+      }
+
+      .book-name{
+        font-size:14px;
       }
 
       .work-grid{
@@ -410,6 +499,23 @@
 
       .work-hero p{
         font-size:14px;
+      }
+
+      .book-section{
+        padding-bottom:60px;
+      }
+
+      .book-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+        gap:28px 16px;
+      }
+
+      .book-panel-top{
+        margin-bottom:26px;
+      }
+
+      .book-panel-top h2{
+        font-size:13px;
       }
 
       .work-grid{
@@ -452,6 +558,20 @@
         max-width:70vw;
         overflow:hidden;
         text-overflow:ellipsis;
+      }
+
+      .book-panel{
+        padding:18px 14px 24px;
+      }
+
+      .book-cover,
+      .book-name{
+        max-width:100%;
+      }
+
+      .book-name{
+        margin-top:12px;
+        font-size:13px;
       }
 
       .mobile-nav-main a{
@@ -504,6 +624,90 @@
       <div class="wrap">
         <h1>WORK</h1>
         <p>Created by Us</p>
+      </div>
+    </section>
+
+    <section class="book-section">
+      <div class="wrap">
+        <div class="book-panel">
+          <div class="book-panel-top">
+            <h2>ART AUCTION</h2>
+          </div>
+
+          <div class="book-grid">
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-1.jpg" alt="[2026 SPRING] CONTEMPORARY ART SALE">
+              </div>
+              <p class="book-name">[2026 SPRING] CONTEMPORARY ART SALE</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-2.jpg" alt="제190회 미술품 경매">
+              </div>
+              <p class="book-name">제190회 미술품 경매</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-3.jpg" alt="제189회 미술품 경매">
+              </div>
+              <p class="book-name">제189회 미술품 경매</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-4.jpg" alt="제188회 미술품 경매">
+              </div>
+              <p class="book-name">제188회 미술품 경매</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-5.jpg" alt="제187회 미술품 경매">
+              </div>
+              <p class="book-name">제187회 미술품 경매</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-6.jpg" alt="제186회 미술품 경매">
+              </div>
+              <p class="book-name">프란츠 슈베르트</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-7.jpg" alt="제185회 미술품 경매">
+              </div>
+              <p class="book-name">제186회 미술품 경매</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-8.jpg" alt="제185회 미술품 경매">
+              </div>
+              <p class="book-name">음악 없는 말</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-9.jpg" alt="바이올린을 위한 밤의 노래">
+              </div>
+              <p class="book-name">바이올린을 위한 밤의 노래</p>
+            </a>
+
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/sa-book-10.jpg" alt="클래식 음악 연표">
+              </div>
+              <p class="book-name">클래식 음악 연표</p>
+            </a>
+
+            
+          </div>
+        </div>
       </div>
     </section>
 
