@@ -353,29 +353,25 @@
 
     /* hero */
     .hero{
-      padding:64px 0 34px;
+      padding:260px 0 110px;
     }
 
     .hero-grid{
-      display:grid;
-      grid-template-columns: 1.4fr .9fr;
-      gap:32px;
-      align-items:end;
-    }
-
-    .hero-title{
-      font-size:clamp(36px, 7vw, 88px);
-      line-height:0.95;
-      font-weight:800;
-      letter-spacing:-0.05em;
+      display:block;
     }
 
     .hero-copy{
-      max-width:420px;
-      margin-left:auto;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.7;
+      max-width:1380px;
+      margin-left:0;
+      color:var(--text);
+      font-size:clamp(34px, 4.15vw, 78px);
+      line-height:1.18;
+      letter-spacing:-0.055em;
+      font-weight:400;
+    }
+
+    .hero-copy strong{
+      font-weight:800;
     }
 
     /* section head */
@@ -581,6 +577,14 @@
         opacity:1;
         pointer-events:auto;
       }
+
+      .hero{
+        padding:220px 0 100px;
+      }
+
+      .hero-copy{
+        max-width:1180px;
+      }
     }
 
     @media (max-width: 1180px){
@@ -609,16 +613,18 @@
       }
 
       .hero{
-        padding:48px 0 28px;
+        padding:180px 0 72px;
       }
 
       .hero-grid{
-        grid-template-columns:1fr;
-        gap:18px;
+        display:block;
       }
 
       .hero-copy{
+        max-width:100%;
         margin-left:0;
+        font-size:clamp(28px, 5vw, 52px);
+        line-height:1.22;
       }
 
       .portfolio-grid{
@@ -699,6 +705,16 @@
         pointer-events:auto;
       }
 
+      .hero{
+        padding:130px 0 58px;
+      }
+
+      .hero-copy{
+        font-size:clamp(24px, 6.8vw, 40px);
+        line-height:1.24;
+        letter-spacing:-0.05em;
+      }
+
       .portfolio-grid{
         grid-template-columns:repeat(2, 1fr);
       }
@@ -744,12 +760,13 @@
         padding:0 14px;
       }
 
-      .hero-title{
-        font-size:42px;
+      .hero{
+        padding:110px 0 48px;
       }
 
       .hero-copy{
-        font-size:14px;
+        font-size:clamp(22px, 7vw, 34px);
+        line-height:1.26;
       }
 
       .portfolio-grid{
@@ -840,12 +857,8 @@
   <main>
     <section class="hero wrap">
       <div class="hero-grid">
-        <h1 class="hero-title">
-          Creative Archive<br />
-          for Visual Culture
-        </h1>
         <p class="hero-copy">
-          서울옥션 크리에이티브는 전시와 경매, 그리고 예술 콘텐츠를 통해 만들어진 다양한 시각적 결과물과 디자인 작업들을 창작자의 관점에서 재해석하고 기록하는 디지털 아카이브입니다.
+          <strong>Seoul Auction Creatives</strong> is a digital archive that reinterprets and documents a wide range of visual outcomes and design works—generated through exhibitions, auctions, and art content—from the perspective of the creator.
         </p>
       </div>
     </section>
@@ -879,7 +892,7 @@
           </div>
         </a>
 
-        <a class="card span-4 h-md" href="sa-archive.html">
+        <a class="card span-6 h-md" href="sa-archive.html">
           <div class="card-media">
             <img src="images/sa-9.jpg" alt="">
           </div>
@@ -890,7 +903,7 @@
           </div>
         </a>
 
-        <a class="card span-4 h-md" href="sa-download.html">
+        <a class="card span-6 h-md" href="sa-download.html">
           <div class="card-media">
             <img src="images/sa-9.jpg" alt="">
           </div>
