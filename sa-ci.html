@@ -13,11 +13,12 @@
       --text:#111111;
       --muted:#6b7280;
       --line:#e5e7eb;
-      --max:1680px;
+      --max:1920px;
       --header-h:72px;
       --radius:0px;
       --blue:#39c3bc;
-      --menu-panel-w:min(68vw, 320px);
+      --soft:#f7f7f7;
+      --menu-panel-w:min(68vw, 520px);
     }
 
     *{
@@ -67,7 +68,7 @@
     }
 
     .wrap{
-      width:min(calc(100% - 64px), var(--max));
+      width:min(calc(100% - 50px), var(--max));
       margin:0 auto;
     }
 
@@ -77,38 +78,47 @@
       z-index:100;
       height:var(--header-h);
       background:rgba(255,255,255,0.92);
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(14px);
       border-bottom:1px solid rgba(0,0,0,0.06);
     }
 
     .site-header .inner{
-      width:min(calc(100% - 56px), var(--max));
+      width:min(calc(100% - 24px), var(--max));
       height:100%;
       margin:0 auto;
       display:flex;
       align-items:center;
-      gap:24px;
+      position:relative;
+      gap:20px;
     }
 
     .brand{
-      flex:1 1 auto;
+      flex:0 0 auto;
       min-width:0;
-      font-size:18px;
+      margin-left:20px;
+      margin-right:auto;
+      font-size:22px;
       font-weight:400 !important;
+      font-style:normal !important;
       letter-spacing:0 !important;
       white-space:nowrap;
       font-family:"Didot", "Didot LT Std", "Bodoni 72", "Times New Roman", serif !important;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      position:relative;
+      z-index:6;
+      transition:opacity .25s ease;
     }
 
     .desktop-nav{
       display:flex;
       align-items:center;
-      gap:28px;
-      margin-left:auto;
       justify-content:flex-end;
+      gap:28px;
       flex:0 0 auto;
+      margin-left:auto;
+      position:relative;
+      z-index:3;
     }
 
     .desktop-nav a{
@@ -116,6 +126,7 @@
       font-size:13px;
       font-weight:400;
       letter-spacing:0.04em;
+      white-space:nowrap;
       color:#111111;
     }
 
@@ -135,16 +146,13 @@
       width:100%;
     }
 
-    .header-right{
-      display:none;
-    }
-
     .header-tools{
-      display:none;
+      display:flex;
       align-items:center;
       gap:10px;
       flex:0 0 auto;
-      margin-left:auto;
+      position:relative;
+      z-index:8;
     }
 
     .icon-btn{
@@ -159,8 +167,12 @@
     }
 
     .icon-btn:hover{
-      background:rgba(0,0,0,0.03);
-      border-color:rgba(0,0,0,0.06);
+      background:var(--soft);
+      border-color:var(--line);
+    }
+
+    .menu-btn{
+      display:none;
     }
 
     .page-hero{
@@ -234,7 +246,7 @@
     }
 
     .asset-card.dark{
-      background:#303030;;
+      background:#303030;
       color:#ffffff;
       border-color:#232838;
     }
@@ -382,7 +394,7 @@
     }
 
     .mobile-menu.active .mobile-menu-dim{
-      background:rgba(0,0,0,0.28);
+      background:rgba(0,0,0,0.42);
     }
 
     .mobile-menu-panel{
@@ -399,7 +411,7 @@
       flex-direction:column;
       padding:22px 24px 28px;
       overflow-y:auto;
-      box-shadow:-10px 0 30px rgba(0,0,0,0.12);
+      box-shadow:none;
     }
 
     .mobile-menu.active .mobile-menu-panel{
@@ -431,13 +443,43 @@
     }
 
     .mobile-nav-main a{
-      font-size:18px;
+      font-size:22px;
       font-weight:400;
       letter-spacing:-0.03em;
       color:#111111;
     }
 
     .mobile-nav-main a.current{
+      font-weight:700;
+    }
+
+    .mobile-sub-wrap{
+      margin-top:8px;
+      padding-top:24px;
+      border-top:1px solid #d9d9d9;
+    }
+
+    .mobile-sub-title{
+      font-size:12px;
+      letter-spacing:0.12em;
+      color:#888;
+      margin-bottom:18px;
+    }
+
+    .mobile-sub-list{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .mobile-sub-list a{
+      font-size:18px;
+      line-height:1.4;
+      letter-spacing:-0.02em;
+      color:#111111;
+    }
+
+    .mobile-sub-list a.current{
       font-weight:700;
     }
 
@@ -449,6 +491,16 @@
       .type-grid,
       .rule-grid{
         grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 980px){
+      .brand{
+        font-size:19px;
+      }
+
+      .desktop-nav{
+        gap:18px;
       }
     }
 
@@ -468,10 +520,20 @@
       }
     }
 
+    @media (max-width: 763px){
+      .desktop-nav{
+        display:none;
+      }
+
+      .menu-btn{
+        display:grid;
+      }
+    }
+
     @media (max-width: 640px){
       :root{
         --header-h:64px;
-        --menu-panel-w:min(64vw, 320px);
+        --menu-panel-w:64vw;
       }
 
       .site-header .inner,
@@ -480,19 +542,11 @@
       }
 
       .brand{
+        margin-left:0;
         font-size:16px;
         max-width:70vw;
         overflow:hidden;
         text-overflow:ellipsis;
-      }
-
-      .desktop-nav,
-      .header-right{
-        display:none;
-      }
-
-      .header-tools{
-        display:flex;
       }
 
       .page-hero{
@@ -525,10 +579,18 @@
       .color-grid{
         grid-template-columns:repeat(2, minmax(0, 1fr));
       }
+
+      .mobile-nav-main a{
+        font-size:18px;
+      }
+
+      .mobile-sub-list a{
+        font-size:16px;
+      }
     }
   </style>
 </head>
-<body>
+<body data-page="ci">
   <header class="site-header">
     <div class="inner">
       <a href="index.html" class="brand">Seoul Auction Creatives</a>
@@ -541,15 +603,17 @@
         <a href="sa-contact.html">CONTACT</a>
       </nav>
 
-      <div class="header-right">
-        <span>Seoul Auction</span>
-      </div>
-
       <div class="header-tools">
-        <button class="icon-btn" id="menuBtn" aria-label="메뉴 열기">
-          <svg width="30" height="18" viewBox="0 0 30 18" fill="none">
-            <path d="M0 3H30" stroke="#111111" stroke-width="2.4"/>
-            <path d="M0 15H30" stroke="#111111" stroke-width="2.4"/>
+        <button class="icon-btn" aria-label="검색">
+          <svg width="18" height="18" viewBox="0 0 17 17" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
+            <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="메뉴 열기">
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+            <path d="M0 1H18M0 9H18" stroke="#111" stroke-width="2"/>
           </svg>
         </button>
       </div>
@@ -576,15 +640,13 @@
         <div class="asset-grid">
           <article class="asset-card light">
             <p class="card-label">로고</p>
-
             <div class="card-visual">
-                <img src="images/sa-logo_2.png" alt="Seoul Auction Logo">
+              <img src="images/sa-logo_2.png" alt="Seoul Auction Logo">
             </div>
           </article>
 
           <article class="asset-card dark">
             <p class="card-label">로고 다크 배경용</p>
-
             <div class="card-visual">
               <img src="images/sa-logo_3.png" alt="Seoul Auction Logo">
             </div>
@@ -679,17 +741,88 @@
         <button class="mobile-close" id="closeMenu" aria-label="메뉴 닫기">×</button>
       </div>
 
-      <nav class="mobile-nav-main" aria-label="모바일 주 메뉴">
-        <a href="sa-about.html">ABOUT</a>
-        <a href="sa-work.html">WORK</a>
-        <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-ci.html" class="current">CI</a>
-        <a href="sa-contact.html">CONTACT</a>
-      </nav>
+      <nav class="mobile-nav-main" id="mobileMainNav" aria-label="모바일 주 메뉴"></nav>
+
+      <div class="mobile-sub-wrap">
+        <p class="mobile-sub-title" id="mobileSubTitle">CI</p>
+        <div class="mobile-sub-list" id="mobileSubList"></div>
+      </div>
     </div>
   </aside>
 
   <script>
+    const pageKey = document.body.dataset.page || 'ci';
+
+    const mainMenu = [
+      { key:'about', label:'ABOUT', href:'sa-about.html' },
+      { key:'work', label:'WORK', href:'sa-work.html' },
+      { key:'archive', label:'ARCHIVE', href:'sa-archive.html' },
+      { key:'ci', label:'CI', href:'sa-ci.html' },
+      { key:'contact', label:'CONTACT', href:'sa-contact.html' }
+    ];
+
+    const subMenuData = {
+      about: {
+        title: 'ABOUT',
+        items: [
+          { label:'Introduction', href:'sa-about.html' },
+          { label:'Vision', href:'sa-about.html' },
+          { label:'Story', href:'sa-about.html' }
+        ]
+      },
+      work: {
+        title: 'WORK',
+        items: [
+          { label:'Brand', href:'sa-work.html' },
+          { label:'Corporate', href:'sa-work.html' },
+          { label:'Award-winning', href:'sa-work.html' }
+        ]
+      },
+      archive: {
+        title: 'ARCHIVE',
+        items: [
+          { label:'Exhibition Records', href:'sa-archive.html' },
+          { label:'Research & Reference', href:'sa-archive.html' },
+          { label:'Project Documentation', href:'sa-archive.html' }
+        ]
+      },
+      ci: {
+        title: 'CI',
+        items: [
+          { label:'Logo System', href:'sa-ci.html', current:true },
+          { label:'Color System', href:'sa-ci.html' },
+          { label:'Usage Rules', href:'sa-ci.html' }
+        ]
+      },
+      contact: {
+        title: 'CONTACT',
+        items: [
+          { label:'General Inquiry', href:'sa-contact.html' },
+          { label:'Design Team', href:'sa-contact.html' }
+        ]
+      }
+    };
+
+    const mobileMainNav = document.getElementById('mobileMainNav');
+    const mobileSubTitle = document.getElementById('mobileSubTitle');
+    const mobileSubList = document.getElementById('mobileSubList');
+
+    function renderMobileMenu() {
+      mobileMainNav.innerHTML = mainMenu.map(item => {
+        const currentClass = item.key === pageKey ? 'current' : '';
+        return `<a href="${item.href}" class="${currentClass}">${item.label}</a>`;
+      }).join('');
+
+      const currentSub = subMenuData[pageKey] || subMenuData.ci;
+      mobileSubTitle.textContent = currentSub.title;
+      mobileSubList.innerHTML = currentSub.items.map(item => {
+        const currentClass = item.current ? 'current' : '';
+        return `<a href="${item.href}" class="${currentClass}">${item.label}</a>`;
+      }).join('');
+    }
+
+    renderMobileMenu();
+
     const body = document.body;
     const mobileMenu = document.getElementById('mobileMenu');
     const menuBtn = document.getElementById('menuBtn');
