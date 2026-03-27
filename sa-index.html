@@ -181,7 +181,8 @@
 
     .list{ display:flex; flex-direction:column; gap:16px; }
 
-    body.mode-request .list{
+    body.mode-request .list,
+    body.mode-admin .list{
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
       gap:16px;
@@ -974,13 +975,15 @@
       .stock{ min-height:86px; }
       .listGrid{ grid-template-columns:1fr 1fr; }
 
-      body.mode-request .list{
+      body.mode-request .list,
+      body.mode-admin .list{
         display:grid;
-        grid-template-columns:repeat(2, minmax(0, 1fr));
+        grid-template-columns:1fr;
         gap:14px;
       }
 
-      body.mode-request .row{
+      body.mode-request .row,
+      body.mode-admin .row{
         grid-template-columns:minmax(0, 1fr) 140px;
         gap:12px;
         align-items:stretch;
@@ -1014,19 +1017,22 @@
       .section{ margin-top:28px; }
       .listGrid{ grid-template-columns:1fr; gap:14px; }
 
-      body.mode-request .list{
+      body.mode-request .list,
+      body.mode-admin .list{
         display:grid;
         grid-template-columns:1fr;
         gap:14px;
       }
 
-      body.mode-request .row{
+      body.mode-request .row,
+      body.mode-admin .row{
         grid-template-columns:minmax(0, 1fr) 104px;
         gap:10px;
         align-items:stretch;
       }
 
-      body.mode-request .card{
+      body.mode-request .card,
+      body.mode-admin .card{
         min-height:92px;
         padding:12px;
         gap:12px;
@@ -1034,20 +1040,23 @@
         align-items:center;
       }
 
-      body.mode-request .thumb{
+      body.mode-request .thumb,
+      body.mode-admin .thumb{
         width:72px;
         height:72px;
         aspect-ratio:auto;
         flex:0 0 72px;
       }
 
-      body.mode-request .meta{
+      body.mode-request .meta,
+      body.mode-admin .meta{
         width:100%;
         gap:6px;
         min-width:0;
       }
 
-      body.mode-request .meta-bot{
+      body.mode-request .meta-bot,
+      body.mode-admin .meta-bot{
         width:100%;
         gap:8px;
         flex-direction:row;
@@ -1056,11 +1065,14 @@
       }
 
       body.mode-request .meta-bot span,
-      body.mode-request .delta{
+      body.mode-request .delta,
+      body.mode-admin .meta-bot span,
+      body.mode-admin .delta{
         white-space:nowrap;
       }
 
-      body.mode-request .title{
+      body.mode-request .title,
+      body.mode-admin .title{
         font-size:14px;
         line-height:1.35;
         white-space:normal;
@@ -1071,18 +1083,21 @@
         -webkit-box-orient:vertical;
       }
 
-      body.mode-request .size{
+      body.mode-request .size,
+      body.mode-admin .size{
         font-size:11px;
         white-space:normal;
       }
 
-      body.mode-request .stock{
+      body.mode-request .stock,
+      body.mode-admin .stock{
         min-height:92px;
         padding:10px 8px;
         font-size:16px;
       }
 
-      body.mode-request .stock small{
+      body.mode-request .stock small,
+      body.mode-admin .stock small{
         font-size:10px;
       }
 
@@ -1974,7 +1989,7 @@
       app.innerHTML = `
         <div class="mainHome">
           <div class="mainLogoArea" id="mainHomeLogoBtn">
-            ${renderSmartLogo("sa-ci.jpg", "Seoul Auction 로고")}
+            ${renderSmartLogo("sa-logo_4.png", "Seoul Auction 로고")}
           </div>
 
           <div class="mainHomeLine"></div>
