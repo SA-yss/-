@@ -12,7 +12,6 @@
       --muted:#666666;
       --line:#dddddd;
       --soft:#f7f7f7;
-      --section-bg:#f3f3f1;
       --header-h:72px;
       --max:1920px;
       --menu-panel-w:min(68vw, 520px);
@@ -194,15 +193,18 @@
     }
 
     .book-panel{
-      background:#f7f7f7;
-      padding:26px 32px 44px;
+      background:transparent;
+      padding:26px 0 44px;
+    }
+
+    .book-panel + .book-panel{
+      margin-top:26px;
     }
 
     .book-panel-top{
       border-top:1px solid #dfdfdf;
       padding-top:24px;
       margin-bottom:34px;
-      
     }
 
     .book-panel-top h2{
@@ -257,75 +259,6 @@
       font-weight:500;
       color:#5f5f5f;
       letter-spacing:-0.03em;
-    }
-
-    .work-grid-section{
-      padding:0 0 120px;
-    }
-
-    .work-grid-wrap{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-
-    .work-grid{
-      width:100%;
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:54px 20px;
-    }
-
-    .work-card{
-      display:block;
-    }
-
-    .work-thumb{
-      aspect-ratio:1.48 / 1;
-      overflow:hidden;
-      background:#dcdcdc;
-      margin-bottom:16px;
-    }
-
-    .work-thumb img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      transition:transform .5s ease;
-    }
-
-    .work-card:hover .work-thumb img{
-      transform:scale(1.02);
-    }
-
-    .work-title{
-      font-size:22px;
-      line-height:1.35;
-      font-weight:800;
-      letter-spacing:-0.04em;
-      margin-bottom:8px;
-    }
-
-    .work-subtitle{
-      font-size:15px;
-      line-height:1.6;
-      color:#222;
-      letter-spacing:-0.02em;
-    }
-
-    .back-home{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-size:14px;
-      color:var(--muted);
-      margin-top:56px;
-      align-self:center;
-    }
-
-    .back-home:hover{
-      color:#111;
     }
 
     .mobile-menu{
@@ -454,7 +387,7 @@
       }
 
       .book-panel{
-        padding:22px 22px 34px;
+        padding:22px 0 34px;
       }
 
       .book-grid{
@@ -463,18 +396,6 @@
       }
 
       .book-name{
-        font-size:14px;
-      }
-
-      .work-grid{
-        gap:42px 16px;
-      }
-
-      .work-title{
-        font-size:19px;
-      }
-
-      .work-subtitle{
         font-size:14px;
       }
     }
@@ -506,8 +427,8 @@
       }
 
       .book-grid{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-        gap:28px 16px;
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:22px 12px;
       }
 
       .book-panel-top{
@@ -518,26 +439,15 @@
         font-size:13px;
       }
 
-      .work-grid{
-        grid-template-columns:1fr;
-        gap:34px;
+      .book-cover{
+        max-width:100%;
       }
 
-      .work-grid-section{
-        padding-bottom:70px;
-      }
-
-      .work-title{
-        font-size:18px;
-      }
-
-      .work-subtitle{
-        font-size:13px;
-      }
-
-      .back-home{
-        margin-top:40px;
-        font-size:13px;
+      .book-name{
+        max-width:100%;
+        margin-top:12px;
+        font-size:12px;
+        line-height:1.4;
       }
     }
 
@@ -561,17 +471,7 @@
       }
 
       .book-panel{
-        padding:18px 14px 24px;
-      }
-
-      .book-cover,
-      .book-name{
-        max-width:100%;
-      }
-
-      .book-name{
-        margin-top:12px;
-        font-size:13px;
+        padding:18px 0 24px;
       }
 
       .mobile-nav-main a{
@@ -580,11 +480,6 @@
 
       .mobile-sub-list a{
         font-size:16px;
-      }
-
-      .back-home{
-        margin-top:20px;
-        font-size:12px;
       }
     }
   </style>
@@ -672,21 +567,21 @@
 
             <a href="#" class="book-card">
               <div class="book-cover">
-                <img src="images/sa-book-6.jpg" alt="제186회 미술품 경매">
+                <img src="images/sa-book-6.jpg" alt="프란츠 슈베르트">
               </div>
               <p class="book-name">프란츠 슈베르트</p>
             </a>
 
             <a href="#" class="book-card">
               <div class="book-cover">
-                <img src="images/sa-book-7.jpg" alt="제185회 미술품 경매">
+                <img src="images/sa-book-7.jpg" alt="제186회 미술품 경매">
               </div>
               <p class="book-name">제186회 미술품 경매</p>
             </a>
 
             <a href="#" class="book-card">
               <div class="book-cover">
-                <img src="images/sa-book-8.jpg" alt="제185회 미술품 경매">
+                <img src="images/sa-book-8.jpg" alt="음악 없는 말">
               </div>
               <p class="book-name">음악 없는 말</p>
             </a>
@@ -704,66 +599,51 @@
               </div>
               <p class="book-name">클래식 음악 연표</p>
             </a>
-
-            
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="work-grid-section">
-      <div class="wrap work-grid-wrap">
-        <div class="work-grid">
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-18.jpg" alt="서울옥션 크리에이티브 작업물 1">
-            </div>
-            <h2 class="work-title">Seoul Auction Exhibition Campaign Design</h2>
-            <p class="work-subtitle">서울옥션 전시 캠페인 그래픽 디자인</p>
-          </a>
+        <div class="book-panel">
+          <div class="book-panel-top">
+            <h2>EXHIBITION</h2>
+          </div>
 
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-14.jpg" alt="서울옥션 크리에이티브 작업물 2">
-            </div>
-            <h2 class="work-title">Auction Preview Space Visual Identity</h2>
-            <p class="work-subtitle">프리뷰 공간 비주얼 아이덴티티 구축</p>
-          </a>
+          <div class="book-grid">
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/exhibition-1.jpg" alt="전시 도록 1">
+              </div>
+              <p class="book-name">Exhibition Catalog 01</p>
+            </a>
 
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-13.jpg" alt="서울옥션 크리에이티브 작업물 3">
-            </div>
-            <h2 class="work-title">Digital Artwork Promotion Contents</h2>
-            <p class="work-subtitle">온라인 작품 홍보 콘텐츠 디자인</p>
-          </a>
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/exhibition-2.jpg" alt="전시 도록 2">
+              </div>
+              <p class="book-name">Exhibition Catalog 02</p>
+            </a>
 
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-21.jpg" alt="서울옥션 크리에이티브 작업물 4">
-            </div>
-            <h2 class="work-title">Art Fair Booth Graphic System</h2>
-            <p class="work-subtitle">아트페어 부스 그래픽 시스템 디자인</p>
-          </a>
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/exhibition-3.jpg" alt="전시 도록 3">
+              </div>
+              <p class="book-name">Exhibition Catalog 03</p>
+            </a>
 
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-25.jpg" alt="서울옥션 크리에이티브 작업물 5">
-            </div>
-            <h2 class="work-title">Archive Editorial Layout Project</h2>
-            <p class="work-subtitle">아카이브 에디토리얼 레이아웃 프로젝트</p>
-          </a>
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/exhibition-4.jpg" alt="전시 도록 4">
+              </div>
+              <p class="book-name">Exhibition Catalog 04</p>
+            </a>
 
-          <a href="#" class="work-card">
-            <div class="work-thumb">
-              <img src="images/sa-26.jpg" alt="서울옥션 크리에이티브 작업물 6">
-            </div>
-            <h2 class="work-title">Auction Event Key Visual Series</h2>
-            <p class="work-subtitle">경매 이벤트 키비주얼 시리즈</p>
-          </a>
+            <a href="#" class="book-card">
+              <div class="book-cover">
+                <img src="images/exhibition-5.jpg" alt="전시 도록 5">
+              </div>
+              <p class="book-name">Exhibition Catalog 05</p>
+            </a>
+          </div>
         </div>
-
-        <a href="index.html" class="back-home">← BACK TO HOME</a>
       </div>
     </section>
   </main>
