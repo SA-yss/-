@@ -408,10 +408,83 @@
       gap:14px;
     }
 
+    .card{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      background:var(--card);
+      transition:transform .28s ease, box-shadow .28s ease;
+    }
+
+    .card:hover,
+    .home-grid-card:hover,
+    .work-slider-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    }
+
+    .card::before{
+      display:none;
+    }
+
+    .card-media,
+    .work-slider-track{
+      position:absolute;
+      inset:0;
+      background:none;
+    }
+
+    .card-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .card-body{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:2;
+      color:#fff;
+      padding:18px 18px 17px;
+    }
+
+    .card-kicker{
+      font-size:11px;
+      letter-spacing:0.08em;
+      opacity:.86;
+      margin-bottom:8px;
+    }
+
+    .card-title{
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:-0.03em;
+      margin-bottom:6px;
+    }
+
+    .card-desc{
+      font-size:13px;
+      opacity:.92;
+      max-width:90%;
+    }
+
+    .span-4{ grid-column:span 4; }
+    .span-5{ grid-column:span 5; }
+    .span-6{ grid-column:span 6; }
+    .span-7{ grid-column:span 7; }
+    .span-8{ grid-column:span 8; }
+
+    .h-sm{ height:clamp(220px, 18vw, 300px); }
+    .h-md{ height:clamp(260px, 23vw, 420px); }
+    .h-lg{ height:clamp(320px, 31vw, 560px); }
+
     .home-grid{
       display:grid;
       grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:14px;
+      gap:var(--home-grid-gap);
     }
 
     .home-grid-card,
@@ -422,12 +495,6 @@
       background:var(--card);
       aspect-ratio:1 / 1;
       transition:transform .28s ease, box-shadow .28s ease;
-    }
-
-    .home-grid-card:hover,
-    .work-slider-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
     .home-grid-card.grid-feature{
@@ -447,40 +514,6 @@
     .home-grid-card.grid-bottom-1{ grid-column:1; }
     .home-grid-card.grid-bottom-2{ grid-column:2; }
     .home-grid-card.grid-bottom-3{ grid-column:3; }
-
-    .card-media,
-    .work-slider-track{
-      position:absolute;
-      inset:0;
-      background:none;
-    }
-
-    .card-media img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-
-    .card-body,
-    .card::before,
-    .work-slider-book-title,
-    .work-slider-meta{
-      display:none !important;
-    }
-
-    .card,
-    .span-4,
-    .span-5,
-    .span-6,
-    .span-7,
-    .span-8,
-    .h-sm,
-    .h-md,
-    .h-lg{
-      height:auto;
-      grid-column:auto;
-    }
 
     /* work slider */
     .work-slider-card{
@@ -509,9 +542,9 @@
 
     .work-slider-progress{
       position:absolute;
-      top:24px;
-      left:24px;
-      right:24px;
+      top:0;
+      left:0;
+      right:0;
       width:auto;
       height:1px;
       background:rgba(17,17,17,0.12);
@@ -554,34 +587,28 @@
 
     .work-slider-item.is-book{
       background:#f6f6f6;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
+      padding:24px 34px 20px;
     }
 
     .work-slider-book-title{
-      position:absolute;
-      left:clamp(18px, 5%, 36px);
-      top:clamp(26px, 10%, 42px);
-      z-index:2;
-      width:30%;
-      max-width:150px;
-      font-size:clamp(9px, 1.6vw, 16px);
-      line-height:1.3;
-      font-weight:500;
-      letter-spacing:-0.03em;
-      color:#222;
-      word-break:keep-all;
+      display:none;
     }
 
     .work-slider-book-wrap{
-      position:absolute;
-      right:clamp(18px, 6%, 30px);
-      top:clamp(18px, 6%, 30px);
-      transform:none;
-      width:clamp(130px, 44%, 220px);
+      position:relative;
+      width:min(100%, 240px);
+      max-width:72%;
       aspect-ratio:1000 / 1500;
+      margin:auto 0 22px;
       background:transparent;
       display:flex;
       align-items:center;
       justify-content:center;
+      z-index:1;
     }
 
     .work-slider-book-wrap img{
@@ -595,7 +622,20 @@
     }
 
     .work-slider-item.is-book .work-slider-meta{
-      display:none;
+      display:block;
+      width:100%;
+      padding-top:18px;
+      border-top:1px solid rgba(17,17,17,0.14);
+      z-index:2;
+    }
+
+    .work-slider-item.is-book .work-slider-title{
+      font-size:clamp(18px, 1.55vw, 24px);
+      line-height:1.42;
+      font-weight:500;
+      letter-spacing:-0.035em;
+      color:#222;
+      word-break:keep-all;
     }
 
     .work-slider-item.is-exhibition::after{
@@ -639,7 +679,6 @@
       letter-spacing:-0.04em;
       word-break:keep-all;
     }
-
     /* about strip */
     .about-strip{
       padding:10px 0 60px;
@@ -890,8 +929,9 @@
         grid-row:auto;
       }
 
-      .home-card-grid{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
+      .portfolio-grid{
+        grid-template-columns:repeat(12, 1fr);
+        gap:12px;
       }
     }
 
@@ -935,14 +975,6 @@
         gap:12px;
       }
 
-      .home-card-grid{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-      }
-
-      .home-card-grid .card{
-        grid-column:auto !important;
-      }
-
       .span-4{ grid-column:span 12; }
       .span-5{ grid-column:span 12; }
       .span-6{ grid-column:span 12; }
@@ -957,17 +989,16 @@
         font-size:20px;
       }
 
-      .work-slider-progress{
-        top:16px;
-        left:16px;
-        right:16px;
+      .work-slider-book-title{
+        left:20px;
+        top:24px;
+        width:34%;
+        font-size:22px;
       }
 
       .work-slider-book-wrap{
-        top:16px;
-        right:16px;
-        transform:none;
-        width:min(46%, 170px);
+        right:36px;
+        width:min(42%, 170px);
       }
 
       .work-slider-item.is-exhibition .work-slider-meta{
@@ -1003,6 +1034,7 @@
         <a href="sa-about.html">ABOUT</a>
         <a href="sa-work.html">WORK</a>
         <a href="sa-archive.html">ARCHIVE</a>
+        <a href="sa-ci.html">CI</a>
         <a href="sa-contact.html">CONTACT</a>
       </nav>
 
@@ -1172,43 +1204,54 @@
     <section class="grid-section wrap" id="Library">
       <div class="section-head">
         <h2>LIBRARY</h2>
-        <p>Visual Design, Branding, Typography</p>
+        <p>Visual Design, Branding, Typography  </p>
       </div>
 
-      <div class="home-grid">
-        <a class="home-grid-card grid-feature" href="#">
+      <div class="portfolio-grid">
+        <a class="card span-5 h-md" href="#">
           <div class="card-media">
             <img src="images/sa-30.jpg" alt="">
           </div>
-        </a>
-
-        <a class="home-grid-card grid-top" href="#">
-          <div class="card-media">
-            <img src="images/sa-31.jpg" alt="">
+          <div class="card-body">
+            <p class="card-kicker">LIBRARY / Visual Design</p>
+            <h3 class="card-title">Visual Design</h3>
+            <p class="card-desc"></p>
           </div>
         </a>
 
-        <a class="home-grid-card grid-middle" href="#">
-          <div class="card-media">
-            <img src="images/sa-32.jpg" alt="">
+        <a class="card span-7 h-md" href="#">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <p class="card-kicker">LIBRARY / Branding</p>
+            <h3 class="card-title">Branding</h3>
+            <p class="card-desc"></p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="grid-section wrap" id="ci">
+      <div class="section-head">
+        <h2>CI</h2>
+        <p>Corporate identity and visual rules</p>
+      </div>
+
+      <div class="portfolio-grid">
+        <a class="card span-6 h-md" href="#">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <p class="card-kicker">CI / LOGO</p>
+            <h3 class="card-title">Logo System</h3>
+            <p class="card-desc"></p>
           </div>
         </a>
 
-        <a class="home-grid-card grid-bottom-1" href="#">
-          <div class="card-media">
-            <img src="images/sa-33.jpg" alt="">
-          </div>
-        </a>
-
-        <a class="home-grid-card grid-bottom-2" href="#">
-          <div class="card-media">
-            <img src="images/sa-34.jpg" alt="">
-          </div>
-        </a>
-
-        <a class="home-grid-card grid-bottom-3" href="#">
-          <div class="card-media">
-            <img src="images/sa-35.jpg" alt="">
+        <a class="card span-6 h-md" href="#">
+          <div class="card-media"></div>
+          <div class="card-body">
+            <p class="card-kicker">CI / GUIDELINE</p>
+            <h3 class="card-title">Typography & Color</h3>
+            <p class="card-desc"></p>
           </div>
         </a>
       </div>
@@ -1243,6 +1286,7 @@
         <a href="sa-about.html">ABOUT</a>
         <a href="sa-work.html">WORK</a>
         <a href="sa-archive.html">ARCHIVE</a>
+        <a href="sa-ci.html">CI</a>
         <a href="sa-contact.html">CONTACT</a>
       </div>
     </div>
@@ -1269,6 +1313,7 @@
       { key:'about', label:'ABOUT', href:'sa-about.html' },
       { key:'work', label:'WORK', href:'sa-work.html' },
       { key:'archive', label:'ARCHIVE', href:'sa-archive.html' },
+      { key:'ci', label:'CI', href:'sa-ci.html' },
       { key:'contact', label:'CONTACT', href:'sa-contact.html' }
     ];
 
@@ -1279,6 +1324,7 @@
           { label:'Creative Archive', href:'index.html', current:true },
           { label:'Featured Work', href:'#work' },
           { label:'Archive', href:'#archive' },
+          { label:'CI', href:'#ci' },
           { label:'Contact', href:'#contact' }
         ]
       },
