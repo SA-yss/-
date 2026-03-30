@@ -22,6 +22,7 @@
       --search-w:320px;
       --search-gap:24px;
       --search-move:calc(var(--search-w) + var(--search-gap));
+      --home-grid-gap:14px;
     }
 
     *{
@@ -364,7 +365,7 @@
       max-width:1380px;
       margin-left:0;
       color:var(--text);
-      font-size:clamp(34px, 4.15vw, 78px);
+      font-size:clamp(20px, 4.15vw, 50px);
       line-height:1.18;
       letter-spacing:-0.055em;
       font-weight:400;
@@ -407,24 +408,48 @@
       gap:14px;
     }
 
-    .card{
+    .home-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .home-grid-card,
+    .work-slider-card{
       position:relative;
       overflow:hidden;
       border-radius:var(--radius);
       background:var(--card);
+      aspect-ratio:1 / 1;
       transition:transform .28s ease, box-shadow .28s ease;
     }
 
-    .card:hover{
+    .home-grid-card:hover,
+    .work-slider-card:hover{
       transform:translateY(-4px);
       box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
-    .card::before{
-      display:none;
+    .home-grid-card.grid-feature{
+      grid-column:1 / 3;
+      grid-row:1 / 3;
     }
 
-    .card-media{
+    .home-grid-card.grid-top,
+    .work-slider-card{
+      grid-column:3;
+    }
+
+    .home-grid-card.grid-middle{
+      grid-column:3;
+    }
+
+    .home-grid-card.grid-bottom-1{ grid-column:1; }
+    .home-grid-card.grid-bottom-2{ grid-column:2; }
+    .home-grid-card.grid-bottom-3{ grid-column:3; }
+
+    .card-media,
+    .work-slider-track{
       position:absolute;
       inset:0;
       background:none;
@@ -437,49 +462,28 @@
       display:block;
     }
 
-    .card-body{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:2;
-      color:#fff;
-      padding:18px 18px 17px;
+    .card-body,
+    .card::before,
+    .work-slider-book-title,
+    .work-slider-meta{
+      display:none !important;
     }
 
-    .card-kicker{
-      font-size:11px;
-      letter-spacing:0.08em;
-      opacity:.86;
-      margin-bottom:8px;
+    .card,
+    .span-4,
+    .span-5,
+    .span-6,
+    .span-7,
+    .span-8,
+    .h-sm,
+    .h-md,
+    .h-lg{
+      height:auto;
+      grid-column:auto;
     }
-
-    .card-title{
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:-0.03em;
-      margin-bottom:6px;
-    }
-
-    .card-desc{
-      font-size:13px;
-      opacity:.92;
-      max-width:90%;
-    }
-
-    .span-4{ grid-column:span 4; }
-    .span-5{ grid-column:span 5; }
-    .span-6{ grid-column:span 6; }
-    .span-7{ grid-column:span 7; }
-    .span-8{ grid-column:span 8; }
-
-    .h-sm{ height:clamp(220px, 18vw, 300px); }
-    .h-md{ height:clamp(260px, 23vw, 420px); }
-    .h-lg{ height:clamp(320px, 31vw, 560px); }
 
     /* work slider */
     .work-slider-card{
-      position:relative;
       background:#f4f4f2;
       display:block;
     }
@@ -505,33 +509,51 @@
 
     .work-slider-progress{
       position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:2px;
-      background:rgba(0,0,0,0.08);
-      z-index:5;
+      top:24px;
+      left:24px;
+      right:24px;
+      width:auto;
+      height:1px;
+      background:rgba(17,17,17,0.12);
+      z-index:6;
       overflow:hidden;
+      pointer-events:none;
     }
 
     .work-slider-progress-bar{
+      position:relative;
       display:block;
-      width:0;
+      width:100%;
       height:100%;
       background:#111;
+      transform:scaleX(0);
+      transform-origin:left center;
+      will-change:transform;
+    }
+
+    .work-slider-progress-bar::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:0;
+      width:28px;
+      height:1px;
+      transform:translate(50%, -50%);
+      background:rgba(17,17,17,0.45);
+      filter:blur(1.2px);
     }
 
     .work-slider-card.is-playing .work-slider-item.is-active .work-slider-progress-bar{
-      animation:workSlideProgress 2s linear forwards;
+      animation:workSlideProgress 3s linear forwards;
     }
 
     @keyframes workSlideProgress{
-      from{ width:0; }
-      to{ width:100%; }
+      from{ transform:scaleX(0); }
+      to{ transform:scaleX(1); }
     }
 
     .work-slider-item.is-book{
-      background:#efefec;
+      background:#f6f6f6;
     }
 
     .work-slider-book-title{
@@ -541,7 +563,7 @@
       z-index:2;
       width:30%;
       max-width:150px;
-      font-size:clamp(18px, 2vw, 32px);
+      font-size:clamp(9px, 1.6vw, 16px);
       line-height:1.3;
       font-weight:500;
       letter-spacing:-0.03em;
@@ -551,10 +573,10 @@
 
     .work-slider-book-wrap{
       position:absolute;
-      right:clamp(22px, 7%, 40px);
-      top:50%;
-      transform:translateY(-50%);
-      width:clamp(150px, 47%, 270px);
+      right:clamp(18px, 6%, 30px);
+      top:clamp(18px, 6%, 30px);
+      transform:none;
+      width:clamp(130px, 44%, 220px);
       aspect-ratio:1000 / 1500;
       background:transparent;
       display:flex;
@@ -848,9 +870,28 @@
         letter-spacing:-0.05em;
       }
 
-      .portfolio-grid{
-        grid-template-columns:repeat(12, 1fr);
+      .home-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
         gap:12px;
+      }
+
+      .home-grid-card.grid-feature{
+        grid-column:1 / -1;
+        grid-row:auto;
+      }
+
+      .home-grid-card.grid-top,
+      .work-slider-card,
+      .home-grid-card.grid-middle,
+      .home-grid-card.grid-bottom-1,
+      .home-grid-card.grid-bottom-2,
+      .home-grid-card.grid-bottom-3{
+        grid-column:auto;
+        grid-row:auto;
+      }
+
+      .home-card-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -894,6 +935,14 @@
         gap:12px;
       }
 
+      .home-card-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      .home-card-grid .card{
+        grid-column:auto !important;
+      }
+
       .span-4{ grid-column:span 12; }
       .span-5{ grid-column:span 12; }
       .span-6{ grid-column:span 12; }
@@ -908,16 +957,17 @@
         font-size:20px;
       }
 
-      .work-slider-book-title{
-        left:20px;
-        top:24px;
-        width:34%;
-        font-size:22px;
+      .work-slider-progress{
+        top:16px;
+        left:16px;
+        right:16px;
       }
 
       .work-slider-book-wrap{
-        right:20px;
-        width:min(54%, 230px);
+        top:16px;
+        right:16px;
+        transform:none;
+        width:min(46%, 170px);
       }
 
       .work-slider-item.is-exhibition .work-slider-meta{
@@ -953,7 +1003,6 @@
         <a href="sa-about.html">ABOUT</a>
         <a href="sa-work.html">WORK</a>
         <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-ci.html">CI</a>
         <a href="sa-contact.html">CONTACT</a>
       </nav>
 
@@ -979,7 +1028,7 @@
           <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
           <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
         </svg>
-        <input type="text" id="headerSearchInput" placeholder="Search projects, archive." />
+        <input type="text" id="headerSearchInput" placeholder="Search projects.." />
         <span class="search-hint">ESC</span>
       </form>
     </div>
@@ -1006,7 +1055,7 @@
     <section class="hero wrap">
       <div class="hero-grid">
         <p class="hero-copy">
-          <strong>Seoul Auction Creatives</strong> is a digital archive that reinterprets and documents a wide range of visual outcomes and design works—generated through exhibitions, auctions, and art content—from the perspective of the creator.
+          <strong>Seoul Auction Creatives</strong> is a digital archive documenting and reinterpreting visual works from exhibitions, auctions, and art content.
         </p>
       </div>
     </section>
@@ -1017,19 +1066,14 @@
         <p>Selected projects, exhibition graphics, campaign assets</p>
       </div>
 
-      <div class="portfolio-grid">
-        <a class="card span-8 h-lg" href="#">
+      <div class="home-grid">
+        <a class="home-grid-card grid-feature" href="#">
           <div class="card-media">
             <img src="images/sa-1.jpg" alt="">
           </div>
-          <div class="card-body">
-            <p class="card-kicker">WORK / EXHIBITION</p>
-            <h3 class="card-title">Auction Exhibition Identity</h3>
-            <p class="card-desc"></p>
-          </div>
         </a>
 
-        <a class="card span-4 h-lg work-slider-card is-playing" href="sa-work.html" id="workSliderCard" aria-label="WORK 페이지로 이동">
+        <a class="work-slider-card is-playing" href="sa-work.html" id="workSliderCard" aria-label="WORK 페이지로 이동">
           <div class="work-slider-track">
             <div class="work-slider-item is-book is-active" data-href="sa-work.html#art-auction-1">
               <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
@@ -1096,161 +1140,75 @@
                 <h3 class="work-slider-title">프란츠 슈베르트</h3>
               </div>
             </div>
-
-            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-7">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <p class="work-slider-book-title">제186회 미술품 경매</p>
-              <div class="work-slider-book-wrap">
-                <img src="images/sa-book-7.jpg" alt="제186회 미술품 경매">
-              </div>
-              <div class="work-slider-meta">
-                <h3 class="work-slider-title">제186회 미술품 경매</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-8">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <p class="work-slider-book-title">음악 없는 말</p>
-              <div class="work-slider-book-wrap">
-                <img src="images/sa-book-8.jpg" alt="음악 없는 말">
-              </div>
-              <div class="work-slider-meta">
-                <h3 class="work-slider-title">음악 없는 말</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-9">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <p class="work-slider-book-title">바이올린을 위한 밤의 노래</p>
-              <div class="work-slider-book-wrap">
-                <img src="images/sa-book-9.jpg" alt="바이올린을 위한 밤의 노래">
-              </div>
-              <div class="work-slider-meta">
-                <h3 class="work-slider-title">바이올린을 위한 밤의 노래</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-10">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <p class="work-slider-book-title">클래식 음악 연표</p>
-              <div class="work-slider-book-wrap">
-                <img src="images/sa-book-10.jpg" alt="클래식 음악 연표">
-              </div>
-              <div class="work-slider-meta">
-                <h3 class="work-slider-title">클래식 음악 연표</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-1">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <div class="card-media">
-                <img src="images/exhibition-1.jpg" alt="Paik Nam June Exhibition Graphic System">
-              </div>
-              <div class="work-slider-meta">
-                <p class="work-slider-kicker">WORK / EXHIBITION</p>
-                <h3 class="work-slider-title">Paik Nam June Exhibition Graphic System</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-2">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <div class="card-media">
-                <img src="images/exhibition-2.jpg" alt="Seoul Auction Preview Exhibition Design">
-              </div>
-              <div class="work-slider-meta">
-                <p class="work-slider-kicker">WORK / EXHIBITION</p>
-                <h3 class="work-slider-title">Seoul Auction Preview Exhibition Design</h3>
-              </div>
-            </div>
-
-            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-3">
-              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
-              <div class="card-media">
-                <img src="images/exhibition-3.jpg" alt="Exhibition Promotion Content Series">
-              </div>
-              <div class="work-slider-meta">
-                <p class="work-slider-kicker">WORK / EXHIBITION</p>
-                <h3 class="work-slider-title">Exhibition Promotion Content Series</h3>
-              </div>
-            </div>
           </div>
         </a>
 
-        <a class="card span-6 h-md" href="sa-archive.html">
+        <a class="home-grid-card grid-middle" href="#">
           <div class="card-media">
-            <img src="images/sa-9.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE</p>
-            <h3 class="card-title">Past Projects</h3>
-            <p class="card-desc"></p>
+            <img src="images/sa-2.jpg" alt="">
           </div>
         </a>
 
-        <a class="card span-6 h-md" href="sa-download.html">
+        <a class="home-grid-card grid-bottom-1" href="#">
           <div class="card-media">
-            <img src="images/sa-9.jpg" alt="">
+            <img src="images/sa-3.jpg" alt="">
           </div>
-          <div class="card-body">
-            <p class="card-kicker">CI</p>
-            <h3 class="card-title">Brand Assets</h3>
-            <p class="card-desc"></p>
+        </a>
+
+        <a class="home-grid-card grid-bottom-2" href="#">
+          <div class="card-media">
+            <img src="images/sa-4.jpg" alt="">
+          </div>
+        </a>
+
+        <a class="home-grid-card grid-bottom-3" href="#">
+          <div class="card-media">
+            <img src="images/sa-5.jpg" alt="">
           </div>
         </a>
       </div>
     </section>
 
-    <section class="grid-section wrap" id="archive">
+    <section class="grid-section wrap" id="Library">
       <div class="section-head">
-        <h2>ARCHIVE</h2>
-        <p>Documented process, records, references</p>
+        <h2>LIBRARY</h2>
+        <p>Visual Design, Branding, Typography</p>
       </div>
 
-      <div class="portfolio-grid">
-        <a class="card span-5 h-md" href="#">
+      <div class="home-grid">
+        <a class="home-grid-card grid-feature" href="#">
           <div class="card-media">
-            <img src="images/sa-10.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE / RECORD</p>
-            <h3 class="card-title">Exhibition Records</h3>
-            <p class="card-desc"></p>
+            <img src="images/sa-30.jpg" alt="">
           </div>
         </a>
 
-        <a class="card span-7 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">ARCHIVE / RESEARCH</p>
-            <h3 class="card-title">Research & Reference</h3>
-            <p class="card-desc"></p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="grid-section wrap" id="ci">
-      <div class="section-head">
-        <h2>CI</h2>
-        <p>Corporate identity and visual rules</p>
-      </div>
-
-      <div class="portfolio-grid">
-        <a class="card span-6 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">CI / LOGO</p>
-            <h3 class="card-title">Logo System</h3>
-            <p class="card-desc"></p>
+        <a class="home-grid-card grid-top" href="#">
+          <div class="card-media">
+            <img src="images/sa-31.jpg" alt="">
           </div>
         </a>
 
-        <a class="card span-6 h-md" href="#">
-          <div class="card-media"></div>
-          <div class="card-body">
-            <p class="card-kicker">CI / GUIDELINE</p>
-            <h3 class="card-title">Typography & Color</h3>
-            <p class="card-desc"></p>
+        <a class="home-grid-card grid-middle" href="#">
+          <div class="card-media">
+            <img src="images/sa-32.jpg" alt="">
+          </div>
+        </a>
+
+        <a class="home-grid-card grid-bottom-1" href="#">
+          <div class="card-media">
+            <img src="images/sa-33.jpg" alt="">
+          </div>
+        </a>
+
+        <a class="home-grid-card grid-bottom-2" href="#">
+          <div class="card-media">
+            <img src="images/sa-34.jpg" alt="">
+          </div>
+        </a>
+
+        <a class="home-grid-card grid-bottom-3" href="#">
+          <div class="card-media">
+            <img src="images/sa-35.jpg" alt="">
           </div>
         </a>
       </div>
@@ -1285,7 +1243,6 @@
         <a href="sa-about.html">ABOUT</a>
         <a href="sa-work.html">WORK</a>
         <a href="sa-archive.html">ARCHIVE</a>
-        <a href="sa-ci.html">CI</a>
         <a href="sa-contact.html">CONTACT</a>
       </div>
     </div>
@@ -1312,7 +1269,6 @@
       { key:'about', label:'ABOUT', href:'sa-about.html' },
       { key:'work', label:'WORK', href:'sa-work.html' },
       { key:'archive', label:'ARCHIVE', href:'sa-archive.html' },
-      { key:'ci', label:'CI', href:'sa-ci.html' },
       { key:'contact', label:'CONTACT', href:'sa-contact.html' }
     ];
 
@@ -1323,7 +1279,6 @@
           { label:'Creative Archive', href:'index.html', current:true },
           { label:'Featured Work', href:'#work' },
           { label:'Archive', href:'#archive' },
-          { label:'CI', href:'#ci' },
           { label:'Contact', href:'#contact' }
         ]
       },
@@ -1492,7 +1447,7 @@
       if (workSliderTimer) clearInterval(workSliderTimer);
       if (workSliderCard) workSliderCard.classList.add('is-playing');
       setWorkSlider(workSliderIndex);
-      workSliderTimer = setInterval(nextWorkSlider, 2000);
+      workSliderTimer = setInterval(nextWorkSlider, 3000);
     }
 
     function stopWorkSlider() {
