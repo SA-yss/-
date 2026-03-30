@@ -412,7 +412,6 @@
       overflow:hidden;
       border-radius:var(--radius);
       background:var(--card);
-      min-height:240px;
       transition:transform .28s ease, box-shadow .28s ease;
     }
 
@@ -429,6 +428,13 @@
       position:absolute;
       inset:0;
       background:none;
+    }
+
+    .card-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     .card-body{
@@ -467,9 +473,150 @@
     .span-7{ grid-column:span 7; }
     .span-8{ grid-column:span 8; }
 
-    .h-sm{ min-height:300px; }
-    .h-md{ min-height:420px; }
-    .h-lg{ min-height:560px; }
+    .h-sm{ height:clamp(220px, 18vw, 300px); }
+    .h-md{ height:clamp(260px, 23vw, 420px); }
+    .h-lg{ height:clamp(320px, 31vw, 560px); }
+
+    /* work slider */
+    .work-slider-card{
+      position:relative;
+      background:#f4f4f2;
+      display:block;
+    }
+
+    .work-slider-track{
+      position:absolute;
+      inset:0;
+    }
+
+    .work-slider-item{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .35s ease;
+      background:#f4f4f2;
+    }
+
+    .work-slider-item.is-active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .work-slider-progress{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:2px;
+      background:rgba(0,0,0,0.08);
+      z-index:5;
+      overflow:hidden;
+    }
+
+    .work-slider-progress-bar{
+      display:block;
+      width:0;
+      height:100%;
+      background:#111;
+    }
+
+    .work-slider-card.is-playing .work-slider-item.is-active .work-slider-progress-bar{
+      animation:workSlideProgress 2s linear forwards;
+    }
+
+    @keyframes workSlideProgress{
+      from{ width:0; }
+      to{ width:100%; }
+    }
+
+    .work-slider-item.is-book{
+      background:#efefec;
+    }
+
+    .work-slider-book-title{
+      position:absolute;
+      left:clamp(18px, 5%, 36px);
+      top:clamp(26px, 10%, 42px);
+      z-index:2;
+      width:30%;
+      max-width:150px;
+      font-size:clamp(18px, 2vw, 32px);
+      line-height:1.3;
+      font-weight:500;
+      letter-spacing:-0.03em;
+      color:#222;
+      word-break:keep-all;
+    }
+
+    .work-slider-book-wrap{
+      position:absolute;
+      right:clamp(22px, 7%, 40px);
+      top:50%;
+      transform:translateY(-50%);
+      width:clamp(150px, 47%, 270px);
+      aspect-ratio:1000 / 1500;
+      background:transparent;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .work-slider-book-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      background:#fff;
+      border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .work-slider-item.is-book .work-slider-meta{
+      display:none;
+    }
+
+    .work-slider-item.is-exhibition::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,0.46) 100%);
+      z-index:1;
+    }
+
+    .work-slider-item.is-exhibition .card-media{
+      position:absolute;
+      inset:0;
+    }
+
+    .work-slider-item.is-exhibition .work-slider-meta{
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:17px;
+      z-index:2;
+      color:#fff;
+      padding:0;
+      border-top:none;
+    }
+
+    .work-slider-item.is-exhibition .work-slider-kicker{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.08em;
+      opacity:.86;
+      margin-bottom:8px;
+      color:#fff;
+    }
+
+    .work-slider-item.is-exhibition .work-slider-title{
+      color:#fff;
+      font-size:clamp(18px, 1.8vw, 22px);
+      line-height:1.35;
+      font-weight:700;
+      letter-spacing:-0.04em;
+      word-break:keep-all;
+    }
 
     /* about strip */
     .about-strip{
@@ -628,21 +775,7 @@
       }
 
       .portfolio-grid{
-        grid-template-columns:repeat(2, 1fr);
-      }
-
-      .span-4,
-      .span-5,
-      .span-6,
-      .span-7,
-      .span-8{
-        grid-column:span 1;
-      }
-
-      .h-sm,
-      .h-md,
-      .h-lg{
-        min-height:260px;
+        grid-template-columns:repeat(12, 1fr);
       }
 
       .about-box{
@@ -716,21 +849,8 @@
       }
 
       .portfolio-grid{
-        grid-template-columns:repeat(2, 1fr);
-      }
-
-      .span-4,
-      .span-5,
-      .span-6,
-      .span-7,
-      .span-8{
-        grid-column:span 1;
-      }
-
-      .h-sm,
-      .h-md,
-      .h-lg{
-        min-height:260px;
+        grid-template-columns:repeat(12, 1fr);
+        gap:12px;
       }
     }
 
@@ -770,9 +890,15 @@
       }
 
       .portfolio-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(12, 1fr);
         gap:12px;
       }
+
+      .span-4{ grid-column:span 12; }
+      .span-5{ grid-column:span 12; }
+      .span-6{ grid-column:span 12; }
+      .span-7{ grid-column:span 12; }
+      .span-8{ grid-column:span 12; }
 
       .card{
         border-radius:0px;
@@ -780,6 +906,28 @@
 
       .card-title{
         font-size:20px;
+      }
+
+      .work-slider-book-title{
+        left:20px;
+        top:24px;
+        width:34%;
+        font-size:22px;
+      }
+
+      .work-slider-book-wrap{
+        right:20px;
+        width:min(54%, 230px);
+      }
+
+      .work-slider-item.is-exhibition .work-slider-meta{
+        left:16px;
+        right:16px;
+        bottom:16px;
+      }
+
+      .work-slider-item.is-exhibition .work-slider-title{
+        font-size:18px;
       }
 
       .about-box .text{
@@ -831,7 +979,7 @@
           <path fill-rule="evenodd" clip-rule="evenodd" d="M7.56021 0C11.7313 0 15.0988 3.36747 15.0988 7.56021C15.0988 11.753 11.7313 15.0988 7.56021 15.0988C3.38909 15.0988 0 11.7316 0 7.56021C0 3.38879 3.36747 0 7.56021 0ZM12.0791 3.0197C10.9276 1.86828 9.32008 1.15142 7.56021 1.15142C5.80034 1.15142 4.17112 1.86828 3.0197 3.0197C1.86828 4.17112 1.15142 5.77872 1.15142 7.56021C1.15142 9.3417 1.86828 10.9276 3.0197 12.0791C4.17112 13.2305 5.77872 13.9693 7.56021 13.9693C9.3417 13.9693 10.9276 13.2305 12.0791 12.0791C13.2522 10.9276 13.9693 9.32008 13.9693 7.56021C13.9693 5.80034 13.2525 4.17112 12.0791 3.0197Z" fill="#111"/>
           <path d="M16.8368 16.0331C17.0539 16.2502 17.0539 16.6196 16.8368 16.837C16.6196 17.0542 16.2502 17.0542 16.0328 16.837L12.3395 13.1438C12.1224 12.9266 12.1224 12.5572 12.3395 12.3398C12.5567 12.1007 12.926 12.1007 13.1435 12.3398L16.8368 16.0331Z" fill="#111"/>
         </svg>
-        <input type="text" id="headerSearchInput" placeholder="Search projects, archive..." />
+        <input type="text" id="headerSearchInput" placeholder="Search projects, archive." />
         <span class="search-hint">ESC</span>
       </form>
     </div>
@@ -881,14 +1029,150 @@
           </div>
         </a>
 
-        <a class="card span-4 h-lg" href="#">
-          <div class="card-media">
-            <img src="images/sa-11.jpg" alt="">
-          </div>
-          <div class="card-body">
-            <p class="card-kicker">WORK / DIGITAL</p>
-            <h3 class="card-title">Online Promotion</h3>
-            <p class="card-desc"></p>
+        <a class="card span-4 h-lg work-slider-card is-playing" href="sa-work.html" id="workSliderCard" aria-label="WORK 페이지로 이동">
+          <div class="work-slider-track">
+            <div class="work-slider-item is-book is-active" data-href="sa-work.html#art-auction-1">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">[2026 SPRING] CONTEMPORARY ART SALE</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-1.jpg" alt="[2026 SPRING] CONTEMPORARY ART SALE">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">[2026 SPRING] CONTEMPORARY ART SALE</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-2">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">제190회 미술품 경매</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-2.jpg" alt="제190회 미술품 경매">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">제190회 미술품 경매</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-3">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">제189회 미술품 경매</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-3.jpg" alt="제189회 미술품 경매">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">제189회 미술품 경매</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-4">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">제188회 미술품 경매</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-4.jpg" alt="제188회 미술품 경매">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">제188회 미술품 경매</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-5">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">제187회 미술품 경매</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-5.jpg" alt="제187회 미술품 경매">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">제187회 미술품 경매</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-6">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">프란츠 슈베르트</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-6.jpg" alt="프란츠 슈베르트">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">프란츠 슈베르트</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-7">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">제186회 미술품 경매</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-7.jpg" alt="제186회 미술품 경매">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">제186회 미술품 경매</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-8">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">음악 없는 말</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-8.jpg" alt="음악 없는 말">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">음악 없는 말</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-9">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">바이올린을 위한 밤의 노래</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-9.jpg" alt="바이올린을 위한 밤의 노래">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">바이올린을 위한 밤의 노래</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-book" data-href="sa-work.html#art-auction-10">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <p class="work-slider-book-title">클래식 음악 연표</p>
+              <div class="work-slider-book-wrap">
+                <img src="images/sa-book-10.jpg" alt="클래식 음악 연표">
+              </div>
+              <div class="work-slider-meta">
+                <h3 class="work-slider-title">클래식 음악 연표</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-1">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <div class="card-media">
+                <img src="images/exhibition-1.jpg" alt="Paik Nam June Exhibition Graphic System">
+              </div>
+              <div class="work-slider-meta">
+                <p class="work-slider-kicker">WORK / EXHIBITION</p>
+                <h3 class="work-slider-title">Paik Nam June Exhibition Graphic System</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-2">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <div class="card-media">
+                <img src="images/exhibition-2.jpg" alt="Seoul Auction Preview Exhibition Design">
+              </div>
+              <div class="work-slider-meta">
+                <p class="work-slider-kicker">WORK / EXHIBITION</p>
+                <h3 class="work-slider-title">Seoul Auction Preview Exhibition Design</h3>
+              </div>
+            </div>
+
+            <div class="work-slider-item is-exhibition" data-href="sa-work.html#exhibition-3">
+              <div class="work-slider-progress"><span class="work-slider-progress-bar"></span></div>
+              <div class="card-media">
+                <img src="images/exhibition-3.jpg" alt="Exhibition Promotion Content Series">
+              </div>
+              <div class="work-slider-meta">
+                <p class="work-slider-kicker">WORK / EXHIBITION</p>
+                <h3 class="work-slider-title">Exhibition Promotion Content Series</h3>
+              </div>
+            </div>
           </div>
         </a>
 
@@ -1183,6 +1467,59 @@
         closeMobileMenu();
       });
     });
+
+    const workSliderCard = document.getElementById('workSliderCard');
+    const workSliderItems = workSliderCard ? Array.from(workSliderCard.querySelectorAll('.work-slider-item')) : [];
+    let workSliderIndex = 0;
+    let workSliderTimer = null;
+
+    function setWorkSlider(index) {
+      if (!workSliderItems.length) return;
+      workSliderItems.forEach((item, itemIndex) => {
+        item.classList.toggle('is-active', itemIndex === index);
+      });
+      workSliderIndex = index;
+    }
+
+    function nextWorkSlider() {
+      if (!workSliderItems.length) return;
+      const nextIndex = (workSliderIndex + 1) % workSliderItems.length;
+      setWorkSlider(nextIndex);
+    }
+
+    function startWorkSlider() {
+      if (!workSliderItems.length) return;
+      if (workSliderTimer) clearInterval(workSliderTimer);
+      if (workSliderCard) workSliderCard.classList.add('is-playing');
+      setWorkSlider(workSliderIndex);
+      workSliderTimer = setInterval(nextWorkSlider, 2000);
+    }
+
+    function stopWorkSlider() {
+      if (workSliderTimer) {
+        clearInterval(workSliderTimer);
+        workSliderTimer = null;
+      }
+      if (workSliderCard) workSliderCard.classList.remove('is-playing');
+    }
+
+    if (workSliderCard && workSliderItems.length) {
+      workSliderCard.addEventListener('mouseenter', stopWorkSlider);
+      workSliderCard.addEventListener('mouseleave', startWorkSlider);
+      workSliderCard.addEventListener('focusin', stopWorkSlider);
+      workSliderCard.addEventListener('focusout', startWorkSlider);
+
+      workSliderCard.addEventListener('click', (e) => {
+        const activeItem = workSliderItems[workSliderIndex];
+        const targetHref = activeItem ? activeItem.dataset.href : workSliderCard.getAttribute('href');
+        if (targetHref) {
+          e.preventDefault();
+          window.location.href = targetHref;
+        }
+      });
+
+      startWorkSlider();
+    }
   </script>
 </body>
 </html>
